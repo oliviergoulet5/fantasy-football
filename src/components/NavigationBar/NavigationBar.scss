@@ -1,0 +1,54 @@
+$pillColor: rgb(7, 87, 255);
+
+.navbar {
+    padding: 1rem;
+    overflow: hidden;
+    margin: 0;
+
+    div {
+        display: inline-flex;
+        .logo {
+            height: 40px;
+        }
+
+        p.pill-button {
+            border-radius: 9999px;
+            background-color: $pillColor;
+            color: white;
+            margin: 0;
+        
+            &:hover {
+                background-color: darken($pillColor, 10%);
+                cursor: pointer;
+            }
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 0.5rem 1rem;
+            &:not(.pill-button) {
+                font-weight: bold;
+                color: black;
+            }
+        }
+
+
+    }
+
+    div.left {
+        float: left;
+    }
+    
+    div.right {
+        float: right;
+    }
+
+    div.nav-links {
+        p:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}
+
