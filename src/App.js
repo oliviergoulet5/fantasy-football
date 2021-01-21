@@ -1,6 +1,6 @@
 import './App.scss';
 import NavigationBar from './components/NavigationBar/NavigationBar';
-import LoginModal from './components/LoginForm/LoginModal';
+import LoginModal from './components/LoginModal/LoginModal';
 import BrowserFilters from './components/BrowserFilters/BrowserFilters';
 import React, { useState } from 'react';
 
