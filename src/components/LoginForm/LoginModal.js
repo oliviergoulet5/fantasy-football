@@ -10,7 +10,7 @@ function LoginModal(props) {
     }
 
     return (
-        <div className='modal' onClick={ handleClickOutsideModal }>
+        <div id='login-modal' onClick={ handleClickOutsideModal }>
             <div className='modal-content'>
                 <div className='header'>
                     <img className='close' src={process.env.PUBLIC_URL + '/icons/close-circle-f.svg'} alt='Close' onClick={ () => {
