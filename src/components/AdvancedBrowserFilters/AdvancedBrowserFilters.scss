@@ -1,0 +1,49 @@
+@import '../../Mixins';
+
+$btn-color: #f1f1f1;
+$login-color: rgb(7, 87, 255);
+$background-color: #f1f1f1;
+
+$content-width: 32rem;
+$content-height: 16rem;
+
+div.wrapper {
+    justify-self: space-between;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    position: relative;
+
+    span.spacing {
+        margin: 0;
+        margin-bottom: 0.25rem;
+        height: 1rem;
+    }
+
+    div.advanced-filters-btn {
+        background-color: $btn-color;
+        height: 1.75rem;
+        border-radius: 8px;
+        padding: .25rem;
+        width: 1.75rem;
+        &:hover {
+            background-color: darken($btn-color, 10%);
+        }
+    }
+
+    div.modal {
+        box-shadow: 0 14px 30px #E1E1E1;
+        position: absolute;
+        z-index: 2;
+        margin: 0;
+        background-color: $background-color;
+        border-radius: 8px;
+        width: $content-width;
+        height: $content-height;
+        top: 4.5rem;
+        right: 0;
+    }
+}
+

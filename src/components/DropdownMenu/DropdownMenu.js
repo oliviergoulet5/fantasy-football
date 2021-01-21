@@ -8,12 +8,7 @@ function DropdownMenu(props) {
     const { visible, setVisible, ref } = useOutsideAlerter(false);
 
     const handleMenuClick = (event) => {
-        if (visible === false) {
-            setVisible(true);
-        } else {
-            setVisible(false);
-        }
-
+        setVisible(!visible);
     }
     
     const handleOptionClick = (event) => {
