@@ -23,8 +23,16 @@ function DropdownMenu(props) {
             setSelectedOption(event.target.textContent);
     }
 
-    // For each passed down option we create a list item.
-    let optionListItems = props.options.map(option => <li onClick={ handleOptionClick }>{option}</li>);
+    // For each passed down option we create a list item. A checkmark is added to the currently selected item.
+    let checkmark = <img src={ process.env.PUBLIC_URL + '/icons/check.svg'} alt='selected'/>;
+    let optionListItems = props.options.map(option => {
+        return (
+            <li onClick={ handleOptionClick }>
+                {option}
+                { option === selectedOption && checkmark }
+            </li>
+        );
+    });
 
     let dropdownOptions =
     <div className={classNames('options', 'animate-open') }>

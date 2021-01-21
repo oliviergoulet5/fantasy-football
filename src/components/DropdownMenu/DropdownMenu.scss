@@ -36,6 +36,9 @@ $theme-color: rgb(7, 87, 255);
 
             li {
                 padding: 0.5rem 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 
                 &:hover {
                     background-color: darken($background-color, 10%);
