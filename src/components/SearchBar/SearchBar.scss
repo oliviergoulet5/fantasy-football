@@ -1,3 +1,5 @@
+@import "../../_Mixins.scss";
+
 div.bar {
     display: flex;
     background-color: #f1f1f1;
@@ -8,6 +10,7 @@ div.bar {
     width: 12rem;
 
     img.icon {
+        @include no-select;
         align-self:stretch;
         float: left;   
         padding: .3rem;    

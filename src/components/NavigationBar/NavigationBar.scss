@@ -1,6 +1,9 @@
+@import "../../_Mixins.scss";
+
 $pillColor: rgb(7, 87, 255);
 
 .navbar {
+    @include no-select;
     padding: 1rem;
     overflow: hidden;
     margin: 0;
