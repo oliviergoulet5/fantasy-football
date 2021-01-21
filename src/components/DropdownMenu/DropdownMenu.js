@@ -1,13 +1,13 @@
 import './DropdownMenu.scss';
 import classNames from 'classnames';
-import React, { useState } from 'react';
 import { useOutsideAlerter } from '../../hooks/outsideAlerter';
+import React, { useState } from 'react';
 
-function DropdownMenu(props) {
-    const [selectedOption, setSelectedOption] = useState('Any');
+function DropdownMenu({ options = ['Default'] }) {
+    const [selectedOption, setSelectedOption] = useState(options[0]);
     const { visible, setVisible, ref } = useOutsideAlerter(false);
 
-    const handleMenuClick = (event) => {
+    const handleMenuClick = () => {
         setVisible(!visible);
     }
     
@@ -20,9 +20,9 @@ function DropdownMenu(props) {
 
     // For each passed down option we create a list item. A checkmark is added to the currently selected item.
     let checkmark = <img src={ process.env.PUBLIC_URL + '/icons/check.svg'} alt='selected'/>;
-    let optionListItems = props.options.map(option => {
+    let optionListItems = options.map(option => {
         return (
-            <li onClick={ handleOptionClick }>
+            <li key={option} onClick={ handleOptionClick }>
                 {option}
                 { option === selectedOption && checkmark }
             </li>
@@ -30,7 +30,7 @@ function DropdownMenu(props) {
     });
 
     let dropdownOptions =
-    <div className={classNames('options', 'animate-open') }>
+    <div key='dropdownOptions' className={classNames('options', 'animate-open') }>
         { optionListItems }
     </div>;
 
