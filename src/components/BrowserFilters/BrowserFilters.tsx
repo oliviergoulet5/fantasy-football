@@ -11,7 +11,9 @@ function BrowserFilters() {
             <Filter name='search' type='search' />
             <Filter name='club' type='dropdown' options={ clubOptions } />
             <Filter name='position' type='dropdown' options={ positionOptions } />
-            <AdvancedBrowserFilters />
+            <AdvancedBrowserFilters>
+
+            </AdvancedBrowserFilters>
         </div>
     );
 }
