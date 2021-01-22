@@ -1,22 +1,21 @@
 import { useRef, useState, useEffect } from 'react';
 
-export const useOutsideAlerter = (initialValue) => {
-    const ref = useRef(null);
+export const useOutsideAlerter = (initialValue: boolean) => {
+    const ref = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(initialValue);
 
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
         if (ref.current && !ref.current.contains(event.target)) {
             setVisible(false);
         }
     }
 
-    // componentDidMount and Unmount = useEffect
     useEffect(() => {
         document.addEventListener('click', handleClickOutside, true);
         return () => {
 
         };
-    }, [ref]); // effect runs everytime our ref changes
+    }, [ref]);
 
 
     return { visible, setVisible, ref };

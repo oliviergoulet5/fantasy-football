@@ -3,7 +3,11 @@ import classNames from 'classnames';
 import { useOutsideAlerter } from '../../hooks/outsideAlerter';
 import React, { useState } from 'react';
 
-function DropdownMenu({ options = ['Default'] }) {
+type Props = {
+    options: Array<string>;
+}
+
+function DropdownMenu({ options = ['Default'] }: Props) {
     const [selectedOption, setSelectedOption] = useState(options[0]);
     const { visible, setVisible, ref } = useOutsideAlerter(false);
 
@@ -11,11 +15,11 @@ function DropdownMenu({ options = ['Default'] }) {
         setVisible(!visible);
     }
     
-    const handleOptionClick = (event) => {
+    const handleOptionClick = (event: React.MouseEvent<HTMLElement>) => {
         setVisible(false);
-        let clickedOption = event.target.textContent;
-        if (selectedOption !== clickedOption)
-            setSelectedOption(event.target.textContent);
+        let clickedOption = (event.target as HTMLElement).textContent;
+        if (clickedOption && selectedOption !== clickedOption)
+            setSelectedOption(clickedOption);
     }
 
     // For each passed down option we create a list item. A checkmark is added to the currently selected item.

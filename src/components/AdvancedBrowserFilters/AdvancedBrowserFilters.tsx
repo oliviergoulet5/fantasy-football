@@ -2,10 +2,10 @@ import './AdvancedBrowserFilters.scss';
 import { useOutsideAlerter } from '../../hooks/outsideAlerter';
 import React from 'react';
 
-function AdvancedBrowserFilters(props) {
+function AdvancedBrowserFilters() {
     const { visible, setVisible, ref } = useOutsideAlerter(false); // visibility state refers to modal window
 
-    const handleButtonClick = event => {
+    const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
         setVisible(!visible);
       
     }
@@ -13,7 +13,7 @@ function AdvancedBrowserFilters(props) {
     // TODO: Align AdvancedBrowserFilters under the button. Absolute Position means float but is relative to parent relative. 
     let modal = 
     <div className='modal'>
-
+    
 
     </div>
 

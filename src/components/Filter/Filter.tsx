@@ -3,9 +3,15 @@ import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import SearchBar from '../SearchBar/SearchBar';
 import React from 'react';
 
-const formatName = name => name.charAt(0).toUpperCase() + name.slice(1);
+const formatName = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
 
-function Filter(props) {
+type Props = {
+    name: string
+    type: string
+    options?: Array<string>
+}
+
+function Filter(props: Props) {
     const name = formatName(props.name);
 
     let label = <p>{ name }</p>

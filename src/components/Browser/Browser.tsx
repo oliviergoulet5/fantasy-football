@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Browser(props) {
+function Browser() {
 
     return (
         <div>
