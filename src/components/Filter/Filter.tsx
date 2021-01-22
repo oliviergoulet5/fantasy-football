@@ -11,13 +11,11 @@ type Props = {
     options?: Array<string>
 }
 
-function Filter(props: Props) {
-    const name = formatName(props.name);
-
-    let label = <p>{ name }</p>
+function Filter({ name, type, options }: Props) {
+    let label = <p>{ formatName(name) }</p>
     let filterRendering;
 
-    switch(props.type) {
+    switch(type) {
         case 'search':
             filterRendering = 
                 <>
@@ -26,11 +24,14 @@ function Filter(props: Props) {
                 </>;
             break;
         case 'dropdown':
-            filterRendering = 
+            if (options) {
+                filterRendering = 
                 <>
                 { label }
-                <DropdownMenu options={ props.options } />
+                <DropdownMenu options={ options } />
                 </>
+            }
+
             break;
         default:
             <p>Filter not found</p>
