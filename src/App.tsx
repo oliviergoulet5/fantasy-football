@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       { renderLoginModal(loginModalVisible, setLoginModalVisibility) }
-      <NavigationBar actions={{setLoginModalVisibility}} />
+      <NavigationBar setLoginModalVisibility={setLoginModalVisibility} />
       <BrowserFilters />
     </div>
   );
@@ -18,7 +18,7 @@ function App() {
 
 export default App;
 
-const renderLoginModal = (value, setVisibility) => {
-  if (value)
-    return <LoginModal actions={{ setVisibility }} />
+const renderLoginModal = (loginModalVisible: boolean, setVisibility: (value: boolean) => void) => {
+  if (loginModalVisible)
+    return <LoginModal setVisibility={ setVisibility } />
 }

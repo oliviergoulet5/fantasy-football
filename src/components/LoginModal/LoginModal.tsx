@@ -1,11 +1,15 @@
 import './LoginModal.scss';
 import React from 'react';
 
-function LoginModal(props) {
+type Props = {
+    setVisibility: (value: boolean) => void
+}
 
-    const handleClickOutsideModal = (event) => {
-        if (event.target.className === 'modal') {
-            props.actions.setVisibility(false);
+function LoginModal({ setVisibility }: Props) {
+
+    const handleClickOutsideModal = (event: React.MouseEvent<HTMLDivElement>) => {
+        if ((event.target as HTMLDivElement).className === 'modal') {
+            setVisibility(false);
         }
     }
 
@@ -14,7 +18,7 @@ function LoginModal(props) {
             <div className='modal-content'>
                 <div className='header'>
                     <img className='close' src={process.env.PUBLIC_URL + '/icons/close-circle-f.svg'} alt='Close' onClick={ () => {
-                        props.actions.setVisibility(false);
+                        setVisibility(false);
                     } }/>
                     <h1>Log in</h1>
                 </div>

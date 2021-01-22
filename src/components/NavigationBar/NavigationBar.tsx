@@ -1,7 +1,11 @@
 import './NavigationBar.scss';
 import React, { useState } from 'react';
 
-function NavigationBar(props) {
+type Props = {
+    setLoginModalVisibility: ( value: boolean ) => void;
+}
+
+function NavigationBar({ setLoginModalVisibility }: Props) {
 
     return (
         <div className='navbar'>
@@ -15,7 +19,7 @@ function NavigationBar(props) {
                 <p>Live Matches</p>
             </div>
             <div className='right'>
-                <p className='pill-button' onClick={ props.actions.setLoginModalVisibility }>Sign in</p>
+                <p className='pill-button' onClick={ () => setLoginModalVisibility(true) }>Sign in</p>
             </div>
         </div>
     )
