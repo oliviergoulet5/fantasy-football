@@ -8,7 +8,7 @@ type Props = {
 function LoginModal({ setVisibility }: Props) {
 
     const handleClickOutsideModal = (event: React.MouseEvent<HTMLDivElement>) => {
-        if ((event.target as HTMLDivElement).className === 'modal') {
+        if ((event.target as HTMLDivElement).id === 'login-modal') {
             setVisibility(false);
         }
     }
