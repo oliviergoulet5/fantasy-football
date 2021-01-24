@@ -79,7 +79,3 @@ function Slider({ min, max, softcap = false }: Props) {
 }
 
 export default Slider;
-
-// Follow the following tutorial: 
-// https://www.youtube.com/watch?v=pTlsnFLiK6c&ab_channel=MinzCode
-// Left off at 5:00's code. Use refs instead of document.get
