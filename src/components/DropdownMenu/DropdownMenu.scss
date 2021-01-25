@@ -1,14 +1,12 @@
+@use '../../styles/styles' as *;
 @import "../../_Mixins.scss";
-
-$background-color: #f1f1f1;
-$theme-color: rgb(7, 87, 255);
 
 .dropdown-wrapper {
     @include no-select;
     width: 12rem;
     border-radius: 8px;
     cursor: pointer;
-    background-color: $background-color;
+    background-color: $neutral-color;
     height: 1.75rem;
     padding: .25rem 0;
 
@@ -24,7 +22,7 @@ $theme-color: rgb(7, 87, 255);
             img.icon {
                 float: right;
                 &:hover {
-                    color: $theme-color;
+                    color: $primary-color;
                 }
             }
         }
@@ -33,7 +31,7 @@ $theme-color: rgb(7, 87, 255);
             box-shadow: 0 14px 30px #E1E1E1;
             border-radius: 8px;
             margin-top: 1.5rem;
-            background-color: $background-color;
+            background-color: $neutral-color;
             position: absolute;
 
             li {
@@ -43,8 +41,8 @@ $theme-color: rgb(7, 87, 255);
                 justify-content: center;
                 
                 &:hover {
-                    background-color: darken($background-color, 10%);
-                    color: $theme-color;
+                    background-color: darken($neutral-color, 10%);
+                    color: $primary-color;
                 }
 
                 &:first-child {

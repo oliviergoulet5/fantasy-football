@@ -1,14 +1,13 @@
+@use '../../styles/styles' as *;
 @import '../../_Mixins.scss';
 
-$login-color: rgb(7, 87, 255);
 $content-width: 400px;
 $content-height: 500px;
 
 #login-modal {
     @include modal;
-
     .modal-content {
-        background-color: #fff;
+        background-color: $background-color;
         border-radius: 25px;
         margin: calc(50vh - #{$content-height / 2}) auto;
         left: 0;
@@ -51,7 +50,7 @@ $content-height: 500px;
                 float: right;
                 margin-right: 2rem;
                 font-weight: normal;
-                color: $login-color;
+                color: $primary-color;
             }
         
             .remember-me {
@@ -85,12 +84,12 @@ $content-height: 500px;
                 p.login {
                     margin: 1.5rem 1rem 1rem 0;
                     padding: 0.75rem 1.75rem;
-                    background-color: $login-color;
+                    background-color: $primary-color;
                     border-radius: 5px;
                     color: white;
                     &:hover {
                         cursor: pointer;
-                        background-color: darken($login-color, 10%)
+                        background-color: darken($primary-color, 10%)
                     }
                 }
             }
