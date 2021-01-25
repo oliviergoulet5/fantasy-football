@@ -1,3 +1,5 @@
+// DO NOT COMMIT: State does not work. We are updating state in order to not lose applied filter when parent component unrenders. May need to use Context and store it as idk [min, max]
+
 import './Slider.scss';
 import React, { useEffect, useState, useRef } from 'react';
 
@@ -14,13 +16,17 @@ type Props = {
  */
 function Slider({ min, max, softcap = false }: Props) {
 
+    const [ leftValue, setLeftValue ] = useState(min);
+    const [ rightValue, setRightValue ] = useState(max);
+
     const leftInputRef = useRef<HTMLInputElement>(null);
     const rightInputRef = useRef<HTMLInputElement>(null);
     const leftThumbRef = useRef<HTMLDivElement>(null);
     const rightThumbRef = useRef<HTMLDivElement>(null);
     const rangeRef = useRef<HTMLDivElement>(null);
 
-    const setLeftValue = () => {
+    const calculateLeftValue = () => {
+        console.log(leftValue);
         if (leftInputRef.current && rightInputRef.current && leftThumbRef.current && rangeRef.current) {
             let leftInput = leftInputRef.current;
             let min = parseInt(leftInput.min);
@@ -34,10 +40,12 @@ function Slider({ min, max, softcap = false }: Props) {
             let percent = (parseInt(leftInput.value) - min) / (max - min) * 100;
             leftThumbRef.current.style.left = percent + '%';
             rangeRef.current.style.left = percent + '%';
+            console.log('why isnt this running');
+            setLeftValue(parseInt(leftInput.value));
         }
     }
 
-    const setRightValue = () => {
+    const calculateRightValue = () => {
         if (leftInputRef.current && rightInputRef.current && rightThumbRef.current && rangeRef.current) {
             let rightInput = rightInputRef.current;
             let min = parseInt(rightInput.min);
@@ -51,22 +59,24 @@ function Slider({ min, max, softcap = false }: Props) {
             let percent = (parseInt(rightInput.value) - min) / (max - min) * 100;
             rightThumbRef.current.style.right = (100 - percent) + '%';
             rangeRef.current.style.right = (100 - percent) + '%';
+
+            setRightValue(parseInt(rightInput.value))
         }
     }
-
+    
     useEffect(() => {
-        setRightValue();
-        setLeftValue();
+        calculateRightValue();
+        calculateLeftValue();
         if (leftInputRef.current && rightInputRef.current) {
-            leftInputRef.current.addEventListener('input', setLeftValue)
-            rightInputRef.current.addEventListener('input', setRightValue);
+            leftInputRef.current.addEventListener('input', calculateLeftValue)
+            rightInputRef.current.addEventListener('input', calculateRightValue);
         }
-    });
+    }, []);
 
     return (
         <div className='slider-container'>
-            <input ref={ leftInputRef } type='range' className='left-input' min={ min } max={ max } />
-            <input ref={ rightInputRef } type='range' className='right-input' min={ min } max={ max } />
+            <input ref={ leftInputRef } type='range' className='left-input' min={ min } max={ max } value={ leftValue } onChange={ () => {} }/>
+            <input ref={ rightInputRef } type='range' className='right-input' min={ min } max={ max } value={ rightValue } onChange={ () => {} } />
 
             <div className='slider'>
                 <div className='track'></div>
