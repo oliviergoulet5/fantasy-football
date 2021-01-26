@@ -37,3 +37,6 @@ logs
 
 .idea/
 .vscode/
+
+# tailwind
+tailwind.output.css
