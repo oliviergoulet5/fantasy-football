@@ -1,10 +1,10 @@
 import logo from '../images/logo.png';
-import mock_avi from '../images/mock/avatar.png';
 import { ReactComponent as MenuIcon } from '../images/icons/menu.svg';
 import { ReactComponent as CloseIcon } from '../images/icons/close.svg';
-import Dropdown from './Dropdown';
-import React, { useState } from 'react';
 import { useOutsideAlerter } from '../hooks/outsideAlerter';
+import ProfileDropdown from './ProfileDropdown';
+import React, { useState } from 'react';
+
 
 function NavigationBar() {
     const { visible: profileDropdownVisible, setVisible: setProfileDropdownVisible, ref: dropdownRef } = useOutsideAlerter(false);
@@ -42,18 +42,9 @@ function NavigationBar() {
                             </div>
                         </div>
                     </div>
-                    
-                    {/* Profile dropdown */}
-                    <div className='m1-3 relative'>
-                        <div>
-                            <button onClick={ handleProfileButtonOnClick } className='bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' id='user-menu' aria-haspopup='true'>
-                                <span className='sr-only'>Open user menu</span>
-                                <img className='h-8 w-8 rounded-full' src={ mock_avi } alt='' />
-                            </button>
-                        </div>
-                    </div>
 
-                    <Dropdown ref={ dropdownRef } options={ ['Your profile', 'Settings', 'Sign out'] } visible={ profileDropdownVisible } />
+                    <ProfileDropdown />
+
                 </div>
             </div>
         </nav>
