@@ -1,17 +1,13 @@
-import './App.scss';
-import NavigationBar from './components/NavigationBar/NavigationBar';
-import LoginModal from './components/LoginModal/LoginModal';
-import BrowserFilters from './components/BrowserFilters/BrowserFilters';
 import React, { useState } from 'react';
+import NavigationBar from './components/NavigationBar';
+
+
 
 function App() {
-  const [loginModalVisible, setLoginModalVisibility] = useState(false);
 
   return (
-    <div className="App">
-      { loginModalVisible && <LoginModal setVisibility={ setLoginModalVisibility } /> }
-      <NavigationBar setLoginModalVisibility={setLoginModalVisibility} />
-      <BrowserFilters />
+    <div className='h-screen bg-gray-100'>
+      <NavigationBar />
     </div>
   );
 }
