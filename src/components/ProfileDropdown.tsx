@@ -12,7 +12,7 @@ function ProfileDropdown() {
         <>
             <div ref={ ref } className='m1-3 relative'>
                 <div>
-                    <button onClick={ handleProfileButtonOnClick } className='bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' id='user-menu' aria-haspopup='true'>
+                    <button onClick={ handleProfileButtonOnClick } className='bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring focus:ring-offset-blue-700 focus:ring-blue-700 outline-none' id='user-menu' aria-haspopup='true'>
                         <span className='sr-only'>Open user menu</span>
                         <img className='h-8 w-8 rounded-full' src={ mock_avi } alt='' />
                     </button>
