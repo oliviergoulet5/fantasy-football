@@ -1,15 +1,14 @@
 import logo from '../images/logo.png';
 import { ReactComponent as MenuIcon } from '../images/icons/menu.svg';
 import { ReactComponent as CloseIcon } from '../images/icons/close.svg';
-import { useOutsideAlerter } from '../hooks/outsideAlerter';
 import ProfileDropdown from './ProfileDropdown';
-import React, { useState } from 'react';
+import React from 'react';
 
-
-function NavigationBar() {
-    const { visible: profileDropdownVisible, setVisible: setProfileDropdownVisible, ref: dropdownRef } = useOutsideAlerter(false);
-
-    const handleProfileButtonOnClick = () => setProfileDropdownVisible(!profileDropdownVisible);
+type Props = {
+    currentPage?: string
+}
+function NavigationBar({ currentPage = 'Home' }: Props) {
+    const pages = ['Home', 'Watchlist', 'Live Games'];
     
     return (
         <nav className='bg-white'>
@@ -25,7 +24,7 @@ function NavigationBar() {
                         </button>
                     </div>
 
-                    <div className='flex-1 flex items-center justify-center sm:items-stretch sm:justify-start'>
+                    <div className='flex-1 flex items-center justify-center sm:items-stretch sm:justify-start h-full'>
                         { /* Logo */ }
                         <div className='flex-shrink-0 flex items-center'>
                             <img className='block lg:hidden h-8 w-auto' src={ logo } alt='fantasy football' />
@@ -34,19 +33,27 @@ function NavigationBar() {
 
                         { /* Links */ }
                         <div className='hidden sm:block sm:ml-6'>
-                            <div className='flex space-x-4'>
-                                {/* Add to current page a bg-color-size */}
-                                <a href='#' className='text-gray-900 hover:bg-gray-50 hover:text-black px-3 py-2 rounded-md text-sm font-medium'>Home</a>
-                                <a href='#' className='text-gray-900 hover:bg-gray-50 hover:text-black px-3 py-2 rounded-md text-sm font-medium'>Watchlist</a>
-                                <a href='#' className='text-gray-900 hover:bg-gray-50 hover:text-black px-3 py-2 rounded-md text-sm font-medium'>Live Games</a>
+                            <div className='flex space-x-4 items-center content-center m-full h-full'>
+                                { pages.map((page) => 
+                                    <div className='flex flex-col justify-center h-full'>
+                                        <a href='#' className={ (page === currentPage ? 'text-black ' : 'text-gray-600 ') + 'hover:bg-gray-50 hover:text-black font-semibold px-3 py-2 rounded-md text-sm m-auto'}>{ page }</a>
+                                        <span className={'h-0.5 w-10/12 flex place-self-center rounded-full' + (page === currentPage && ' bg-blue-700')}></span>
+                                    </div>
+                                )}
                             </div>
                         </div>
+                    </div>
+                    
+                    {/* Search */}
+                    <div className='w-2/12 mr-6'>
+                        <input type='text' name='search' placeholder='Search' className='border-gray-300 border focus:ring-blue-700 focus:border-blue-700 block w-full rounded-md sm:text-sm pl-7 pr-12 h-8 outline-none'></input>
                     </div>
 
                     <ProfileDropdown />
 
                 </div>
             </div>
+
         </nav>
     )
 }
