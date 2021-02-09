@@ -26,7 +26,7 @@ function reducer(state: FilterState, action: Action) {
         case 'goals':
             return { ...state, goals: action.value as number[]};
         case 'assists':
-            return {...state, goals: action.value as number[]};
+            return {...state, assists: action.value as number[]};
         default:
             return state;
     }
