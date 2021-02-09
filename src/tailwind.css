@@ -3,8 +3,19 @@
 @tailwind utilities;
 
 @layer utilities {
+    .primary {
+        @apply bg-blue-700
+    }
+    
+    .fg-item {
+        @apply bg-white border-gray-300 border rounded-md
+    }
+
     .label {
-        font-weight: 700;
-        user-select: none;
+        @apply font-bold select-none
+    }
+
+    .form-group {
+        @apply flex flex-col
     }
 } 
