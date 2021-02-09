@@ -6,60 +6,55 @@ import { Transition } from '@headlessui/react';
 import { useOutsideAlerter } from '../hooks/outsideAlerter';
 import RangeSlider from './RangeSlider';
 import { CLUBS, POSITIONS } from '../constants';
+import { AcceptedFilterTypes } from '../types';
 
 type Props = {
-    dispatchFilters: (value: { filter: string; value: string }) => void;
+    dispatchFilters: (value: { filter: string; value: AcceptedFilterTypes }) => void;
 };
 
-function BrowserFilter({ dispatchFilters }: Props) {
-    const {
-        visible: advancedFiltersVisible,
-        setVisible: setAdvancedFiltersVisible,
-        ref,
-    } = useOutsideAlerter(false);
 
-    const handleAdvancedFilterButtonClick = (
-        event: React.MouseEvent<HTMLButtonElement>
-    ) => setAdvancedFiltersVisible(!advancedFiltersVisible);
+function BrowserFilter({ dispatchFilters }: Props) {
+    const { visible: advancedFiltersVisible, setVisible: setAdvancedFiltersVisible, ref } = useOutsideAlerter(false);
+    
+    const handleAdvancedFilterButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => setAdvancedFiltersVisible(!advancedFiltersVisible);
 
     const getDropdownValue = (value: string, name?: string) => {
-        console.log(value);
         if (name) {
             dispatchFilters({ filter: name, value });
         }
-    };
+    }
+
+    const getSearchValue = (value: string) => {
+        dispatchFilters({ filter: 'search', value })
+    }
+
+    const getRangeValue = (value: number[], name?: string) => {
+        if (name) {
+            dispatchFilters({ filter: name, value });
+        }
+    }
 
     return (
         <>
-            <div className="flex p-20 pb-0 justify-center space-x-6 w-full items-end">
-                <div className="form-group">
-                    <p className="label">Club</p>
-                    <Dropdown
-                        name="clubs"
-                        options={['Any', ...CLUBS]}
-                        liftSelectedOption={getDropdownValue}
-                    />
+            <div className='flex p-20 pb-0 justify-center space-x-6 w-full items-end'>
+
+                <div className='form-group'>
+                    <p className='label'>Club</p>
+                    <Dropdown name='clubs' options={ ['Any', ...CLUBS] } liftSelectedOption={ getDropdownValue } />
                 </div>
 
-                <div className="form-group">
-                    <p className="label">Position</p>
-                    <Dropdown
-                        name="positions"
-                        options={['Any', ...POSITIONS]}
-                        liftSelectedOption={getDropdownValue}
-                    />
+                <div className='form-group'>
+                    <p className='label'>Position</p>
+                    <Dropdown name='positions' options={['Any', ...POSITIONS] } liftSelectedOption={ getDropdownValue } />
                 </div>
 
                 <div className="form-group">
                     <p className="label">Search</p>
-                    <SearchBar />
+                    <SearchBar liftSearchUp={ getSearchValue } />
                 </div>
 
-                <div className="fg-item flex justify-center h-8 w-8 hover:bg-gray-50  flex-none">
-                    <button
-                        onClick={handleAdvancedFilterButtonClick}
-                        className="focus:outline-none"
-                    >
+                <div className='fg-item flex justify-center h-8 w-8 hover:bg-gray-50  flex-none'>
+                    <button onClick={ handleAdvancedFilterButtonClick } className='focus:outline-none'>
                         <AdvancedFiltersIcon />
                     </button>
                 </div>
@@ -80,17 +75,17 @@ function BrowserFilter({ dispatchFilters }: Props) {
                     <div className="relative inline-grid grid-cols-3 grid-rows-3 gap-2">
                         <div className="form-group">
                             <p className="label">Goals</p>
-                            <RangeSlider min={0} max={13} />
+                            <RangeSlider name='goals' min={0} max={13} liftRangeUp={ getRangeValue } />
                         </div>
                         <div className="form-group">
                             <p className="label">Assists</p>
-                            <RangeSlider min={0} max={13} />
+                            <RangeSlider name='assists' min={0} max={13} liftRangeUp={ getRangeValue } />
                         </div>
                     </div>
                 </div>
             </Transition>
         </>
-    );
+    )
 }
 
 export default BrowserFilter;

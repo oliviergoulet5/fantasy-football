@@ -4,14 +4,15 @@ import BrowserFilter from '../components/BrowserFilters';
 
 type Action = {
     filter: string;
-    value: string | number | [number, number];
+    value: string | number | number[];
 };
 
 type FilterState = {
     search?: string;
     club?: string;
     position?: string;
-    goals?: [number, number];
+    goals?: number[];
+    assists?: number[];
 };
 
 function reducer(state: FilterState, action: Action) {
@@ -22,6 +23,10 @@ function reducer(state: FilterState, action: Action) {
             return { ...state, clubs: action.value as string };
         case 'positions':
             return { ...state, positions: action.value as string };
+        case 'goals':
+            return { ...state, goals: action.value as number[]};
+        case 'assists':
+            return {...state, goals: action.value as number[]};
         default:
             return state;
     }
