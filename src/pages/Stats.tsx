@@ -24,9 +24,9 @@ function reducer(state: FilterState, action: Action) {
         case 'positions':
             return { ...state, positions: action.value as string };
         case 'goals':
-            return { ...state, goals: action.value as number[]};
+            return { ...state, goals: action.value as number[] };
         case 'assists':
-            return {...state, assists: action.value as number[]};
+            return { ...state, assists: action.value as number[] };
         default:
             return state;
     }

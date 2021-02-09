@@ -10,8 +10,8 @@ type Props = {
 };
 
 const StyledSlider = styled(Slider)({
-    color: '#1D4ED8'
-})
+    color: '#1D4ED8',
+});
 
 function RangeSlider({ min, max, name, liftRangeUp }: Props) {
     const [value, setValue] = React.useState<number[]>([min, max]);
@@ -27,20 +27,16 @@ function RangeSlider({ min, max, name, liftRangeUp }: Props) {
     }, [value]);
 
     return (
-        <div className='mx-2 w-60 h-8'>
+        <div className="mx-2 w-60 h-8">
             <StyledSlider
                 value={value}
                 onChange={handleChange}
                 valueLabelDisplay="auto"
-                max={ max }
-                min={ min }
-            >
-
-            </StyledSlider>
+                max={max}
+                min={min}
+            ></StyledSlider>
         </div>
-    )
+    );
 }
-
-
 
 export default RangeSlider;
