@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactComponent as ChevronDownIcon } from '../images/icons/chevron-down.svg';
 import { useOutsideAlerter } from '../hooks/outsideAlerter';
 import { Transition } from '@headlessui/react';
 
 type Props = {
+    name: string
     options: Array<string>
+    liftSelectedOptionUp: (value: string, name?: string) => void
 }
 
-function Dropdown({ options }: Props) {
+function Dropdown({ options, name, liftSelectedOptionUp }: Props) {
     const [ selectedOption, setSelectedOption ] = useState(options[0] || 'No Options');
     const { visible: menuVisible, setVisible: setMenuVisible, ref } = useOutsideAlerter(false);
 
@@ -22,6 +24,10 @@ function Dropdown({ options }: Props) {
 
         setMenuVisible(false);
     }
+
+    useEffect(() => {
+            liftSelectedOptionUp(selectedOption, name);
+    }, [selectedOption])
 
     return (
         <div>

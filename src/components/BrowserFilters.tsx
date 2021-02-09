@@ -5,16 +5,34 @@ import SearchBar from './SearchBar';
 import { Transition } from '@headlessui/react';
 import { useOutsideAlerter } from '../hooks/outsideAlerter';
 import RangeSlider from './RangeSlider';
+import { CLUBS, POSITIONS } from '../constants';
+import { AcceptedFilterTypes } from '../types';
+
+type Props = {
+    dispatchFilters: (value: { filter: string; value: AcceptedFilterTypes }) => void;
+};
 
 
-
-function BrowserFilter() {
+function BrowserFilter({ dispatchFilters }: Props) {
     const { visible: advancedFiltersVisible, setVisible: setAdvancedFiltersVisible, ref } = useOutsideAlerter(false);
     
     const handleAdvancedFilterButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => setAdvancedFiltersVisible(!advancedFiltersVisible);
 
-    const clubOptions = ['Any', 'Arsenal', 'Aston Villa', 'Brighton and Hove Albion', 'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United', 'Sheffield United', 'Southampton', 'Tottenham Hotspur', 'West Bromwich Albion', 'West Ham United', 'Wolverhampton Wanderers'];
-    const positionOptions = ['Any', 'Forward', 'Midfielder', 'Defender', 'Goalkeeper'];
+    const getDropdownValue = (value: string, name?: string) => {
+        if (name) {
+            dispatchFilters({ filter: name, value });
+        }
+    }
+
+    const getSearchValue = (value: string) => {
+        dispatchFilters({ filter: 'search', value })
+    }
+
+    const getRangeValue = (value: number[], name?: string) => {
+        if (name) {
+            dispatchFilters({ filter: name, value });
+        }
+    }
 
     return (
         <>
@@ -22,17 +40,17 @@ function BrowserFilter() {
 
                 <div className='form-group'>
                     <p className='label'>Club</p>
-                    <Dropdown options={ clubOptions } />
+                    <Dropdown name='clubs' options={ ['Any', ...CLUBS] } liftSelectedOptionUp={ getDropdownValue } />
                 </div>
 
                 <div className='form-group'>
                     <p className='label'>Position</p>
-                    <Dropdown options={ positionOptions } />
+                    <Dropdown name='positions' options={['Any', ...POSITIONS] } liftSelectedOptionUp={ getDropdownValue } />
                 </div>
 
-                <div className='form-group'>
-                    <p className='label'>Search</p>
-                    <SearchBar />
+                <div className="form-group">
+                    <p className="label">Search</p>
+                    <SearchBar liftSearchUp={ getSearchValue } />
                 </div>
 
                 <div className='fg-item flex justify-center h-8 w-8 hover:bg-gray-50  flex-none'>
@@ -41,16 +59,27 @@ function BrowserFilter() {
                     </button>
                 </div>
             </div>
-            <Transition show={ advancedFiltersVisible } enter={'ease-out duration-100'} enterFrom='transform opacity-0 -transition-y-full' enterTo='transform opacity-100 transition-y-0' leave='transition ease-in duration-75' leaveFrom='transform opacity-100 transition-y-0' leaveTo='transform opacity-0 -transition-y-full'>
-                <div ref={ ref } className='fg-item absolute inline-block p-2 w-auto max-w-max m-auto min-w-1/2 origin-bottom mt-2 shadow-sm text-center left-0 right-0'>
-                    <div className='relative inline-grid grid-cols-3 grid-rows-3 gap-2'>
-                        <div className='form-group'>
-                            <p className='label'>Goals</p>
-                            <RangeSlider min={0} max={13} />
+            <Transition
+                show={advancedFiltersVisible}
+                enter={'ease-out duration-100'}
+                enterFrom="transform opacity-0 -transition-y-full"
+                enterTo="transform opacity-100 transition-y-0"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 transition-y-0"
+                leaveTo="transform opacity-0 -transition-y-full"
+            >
+                <div
+                    ref={ref}
+                    className="fg-item absolute inline-block p-2 w-auto max-w-max m-auto min-w-1/2 origin-bottom mt-2 shadow-sm text-center left-0 right-0"
+                >
+                    <div className="relative inline-grid grid-cols-3 grid-rows-3 gap-2">
+                        <div className="form-group">
+                            <p className="label">Goals</p>
+                            <RangeSlider name='goals' min={0} max={13} liftRangeUp={ getRangeValue } />
                         </div>
-                        <div className='form-group'>
-                            <p className='label'>Assists</p>
-                            <RangeSlider min={0} max={13} />
+                        <div className="form-group">
+                            <p className="label">Assists</p>
+                            <RangeSlider name='assists' min={0} max={13} liftRangeUp={ getRangeValue } />
                         </div>
                     </div>
                 </div>
