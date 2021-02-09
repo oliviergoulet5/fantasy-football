@@ -44,7 +44,7 @@ function BrowserFilter({ dispatchFilters }: Props) {
 
     return (
         <>
-            <div className="flex p-20 pb-0 justify-center space-x-6 w-full items-end">
+            <div className="flex items-end justify-center w-full p-20 pb-0 space-x-6">
                 <div className="form-group">
                     <p className="label">Club</p>
                     <Dropdown
@@ -68,7 +68,7 @@ function BrowserFilter({ dispatchFilters }: Props) {
                     <SearchBar liftSearchUp={getSearchValue} />
                 </div>
 
-                <div className="fg-item flex justify-center h-8 w-8 hover:bg-gray-50  flex-none">
+                <div className="fg-item hover:bg-gray-50 flex justify-center flex-none w-8 h-8">
                     <button
                         onClick={handleAdvancedFilterButtonClick}
                         className="focus:outline-none"
@@ -88,7 +88,7 @@ function BrowserFilter({ dispatchFilters }: Props) {
             >
                 <div
                     ref={ref}
-                    className="fg-item absolute inline-block p-2 w-auto max-w-max m-auto min-w-1/2 origin-bottom mt-2 shadow-sm text-center left-0 right-0"
+                    className="fg-item max-w-max min-w-1/2 absolute left-0 right-0 inline-block w-auto p-2 m-auto mt-2 text-center origin-bottom shadow-sm"
                 >
                     <div className="relative inline-grid grid-cols-3 grid-rows-3 gap-2">
                         <div className="form-group">
@@ -115,5 +115,4 @@ function BrowserFilter({ dispatchFilters }: Props) {
         </>
     );
 }
-
 export default BrowserFilter;

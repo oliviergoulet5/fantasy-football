@@ -27,7 +27,7 @@ function RangeSlider({ min, max, name, liftRangeUp }: Props) {
     }, [value]);
 
     return (
-        <div className="mx-2 w-60 h-8">
+        <div className="w-60 h-8 mx-2">
             <StyledSlider
                 value={value}
                 onChange={handleChange}

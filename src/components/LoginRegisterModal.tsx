@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Formik, Field } from 'formik';
+import * as yup from 'yup';
 
 enum Mode {
     Login,
@@ -15,77 +17,124 @@ const modeText = new Map<Mode, string>([
 function LoginRegisterModal() {
     const [mode, setMode] = useState(Mode.Login);
 
-    const handleModeChange = (event: React.MouseEvent<HTMLParagraphElement>) => {
+    const handleModeChange = (
+        event: React.MouseEvent<HTMLParagraphElement>
+    ) => {
         if (mode === Mode.Verification) {
             return;
         }
         setMode(mode === Mode.Login ? Mode.Register : Mode.Login);
+    };
+
+    const validationSchema = () => {
+        return yup.object().shape({
+            email: yup
+                .string()
+                .matches(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/)
+                .required(),
+            password: yup
+                .string()
+                .required(),
+            username: (mode === Mode.Register) ? yup.string().max(25).required() : yup.string()
+        })
     }
 
+
     return (
-        <div className="flex justify-items-center items-center fixed left-0 top-0 bottom-0 right-0 z-50 overflow-y-auto h-screen w-screen bg-black bg-opacity-50">
-            <div className="relative fg-item m-auto py-4 px-10 text-center select-none sm:w-96 w-3/4">
-                <h1 className="text-2xl font-bold mb-12">
+        <div className="justify-items-center fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center w-screen h-screen overflow-y-auto bg-black bg-opacity-50">
+            <div className="fg-item sm:w-96 relative w-3/4 px-10 py-4 m-auto text-center select-none">
+                <h1 className="mb-12 text-2xl font-bold">
                     {modeText.get(mode)}
                 </h1>
-                <form className="text-left">
-                    <label htmlFor="email" className="font-bold block">
-                        Email
-                    </label>
-                    <input
-                        name="email"
-                        className="fg-item block focus:ring-blue-700 focus:primary h-8 px-2 mb-4 w-full"
-                    />
-
-                    {mode === Mode.Register && (
-                        <>
-                            <label
-                                htmlFor="username"
-                                className="font-bold block"
-                            >
-                                Username
+                <Formik
+                    initialValues={{ email: '', username: '', password: '' }}
+                    onSubmit={(data, { setSubmitting }) => {
+                        setSubmitting(true);
+                        // set async code here
+                        setSubmitting(false);
+                    }}
+                    validationSchema={ validationSchema }
+                >
+                    {({
+                        values,
+                        isSubmitting,
+                        errors
+                    }) => (
+                        <form className="text-left">
+                            <pre>{JSON.stringify(values, null, 2)}</pre>
+                            <pre>{JSON.stringify(errors, null, 2)}</pre>
+                            {/* Email */}
+                            <label htmlFor="email" className="label block">
+                                Email
                             </label>
-                            <input
-                                name="username"
-                                className="fg-item block focus:ring-blue-700 focus:primary h-8 px-2 mb-4 w-full"
+                            <Field
+                                name="email"
+                                type="input"
+                                className="input-text"
                             />
-                        </>
-                    )}
 
-                    <label htmlFor="password" className="font-bold block">
-                        Password
-                    </label>
-                    <input
-                        name="password"
-                        type="password"
-                        className="fg-item block focus:ring-blue-700 focus:primary h-8 px-2 w-full"
-                    />
-                    {mode === Mode.Login && (
-                        <a
-                            href="#"
-                            className="inline-block w-full text-right text-sm text-blue-700 underline"
-                        >
-                            Forgot Password?
-                        </a>
-                    )}
+                            {/* Username */}
+                            {mode === Mode.Register && (
+                                <>
+                                    <label
+                                        htmlFor="username"
+                                        className="label block"
+                                    >
+                                        Username
+                                    </label>
+                                    <Field
+                                        name="username"
+                                        type="input"
+                                        className="input-text"
+                                    />
+                                </>
+                            )}
 
-                    <div className="flex mt-10 justify-between">
-                        <input
-                            type="submit"
-                            value="Login"
-                            className="py-2 px-8 font-semibold bg-blue-700 text-white rounded-md hover:bg-blue-800"
-                        />
-                        <p className="w-full self-center font-semibold ml-4">
-                            { mode === Mode.Login ? 'New user?' : 'Existing user?'}
-                            <p
-                                onClick={handleModeChange}
-                                className="cursor-pointer inline-block text-right text-sm text-blue-700 underline ml-2"
-                            >
-                                { mode === Mode.Login ? 'Sign up' : 'Log in'}
-                            </p>
-                        </p>
-                    </div>
-                </form>
+                            {/* Password */}
+                            <label htmlFor="password" className="label block">
+                                Password
+                            </label>
+                            <Field
+                                name="password"
+                                type="password"
+                                className="input-text"
+                            />
+                            {mode === Mode.Login && (
+                                <a
+                                    href="#"
+                                    className="inline-block w-full text-sm text-right text-blue-700 underline"
+                                >
+                                    Forgot Password?
+                                </a>
+                            )}
+
+                            {/* Submit & Change Mode */}
+                            <div className="flex justify-between mt-10">
+                                <input
+                                    disabled={isSubmitting}
+                                    type="submit"
+                                    value="Login"
+                                    className="hover:bg-blue-800 px-8 py-2 font-semibold text-white bg-blue-700 rounded-md"
+                                />
+                                <p className="self-center w-full ml-4 font-semibold">
+                                    {mode === Mode.Login
+                                        ? 'New user?'
+                                        : 'Existing user?'}
+                                    <p
+                                        onClick={handleModeChange}
+                                        className="inline-block ml-2 text-sm text-right text-blue-700 underline cursor-pointer"
+                                    >
+                                        {mode === Mode.Login
+                                            ? 'Sign up'
+                                            : 'Log in'
+                                        }
+                                    </p>
+                                </p>
+                            </div>
+                        </form>
+                    )}
+                </Formik>
+
                 <hr className="my-4" />
             </div>
         </div>
@@ -93,3 +142,15 @@ function LoginRegisterModal() {
 }
 
 export default LoginRegisterModal;
+
+/*
+                    validate={(values) => {
+                        let errors: Record<string, string> = {};
+                        
+                        const emailPattern = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+                        if (!emailPattern.test(values.email)) {
+                            errors.email = 'Not a valid email address.'
+                        }
+                        return errors;
+                    }}
+                    */

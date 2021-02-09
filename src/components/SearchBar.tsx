@@ -18,13 +18,13 @@ function SearchBar({ placeholder = '', liftSearchUp }: Props) {
     }, [text]);
 
     return (
-        <div className="flex w-full mr-6 fg-item focus:ring-blue-700 focus:primary outline-none h-8 items-center flex-shrink-0">
-            <SearchIcon className="h-5 w-5 mx-1 fill-current text-black flex-none" />
+        <div className="fg-item focus:ring-blue-700 focus:primary flex items-center flex-shrink-0 w-full h-8 mr-6 outline-none">
+            <SearchIcon className="flex-none w-5 h-5 mx-1 text-black fill-current" />
             <input
                 type="text"
                 name="search"
                 placeholder={placeholder}
-                className="outline-none w-full"
+                className="w-full outline-none"
                 onChange={handleOnChange}
             ></input>
         </div>
