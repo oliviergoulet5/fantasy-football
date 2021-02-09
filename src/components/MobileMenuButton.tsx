@@ -9,7 +9,7 @@ type Props = {
 function MobileMenuButton({ onClick, mobileSidebarVisible }: Props) {
     return (
         <button
-            className="inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-inset"
+            className="focus:outline-none focus:ring-inset inline-flex items-center justify-center p-2 rounded-md"
             aria-aria-expanded="false"
         >
             <span className="sr-only">Open main menu</span>

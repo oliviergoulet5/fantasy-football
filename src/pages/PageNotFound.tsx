@@ -3,8 +3,8 @@ import { ReactComponent as NotFoundImage } from '../images/illustrations/not-fou
 
 function PageNotFound() {
     return (
-        <div className="flex flex-col justify-center items-center h-screen w-screen">
-            <div className="text-center space-y-2">
+        <div className="flex flex-col items-center justify-center w-screen h-screen">
+            <div className="space-y-2 text-center">
                 <h1 className="text-3xl font-bold">Page not found</h1>
                 <p className="text-lg font-semibold">
                     It appears the page you've requested does not exist.

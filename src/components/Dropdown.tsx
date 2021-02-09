@@ -38,12 +38,12 @@ function Dropdown({ name, options, liftSelectedOption }: Props) {
     return (
         <div>
             <div
-                className="fg-item flex items-center justify-items-center flex-row-reverse h-8 w-60 border focus:ring-blue-700 focus:border-blue-700"
+                className="fg-item justify-items-center w-60 focus:ring-blue-700 focus:border-blue-700 flex flex-row-reverse items-center h-8 border"
                 onClick={handleMenuClick}
                 ref={ref}
             >
                 <ChevronDownIcon className="justify-self-end w-6 h-6 mx-1 mt-1" />
-                <p className="text-center justify-self-stretch px-2 w-full select-none">
+                <p className="justify-self-stretch w-full px-2 text-center select-none">
                     {selectedOption}
                 </p>
             </div>
@@ -56,12 +56,12 @@ function Dropdown({ name, options, liftSelectedOption }: Props) {
                 leaveFrom="transform opacity-100 transition-y-0"
                 leaveTo="transform opacity-0 -transition-y-full"
             >
-                <ul className="fg-item absolute origin-bottom mt-2 w-60 text-center shadow-md border first:rounded-md last:rounded-md">
+                <ul className="fg-item w-60 first:rounded-md last:rounded-md absolute mt-2 text-center origin-bottom border shadow-md">
                     {options.map(option => (
                         <li
                             key={option}
                             onClick={handleOptionClick}
-                            className="block select-none px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-700"
+                            className="hover:bg-gray-50 hover:text-blue-700 block px-4 py-2 text-gray-700 select-none"
                         >
                             {option}
                         </li>

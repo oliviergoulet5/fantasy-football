@@ -9,7 +9,7 @@ type Props = {
 
 function MobileSidebar({ visible, pages, currentPage }: Props) {
     return (
-        <aside className=" fixed h-screen w-3/5 overflow-hidden pointer-events-none">
+        <aside className=" fixed w-3/5 h-screen overflow-hidden pointer-events-none">
             <Transition
                 show={visible}
                 enter="transition ease-in duration-150"
@@ -19,8 +19,8 @@ function MobileSidebar({ visible, pages, currentPage }: Props) {
                 leaveFrom="transform translate-x-0"
                 leaveTo="transform -translate-x-full"
             >
-                <div className="flex flex-col flex-none sm:hidden px-8 bg-gray-700 shadow-lg h-screen">
-                    <h1 className="pt-12 font-bold text-xl text-white">
+                <div className="sm:hidden flex flex-col flex-none h-screen px-8 bg-gray-700 shadow-lg">
+                    <h1 className="pt-12 text-xl font-bold text-white">
                         Fantasy Football Hub
                     </h1>
                     {pages.map(page => (
@@ -36,7 +36,7 @@ function MobileSidebar({ visible, pages, currentPage }: Props) {
                             >
                                 {page}
                             </a>
-                            <hr className="shadow-lg opacity-10 -2/3" />
+                            <hr className="opacity-10 -2/3 shadow-lg" />
                         </>
                     ))}
                 </div>
