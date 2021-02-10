@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import { __prod__ } from '../constants';
-import BrowserFilter from '../components/BrowserFilters';
+import BrowserFilter from './stats/BrowserFilters';
 
 type Action = {
     filter: string;

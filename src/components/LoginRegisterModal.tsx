@@ -1,8 +1,8 @@
 import React, { useState, useReducer } from 'react';
 import { Formik, Field, FormikHelpers } from 'formik';
 import * as yup from 'yup';
-import LoginForm from './LoginForm';
-import RegisterForm from './RegisterForm';
+import LoginForm from './loginRegisterModal/LoginForm';
+import RegisterForm from './loginRegisterModal/RegisterForm';
 import { LoginFormValues, RegisterFormValues } from '../types';
 
 type FormValues = LoginFormValues & RegisterFormValues;
