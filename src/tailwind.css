@@ -7,6 +7,10 @@
         @apply bg-blue-700;
     }
 
+    .primary-disabled {
+        @apply bg-blue-400;
+    }
+
     .fg-item {
         @apply bg-white border-gray-300 border rounded-md;
     }
