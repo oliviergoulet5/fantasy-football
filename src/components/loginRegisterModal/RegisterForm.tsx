@@ -35,7 +35,11 @@ function RegisterForm({ switchToLogin, savedValues }: Props) {
 
     return (
         <Formik
-            initialValues={{ email: savedValues.email, username: savedValues.username, password: savedValues.password }}
+            initialValues={{
+                email: savedValues.email,
+                username: savedValues.username,
+                password: savedValues.password,
+            }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
             validateOnChange={false}
@@ -43,9 +47,21 @@ function RegisterForm({ switchToLogin, savedValues }: Props) {
         >
             {({ values, isSubmitting, errors }) => (
                 <form className="text-left">
-                    <FormField name='email' type='text' errorMessage={ errors.email } />
-                    <FormField name='username' type='text' errorMessage={ errors.username } />
-                    <FormField name='password' type='password' errorMessage={ errors.password } />
+                    <FormField
+                        name="email"
+                        type="text"
+                        errorMessage={errors.email}
+                    />
+                    <FormField
+                        name="username"
+                        type="text"
+                        errorMessage={errors.username}
+                    />
+                    <FormField
+                        name="password"
+                        type="password"
+                        errorMessage={errors.password}
+                    />
 
                     {/* Submit */}
                     <div className="flex justify-between mt-10">
@@ -58,7 +74,7 @@ function RegisterForm({ switchToLogin, savedValues }: Props) {
                         <p className="self-center w-full ml-4 text-sm font-semibold">
                             Existing user?
                             <p
-                                onClick={ () => switchToLogin(values) }
+                                onClick={() => switchToLogin(values)}
                                 className="inline-block ml-2 text-right text-blue-700 underline cursor-pointer"
                             >
                                 Login

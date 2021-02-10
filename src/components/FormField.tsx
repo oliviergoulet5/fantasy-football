@@ -7,16 +7,24 @@ type Props = {
     errorMessage?: string;
 };
 
-const titleCase = (str: string) => str.toLowerCase().replace(/\w{3,}/g, (match) => match.replace(/\w/, (m) => m.toUpperCase()));    
+const titleCase = (str: string) =>
+    str
+        .toLowerCase()
+        .replace(/\w{3,}/g, match => match.replace(/\w/, m => m.toUpperCase()));
 
 function FormField({ name, type, errorMessage }: Props) {
     const labelText = titleCase(name);
 
     return (
         <>
-            <div className={"flex content-end justify-between" + (errorMessage !== undefined && ' ring-red-600')}>
+            <div
+                className={
+                    'flex content-end justify-between' +
+                    (errorMessage !== undefined && ' ring-red-600')
+                }
+            >
                 <label htmlFor={name} className="label">
-                    { labelText }
+                    {labelText}
                 </label>
                 <p className="text-xs text-red-600">{errorMessage}</p>
             </div>

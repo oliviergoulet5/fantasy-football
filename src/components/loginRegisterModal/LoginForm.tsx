@@ -21,23 +21,32 @@ function LoginForm({ switchToRegister, savedValues }: Props) {
 
     const validationSchema = () => {
         return yup.object().shape({
-            email: yup
-                .string()
-                .required(),
+            email: yup.string().required(),
             password: yup.string().required(),
         });
     };
 
     return (
         <Formik
-            initialValues={{ email: savedValues.email, password: savedValues.password }}
+            initialValues={{
+                email: savedValues.email,
+                password: savedValues.password,
+            }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
         >
             {({ values, isSubmitting, errors }) => (
                 <form className="text-left">
-                    <FormField name='email' type='text' errorMessage={ errors.email } />
-                    <FormField name='password' type='password' errorMessage={ errors.password } />
+                    <FormField
+                        name="email"
+                        type="text"
+                        errorMessage={errors.email}
+                    />
+                    <FormField
+                        name="password"
+                        type="password"
+                        errorMessage={errors.password}
+                    />
 
                     {/* Submit */}
                     <div className="flex justify-between mt-10">
@@ -50,7 +59,7 @@ function LoginForm({ switchToRegister, savedValues }: Props) {
                         <p className="self-center w-full ml-4 text-sm font-semibold">
                             No account?
                             <p
-                                onClick={() => switchToRegister(values) }
+                                onClick={() => switchToRegister(values)}
                                 className="inline-block ml-2 text-sm text-right text-blue-700 underline cursor-pointer"
                             >
                                 Signup

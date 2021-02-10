@@ -14,9 +14,9 @@ enum Mode {
 }
 
 type Action = {
-    field: keyof FormValues,
-    value: string
-}
+    field: keyof FormValues;
+    value: string;
+};
 
 const titleText = new Map<Mode, string>([
     [Mode.Login, 'Login'],
@@ -26,18 +26,23 @@ const titleText = new Map<Mode, string>([
 
 function LoginRegisterModal() {
     const [mode, setMode] = useState(Mode.Login);
-    const [savedValues, setSavedValues ] = useState<FormValues>({ email: '', username: '', password: '' });
+    const [savedValues, setSavedValues] = useState<FormValues>({
+        email: '',
+        username: '',
+        password: '',
+    });
 
     const handleModeChange = (values: Partial<FormValues>) => {
         if (mode === Mode.Verification) {
             return;
         }
-        
-        setSavedValues({...savedValues, ...values });
+
+        setSavedValues({ ...savedValues, ...values });
         setMode(mode === Mode.Login ? Mode.Register : Mode.Login);
     };
 
-    const getValues = (values: Partial<FormValues>) => setSavedValues({ ...savedValues, ...values });
+    const getValues = (values: Partial<FormValues>) =>
+        setSavedValues({ ...savedValues, ...values });
 
     const validationSchema = () => {
         return yup.object().shape({
@@ -62,9 +67,15 @@ function LoginRegisterModal() {
                     {titleText.get(mode)}
                 </h1>
                 {mode === Mode.Login ? (
-                    <LoginForm switchToRegister={ handleModeChange } savedValues={ savedValues } />
+                    <LoginForm
+                        switchToRegister={handleModeChange}
+                        savedValues={savedValues}
+                    />
                 ) : (
-                    <RegisterForm switchToLogin={ handleModeChange } savedValues={ savedValues } />
+                    <RegisterForm
+                        switchToLogin={handleModeChange}
+                        savedValues={savedValues}
+                    />
                 )}
                 <hr className="my-4" />
             </div>
