@@ -1,5 +1,5 @@
-import mock_avi from '../images/mock/avatar.png';
-import { useOutsideAlerter } from '../hooks/outsideAlerter';
+import mock_avi from '../../images/mock/avatar.png';
+import { useOutsideAlerter } from '../../hooks/outsideAlerter';
 import { Transition } from '@headlessui/react';
 import React from 'react';
 

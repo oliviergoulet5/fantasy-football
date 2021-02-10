@@ -1,12 +1,12 @@
 import logo from '../images/logo.png';
 import { ReactComponent as SearchIcon } from '../images/icons/search.svg';
 import { ReactComponent as LiveIcon } from '../images/icons/live.svg';
-import MobileSidebar from './MobileSidebar';
-import ProfileDropdown from './ProfileDropdown';
-import MobileMenuButton from './MobileMenuButton';
+import MobileSidebar from './navigationBar/MobileSidebar';
+import ProfileDropdown from './navigationBar/ProfileDropdown';
+import MobileMenuButton from './navigationBar/MobileMenuButton';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import NavigationPageLink from './NavigationPageLink';
+import NavigationPageLink from './navigationBar/NavigationPageLink';
 
 type Props = {
     pages: Array<string>;

@@ -1,8 +1,8 @@
 import { Field, FormikHelpers, Formik } from 'formik';
 import React from 'react';
 import * as yup from 'yup';
-import { LoginFormValues } from '../types';
-import FormField from './FormField';
+import { LoginFormValues } from '../../types';
+import FormField from '../FormField';
 
 type Props = {
     switchToRegister: (valuesToSave: LoginFormValues) => void;

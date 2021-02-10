@@ -1,12 +1,12 @@
-import { ReactComponent as AdvancedFiltersIcon } from '../images/icons/settings-alt.svg';
-import React, { useReducer } from 'react';
-import Dropdown from './Dropdown';
-import SearchBar from './SearchBar';
+import { ReactComponent as AdvancedFiltersIcon } from '../../images/icons/settings-alt.svg';
+import React from 'react';
+import Dropdown from '../../components/Dropdown';
+import SearchBar from '../../components/SearchBar';
 import { Transition } from '@headlessui/react';
-import { useOutsideAlerter } from '../hooks/outsideAlerter';
-import RangeSlider from './RangeSlider';
-import { CLUBS, POSITIONS } from '../constants';
-import { AcceptedFilterTypes } from '../types';
+import { useOutsideAlerter } from '../../hooks/outsideAlerter';
+import RangeSlider from '../../components/RangeSlider';
+import { CLUBS, POSITIONS } from '../../constants';
+import { AcceptedFilterTypes } from '../../types';
 
 type Props = {
     dispatchFilters: (value: {
