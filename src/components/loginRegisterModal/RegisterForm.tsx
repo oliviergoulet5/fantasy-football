@@ -1,7 +1,9 @@
-import { Field, FormikHelpers, Formik } from 'formik';
+import { FormikHelpers, Formik, Form } from 'formik';
 import React from 'react';
 import * as yup from 'yup';
+import { useRegisterMutation } from '../../generated/graphql';
 import { RegisterFormValues } from '../../types';
+import toErrorMap from '../../utils/toErrorMap';
 import FormField from '../FormField';
 
 type Props = {
@@ -10,17 +12,29 @@ type Props = {
 };
 
 function RegisterForm({ switchToLogin, savedValues }: Props) {
-    const handleSubmit = (
-        data: RegisterFormValues,
-        { setSubmitting }: FormikHelpers<RegisterFormValues>
+    const [register, { data: registerData }] = useRegisterMutation();
+
+    const registerHandler = async (
+        values: RegisterFormValues,
+        { setSubmitting, setErrors }: FormikHelpers<RegisterFormValues>
     ) => {
         setSubmitting(true);
-        // set async code here
+
+        const response = await register({
+            variables: values
+        });
+
+        console.log(response.data?.register.errors);
+
+        if (response.data?.register.errors) {
+            setErrors(toErrorMap(response.data.register.errors));
+        }
+
         setSubmitting(false);
     };
 
     const validationSchema = () => {
-        return yup.object().shape({
+        return yup.object({
             email: yup
                 .string()
                 .email('invalid email address')
@@ -40,49 +54,52 @@ function RegisterForm({ switchToLogin, savedValues }: Props) {
                 username: savedValues.username,
                 password: savedValues.password,
             }}
-            onSubmit={handleSubmit}
+            onSubmit={registerHandler}
             validationSchema={validationSchema}
-            validateOnChange={false}
-            validateOnBlur={true}
         >
-            {({ values, isSubmitting, errors }) => (
-                <form className="text-left">
-                    <FormField
-                        name="email"
-                        type="text"
-                        errorMessage={errors.email}
-                    />
-                    <FormField
-                        name="username"
-                        type="text"
-                        errorMessage={errors.username}
-                    />
-                    <FormField
-                        name="password"
-                        type="password"
-                        errorMessage={errors.password}
-                    />
+            {({ values, isSubmitting, errors, isValid }) => {
+                let disabled = isSubmitting || !isValid;
 
-                    {/* Submit */}
-                    <div className="flex justify-between mt-10">
-                        <input
-                            disabled={isSubmitting}
-                            type="submit"
-                            value="Login"
-                            className="hover:bg-blue-800 px-8 py-2 font-semibold text-white bg-blue-700 rounded-md"
+                return (
+                    <Form className="text-left">
+                        <FormField
+                            name="email"
+                            type="text"
+                            errorMessage={errors.email}
                         />
-                        <p className="self-center w-full ml-4 text-sm font-semibold">
-                            Existing user?
-                            <p
-                                onClick={() => switchToLogin(values)}
-                                className="inline-block ml-2 text-right text-blue-700 underline cursor-pointer"
-                            >
-                                Login
+                        <FormField
+                            name="username"
+                            type="text"
+                            errorMessage={errors.username}
+                        />
+                        <FormField
+                            name="password"
+                            type="password"
+                            errorMessage={errors.password}
+                        />
+
+                        {/* Submit */}
+                        <div className="flex justify-between mt-10">
+                            <input
+                                disabled={disabled}
+                                type="submit"
+                                value="Register"
+                                className={`hover:bg-blue-800 px-8 py-2 font-semibold text-white rounded-md ${
+                                    disabled ? 'primary-disabled' : 'primary'
+                                }`}                            />
+                            <p className="self-center w-full ml-4 text-sm font-semibold">
+                                Existing user?
+                                <span
+                                    onClick={() => switchToLogin(values)}
+                                    className="inline-block ml-2 text-right text-blue-700 underline cursor-pointer"
+                                >
+                                    Login
+                                </span>
                             </p>
-                        </p>
-                    </div>
-                </form>
-            )}
+                        </div>
+                    </Form>
+                );
+            }}
         </Formik>
     );
 }

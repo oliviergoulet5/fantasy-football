@@ -4,7 +4,6 @@ import './tailwind.output.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { gql } from '@apollo/client';
 
 const client = new ApolloClient({
     uri: 'http://localhost:4332/graphql',
@@ -13,7 +12,7 @@ const client = new ApolloClient({
 
 ReactDOM.render(
     <React.StrictMode>
-        <ApolloProvider client={ client }>
+        <ApolloProvider client={client}>
             <App />
         </ApolloProvider>
     </React.StrictMode>,
