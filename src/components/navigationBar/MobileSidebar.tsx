@@ -1,13 +1,13 @@
 import { Transition } from '@headlessui/react';
 import React from 'react';
+import { MAIN_PAGES } from '../../constants';
 
 type Props = {
     currentPage: string;
-    pages: Array<string>;
     visible: boolean;
 };
 
-function MobileSidebar({ visible, pages, currentPage }: Props) {
+function MobileSidebar({ visible, currentPage }: Props) {
     return (
         <aside className=" fixed w-3/5 h-screen overflow-hidden pointer-events-none">
             <Transition
@@ -23,7 +23,7 @@ function MobileSidebar({ visible, pages, currentPage }: Props) {
                     <h1 className="pt-12 text-xl font-bold text-white">
                         Fantasy Football Hub
                     </h1>
-                    {pages.map(page => (
+                    {MAIN_PAGES.map(page => (
                         <>
                             <a
                                 href="#"

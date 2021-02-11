@@ -7,13 +7,9 @@ import MobileMenuButton from './navigationBar/MobileMenuButton';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavigationPageLink from './navigationBar/NavigationPageLink';
+import { MAIN_PAGES } from '../constants';
 
-type Props = {
-    pages: Array<string>;
-    currentPage?: string;
-};
-
-function NavigationBar({ pages }: Props) {
+function NavigationBar() {
     const [mobileSidebarVisible, setMobileSidebarVisible] = useState(false);
     const currentPage = useLocation().pathname.substring(1);
 
@@ -50,7 +46,7 @@ function NavigationBar({ pages }: Props) {
                             {/* Links */}
                             <div className="sm:block sm:ml-6 hidden">
                                 <div className="m-full flex items-center content-center h-full space-x-4">
-                                    {pages.map(page => (
+                                    {MAIN_PAGES.map(page => (
                                         <NavigationPageLink
                                             current={
                                                 currentPage.toLowerCase() ===
@@ -85,7 +81,6 @@ function NavigationBar({ pages }: Props) {
 
             <MobileSidebar
                 currentPage={currentPage}
-                pages={pages}
                 visible={mobileSidebarVisible}
             />
         </>

@@ -4,14 +4,15 @@ import * as yup from 'yup';
 import { useRegisterMutation } from '../../generated/graphql';
 import { RegisterFormValues } from '../../types';
 import toErrorMap from '../../utils/toErrorMap';
-import FormField from '../FormField';
+import FormField from '../../components/FormField';
 
 type Props = {
     switchToLogin: (values: RegisterFormValues) => void;
     savedValues: RegisterFormValues;
+    setModalVisible: (value: boolean) => void;
 };
 
-function RegisterForm({ switchToLogin, savedValues }: Props) {
+function RegisterForm({ switchToLogin, savedValues, setModalVisible }: Props) {
     const [register, { data: registerData }] = useRegisterMutation();
 
     const registerHandler = async (
@@ -21,13 +22,13 @@ function RegisterForm({ switchToLogin, savedValues }: Props) {
         setSubmitting(true);
 
         const response = await register({
-            variables: values
+            variables: values,
         });
-
-        console.log(response.data?.register.errors);
 
         if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
+        } else if (response.data?.register.account) {
+            setModalVisible(false);
         }
 
         setSubmitting(false);
@@ -84,9 +85,10 @@ function RegisterForm({ switchToLogin, savedValues }: Props) {
                                 disabled={disabled}
                                 type="submit"
                                 value="Register"
-                                className={`hover:bg-blue-800 px-8 py-2 font-semibold text-white rounded-md ${
+                                className={`hover:bg-blue-800 px-8 py-2 button ${
                                     disabled ? 'primary-disabled' : 'primary'
-                                }`}                            />
+                                }`}
+                            />
                             <p className="self-center w-full ml-4 text-sm font-semibold">
                                 Existing user?
                                 <span

@@ -22,3 +22,5 @@ export const CLUBS = [
     'Wolverhampton Wanderers',
 ];
 export const POSITIONS = ['Forward', 'Midfielder', 'Defender', 'Goalkeeper'];
+
+export const MAIN_PAGES = ['Home', 'Stats', 'Watchlist', 'Games'];
