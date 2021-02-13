@@ -3,9 +3,9 @@ import { useOutsideAlerter } from '../../hooks/outsideAlerter';
 import { Transition } from '@headlessui/react';
 import { useMeQuery } from '../../generated/graphql';
 import React from 'react';
-import AvatarButton from './profileDropdown/avatarButton';
+import AvatarButton from './profileDropdown/AvatarButton';
 import { Link } from 'react-router-dom';
-import SigninButton from './profileDropdown/signinButton';
+import SigninButton from './profileDropdown/SigninButton';
 
 function ProfileDropdown() {
     const { visible, setVisible, ref } = useOutsideAlerter(false);
