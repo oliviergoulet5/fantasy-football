@@ -1,13 +1,12 @@
-import { ReactComponent as LiveIcon } from '../images/icons/live.svg';
 import MobileSidebar from './navigationBar/MobileSidebar';
 import ProfileDropdown from './navigationBar/ProfileDropdown';
 import MobileMenuButton from './navigationBar/MobileMenuButton';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import NavigationPageLink from './navigationBar/NavigationPageLink';
-import { MAIN_PAGES } from '../constants';
 import NavigationSearchBar from './navigationBar/NavigationSearchBar';
 import Logo from './navigationBar/Logo';
+import NavigationPageLinks from './navigationBar/NavigationPageLinks';
+
 function NavigationBar() {
     const [mobileSidebarVisible, setMobileSidebarVisible] = useState(false);
     const currentPage = useLocation().pathname.substring(1);
@@ -29,24 +28,7 @@ function NavigationBar() {
 
                         <div className="sm:items-stretch sm:justify-start flex items-center justify-center flex-1 h-full">
                             <Logo />
-                            {/* Links */}
-                            <div className="sm:block sm:ml-6 hidden">
-                                <div className="m-full flex items-center content-center h-full space-x-4">
-                                    {MAIN_PAGES.map(page => (
-                                        <NavigationPageLink
-                                            current={
-                                                currentPage.toLowerCase() ===
-                                                page.toLowerCase()
-                                            }
-                                            page={page}
-                                        >
-                                            {page === 'Games' && (
-                                                <LiveIcon className="inline-block w-2 h-2 ml-2" />
-                                            )}
-                                        </NavigationPageLink>
-                                    ))}
-                                </div>
-                            </div>
+                            <NavigationPageLinks />
                         </div>
                         <NavigationSearchBar />
                         <ProfileDropdown />

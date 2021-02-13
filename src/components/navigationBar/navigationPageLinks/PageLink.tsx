@@ -6,7 +6,7 @@ type Props = {
     current: boolean;
 };
 
-function NavigationPageLink({
+function PageLink({
     page,
     current,
     children,
@@ -34,5 +34,5 @@ function NavigationPageLink({
     );
 }
 
-export default NavigationPageLink;
+export default PageLink; 
 //                     {/* add condition to render only if there is a live game currently; state store */}
