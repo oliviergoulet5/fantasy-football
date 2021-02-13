@@ -1,8 +1,9 @@
 import NavigationBar from './components/NavigationBar';
-import React from 'react';
+import React, { useState } from 'react';
 import Stats from './pages/Stats';
 import PageNotFound from './pages/PageNotFound';
 import Home from './pages/Home';
+import AccountModalContext from './contexts/AccountModalContext';
 
 import {
     BrowserRouter as Router,
@@ -10,32 +11,44 @@ import {
     Route,
     Redirect,
 } from 'react-router-dom';
+import LoginRegisterModal from './pages/LoginRegisterModal';
 
 function App() {
-    const pages = ['Home', 'Stats', 'Watchlist', 'Games'];
+    const [accountModalVisible, setAccountModalVisible] = useState<boolean>(
+        false
+    );
 
     return (
         <Router>
-            <div className="h-screen bg-gray-100">
-                <NavigationBar pages={pages} />
-                <main className="h-screen">
-                    <Switch>
-                        <Route path="/home">
-                            <Home />
-                        </Route>
+            <AccountModalContext.Provider
+                value={{ accountModalVisible, setAccountModalVisible }}
+            >
+                <div className="h-screen bg-gray-100">
+                    <NavigationBar />
+                    <main className="h-screen">
+                        { accountModalVisible && <LoginRegisterModal />}
+                        <Switch>
+                            <Route path="/home" component={Home} exact />
 
-                        <Route path="/stats">
-                            <Stats />
-                        </Route>
+                            <Route path="/stats" component={Stats} />
+                            
+                            <Route path='/watchlist' />
 
-                        <Route path="/404">
-                            <PageNotFound />
-                        </Route>
+                            <Route path='/games' />
 
-                        <Redirect to="/404" />
-                    </Switch>
-                </main>
-            </div>
+                            <Route path='/profile' />
+
+                            <Route path='/settings' />
+
+                            <Route path="/404" component={PageNotFound} />
+                            
+                            <Redirect path='/' to='/home' exact/>
+
+                            <Redirect to="/404" />
+                        </Switch>
+                    </main>
+                </div>
+            </AccountModalContext.Provider>
         </Router>
     );
 }

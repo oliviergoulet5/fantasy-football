@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field } from 'formik';
+import toTitleCase from '../utils/toTitleCase';
 
 type Props = {
     name: string;
@@ -7,13 +8,8 @@ type Props = {
     errorMessage?: string;
 };
 
-const titleCase = (str: string) =>
-    str
-        .toLowerCase()
-        .replace(/\w{3,}/g, match => match.replace(/\w/, m => m.toUpperCase()));
-
 function FormField({ name, type, errorMessage }: Props) {
-    const labelText = titleCase(name);
+    const labelText = toTitleCase(name);
 
     return (
         <>

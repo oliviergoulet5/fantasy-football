@@ -1,19 +1,21 @@
-import { gql, useMutation } from '@apollo/client';
 import { FormikHelpers, Formik, Form } from 'formik';
 import React from 'react';
-import * as yup from 'yup';
 import { useLoginMutation } from '../../generated/graphql';
 import { LoginFormValues } from '../../types';
-import FormField from '../FormField';
+import FormField from '../../components/FormField';
 import toErrorMap from '../../utils/toErrorMap';
+import validationSchema from './loginForm/validationSchema';
+import { useHistory } from 'react-router-dom';
 
 type Props = {
     switchToRegister: (valuesToSave: LoginFormValues) => void;
     savedValues: LoginFormValues;
+    setModalVisible: (value: boolean) => void;
 };
 
-function LoginForm({ switchToRegister, savedValues }: Props) {
+function LoginForm({ switchToRegister, savedValues, setModalVisible }: Props) {
     const [login, { data: loginData }] = useLoginMutation();
+    const history = useHistory();
 
     const loginHandler = async (
         values: LoginFormValues,
@@ -21,20 +23,16 @@ function LoginForm({ switchToRegister, savedValues }: Props) {
     ) => {
         setSubmitting(true);
         const response = await login({
-            variables: values,
+            variables: {options: values},
         });
+
         if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
+        } else if (response.data?.login.account) {
+            setModalVisible(false);
+            history.go(0);           
         }
-        console.log(response.data);
         setSubmitting(false);
-    };
-
-    const validationSchema = () => {
-        return yup.object({
-            email: yup.string().required(),
-            password: yup.string().required(),
-        });
     };
 
     return (
@@ -68,7 +66,7 @@ function LoginForm({ switchToRegister, savedValues }: Props) {
                                 disabled={disabled}
                                 type="submit"
                                 value="Login"
-                                className={`hover:bg-blue-800 px-8 py-2 font-semibold text-white rounded-md ${
+                                className={`hover:bg-blue-800 px-8 py-2 button ${
                                     disabled ? 'primary-disabled' : 'primary'
                                 }`}
                             />
