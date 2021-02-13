@@ -82,6 +82,11 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
+export type CommonAccountFieldsFragment = (
+  { __typename?: 'Account' }
+  & Pick<Account, 'id' | 'username' | 'email' | 'name'>
+);
+
 export type LoginMutationVariables = Exact<{
   options: LoginInput;
 }>;
@@ -96,7 +101,7 @@ export type LoginMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, account?: Maybe<(
       { __typename?: 'Account' }
-      & Pick<Account, 'username' | 'email'>
+      & CommonAccountFieldsFragment
     )> }
   ) }
 );
@@ -117,7 +122,7 @@ export type RegisterMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, account?: Maybe<(
       { __typename?: 'Account' }
-      & Pick<Account, 'username' | 'email'>
+      & CommonAccountFieldsFragment
     )> }
   ) }
 );
@@ -129,11 +134,18 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'Account' }
-    & Pick<Account, 'id' | 'username' | 'name'>
+    & CommonAccountFieldsFragment
   )> }
 );
 
-
+export const CommonAccountFieldsFragmentDoc = gql`
+    fragment CommonAccountFields on Account {
+  id
+  username
+  email
+  name
+}
+    `;
 export const LoginDocument = gql`
     mutation Login($options: LoginInput!) {
   login(options: $options) {
@@ -142,12 +154,11 @@ export const LoginDocument = gql`
       message
     }
     account {
-      username
-      email
+      ...CommonAccountFields
     }
   }
 }
-    `;
+    ${CommonAccountFieldsFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -181,12 +192,11 @@ export const RegisterDocument = gql`
       message
     }
     account {
-      username
-      email
+      ...CommonAccountFields
     }
   }
 }
-    `;
+    ${CommonAccountFieldsFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -217,12 +227,10 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutatio
 export const MeDocument = gql`
     query Me {
   me {
-    id
-    username
-    name
+    ...CommonAccountFields
   }
 }
-    `;
+    ${CommonAccountFieldsFragmentDoc}`;
 
 /**
  * __useMeQuery__
