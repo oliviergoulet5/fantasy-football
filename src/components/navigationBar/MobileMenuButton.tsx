@@ -24,8 +24,7 @@ function MobileMenuButton({ onClick, mobileSidebarVisible }: Props) {
                 className={
                     mobileSidebarVisible ? 'block' : 'hidden' + ' h-6 w-6'
                 }
-            />{' '}
-            {/*  Display either MenuIcon or CloseIcon depending on whether the menu is open */}
+            />
         </button>
     );
 }
