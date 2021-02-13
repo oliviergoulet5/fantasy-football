@@ -23,7 +23,7 @@ function LoginForm({ switchToRegister, savedValues, setModalVisible }: Props) {
     ) => {
         setSubmitting(true);
         const response = await login({
-            variables: { options: values },
+            variables: {options: values},
         });
 
         if (response.data?.login.errors) {
