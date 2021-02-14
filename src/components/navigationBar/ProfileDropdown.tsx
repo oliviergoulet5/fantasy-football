@@ -1,7 +1,7 @@
 import mock_avi from '../../images/mock/avatar.png';
 import { useOutsideAlerter } from '../../hooks/outsideAlerter';
 import { Transition } from '@headlessui/react';
-import { useMeQuery } from '../../generated/graphql';
+import { MeDocument, useLogoutMutation, useMeQuery } from '../../generated/graphql';
 import React from 'react';
 import AvatarButton from './profileDropdown/AvatarButton';
 import { Link } from 'react-router-dom';
@@ -10,6 +10,13 @@ import SigninButton from './profileDropdown/SigninButton';
 function ProfileDropdown() {
     const { visible, setVisible, ref } = useOutsideAlerter(false);
     const { loading: fetchingAccount, data: accountData } = useMeQuery();
+    const [logout] = useLogoutMutation({
+        update: (cache) => {
+            cache.reset(); 
+            cache.readQuery({ query: MeDocument }); 
+        }
+        }
+    );
     const handleProfileButtonClick = () => setVisible(!visible);
 
     let accountStateRender: JSX.Element | undefined;
@@ -17,11 +24,13 @@ function ProfileDropdown() {
     if (fetchingAccount) {
         // greyed out icon?
     } else if (!accountData?.me) {
-        accountStateRender = <SigninButton />
+        accountStateRender = <SigninButton />;
     } else {
         accountStateRender = (
             <>
-                <p className='text-sm sm:flex hidden font-semibold mr-2'>{ accountData.me.name || accountData.me.username }</p>
+                <p className="sm:flex hidden mr-2 text-sm font-semibold">
+                    {accountData.me.name || accountData.me.username}
+                </p>
                 <AvatarButton
                     src={mock_avi}
                     onClick={handleProfileButtonClick}
@@ -50,15 +59,29 @@ function ProfileDropdown() {
                     aria-orientation="vertical"
                     aria-labelledby="user-menu"
                 >
-                    <Link to='/profile' className='hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700' role='menuItem'>
+                    <Link
+                        to="/profile"
+                        className="hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700"
+                        role="menuItem"
+                    >
                         Profile
                     </Link>
-                    <Link to='/settings' className='hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700' role='menuItem'>
+                    <Link
+                        to="/settings"
+                        className="hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700"
+                        role="menuItem"
+                    >
                         Settings
                     </Link>
-                    <Link to='/signout' className='hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700' role='menuItem'>
+                    <p
+                        onClick={() => {
+                            logout();
+                        }}
+                        className="hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700"
+                        role="menuItem"
+                    >
                         Sign Out
-                    </Link>
+                    </p>
                 </div>
             </Transition>
         </>
