@@ -1,7 +1,11 @@
 import mock_avi from '../../images/mock/avatar.png';
 import { useOutsideAlerter } from '../../hooks/outsideAlerter';
 import { Transition } from '@headlessui/react';
-import { MeDocument, useLogoutMutation, useMeQuery } from '../../generated/graphql';
+import {
+    MeDocument,
+    useLogoutMutation,
+    useMeQuery,
+} from '../../generated/graphql';
 import React from 'react';
 import AvatarButton from './profileDropdown/AvatarButton';
 import { Link } from 'react-router-dom';
@@ -11,12 +15,11 @@ function ProfileDropdown() {
     const { visible, setVisible, ref } = useOutsideAlerter(false);
     const { loading: fetchingAccount, data: accountData } = useMeQuery();
     const [logout] = useLogoutMutation({
-        update: (cache) => {
-            cache.reset(); 
-            cache.readQuery({ query: MeDocument }); 
-        }
-        }
-    );
+        update: cache => {
+            cache.reset();
+            cache.readQuery({ query: MeDocument });
+        },
+    });
     const handleProfileButtonClick = () => setVisible(!visible);
 
     let accountStateRender: JSX.Element | undefined;
