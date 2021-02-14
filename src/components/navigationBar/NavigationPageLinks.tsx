@@ -6,15 +6,14 @@ import { ReactComponent as LiveIcon } from '../../images/icons/live.svg';
 
 function NavigationPageLinks() {
     const currentPage = useLocation().pathname.substring(1);
-    
+
     return (
         <div className="sm:block sm:ml-6 hidden">
             <div className="m-full flex items-center content-center h-full space-x-4">
                 {MAIN_PAGES.map(page => (
                     <NavigationPageLink
                         current={
-                            currentPage.toLowerCase() ===
-                            page.toLowerCase()
+                            currentPage.toLowerCase() === page.toLowerCase()
                         }
                         page={page}
                     >
@@ -25,8 +24,7 @@ function NavigationPageLinks() {
                 ))}
             </div>
         </div>
-
-    )
+    );
 }
 
 export default NavigationPageLinks;

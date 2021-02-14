@@ -18,11 +18,14 @@ export const useOutsideAlerter = (initialValue: boolean) => {
     return { visible, setVisible, ref };
 };
 
-export const useOutsideAlerterWithContext = (value: boolean , setValue: (value: boolean) => void) => {
+export const useOutsideAlerterWithContext = (
+    value: boolean,
+    setValue: (value: boolean) => void
+) => {
     const ref = useRef<HTMLDivElement>(null);
-    
+
     const handleClickOutside = (event: any) => {
-        if (ref.current  && !ref.current.contains(event.target)) {
+        if (ref.current && !ref.current.contains(event.target)) {
             setValue(false);
         }
     };
@@ -33,4 +36,4 @@ export const useOutsideAlerterWithContext = (value: boolean , setValue: (value: 
     }, [ref]);
 
     return { ref };
-}
+};

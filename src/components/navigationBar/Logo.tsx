@@ -1,7 +1,6 @@
 import logo from '../../images/logo.png';
 
 function Logo() {
-
     return (
         <div className="flex items-center flex-shrink-0">
             <img
@@ -15,7 +14,7 @@ function Logo() {
                 alt="fantasy football"
             />
         </div>
-    )
+    );
 }
 
 export default Logo;

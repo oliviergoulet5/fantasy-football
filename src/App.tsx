@@ -26,23 +26,23 @@ function App() {
                 <div className="h-screen bg-gray-100">
                     <NavigationBar />
                     <main className="h-screen">
-                        { accountModalVisible && <LoginRegisterModal />}
+                        {accountModalVisible && <LoginRegisterModal />}
                         <Switch>
                             <Route path="/home" component={Home} exact />
 
                             <Route path="/stats" component={Stats} />
-                            
-                            <Route path='/watchlist' />
 
-                            <Route path='/games' />
+                            <Route path="/watchlist" />
 
-                            <Route path='/profile' />
+                            <Route path="/games" />
 
-                            <Route path='/settings' />
+                            <Route path="/profile" />
+
+                            <Route path="/settings" />
 
                             <Route path="/404" component={PageNotFound} />
-                            
-                            <Redirect path='/' to='/home' exact/>
+
+                            <Redirect path="/" to="/home" exact />
 
                             <Redirect to="/404" />
                         </Switch>

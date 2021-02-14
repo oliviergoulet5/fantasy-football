@@ -6,11 +6,7 @@ type Props = {
     current: boolean;
 };
 
-function PageLink({
-    page,
-    current,
-    children,
-}: React.PropsWithChildren<Props>) {
+function PageLink({ page, current, children }: React.PropsWithChildren<Props>) {
     return (
         <div className="flex flex-col justify-center h-full">
             <Link to={`/${page.toLowerCase()}`} className="py-2 m-auto">
@@ -34,5 +30,5 @@ function PageLink({
     );
 }
 
-export default PageLink; 
+export default PageLink;
 //                     {/* add condition to render only if there is a live game currently; state store */}
