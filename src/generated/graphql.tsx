@@ -1,165 +1,174 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = {
-    [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-    { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-    { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-    ID: string;
-    String: string;
-    Boolean: boolean;
-    Int: number;
-    Float: number;
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
 };
 
 export type Query = {
-    __typename?: 'Query';
-    me?: Maybe<Account>;
-    accounts: Array<Account>;
-    players: Array<Player>;
+  __typename?: 'Query';
+  me?: Maybe<Account>;
+  accounts: Array<Account>;
+  players: Array<Player>;
 };
 
 export type Account = {
-    __typename?: 'Account';
-    id: Scalars['Int'];
-    username: Scalars['String'];
-    email: Scalars['String'];
-    name?: Maybe<Scalars['String']>;
-    createdAt: Scalars['String'];
-    updatedAt: Scalars['String'];
+  __typename?: 'Account';
+  id: Scalars['Int'];
+  username: Scalars['String'];
+  email: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type Player = {
-    __typename?: 'Player';
-    firstName: Scalars['String'];
-    lastName: Scalars['String'];
-    goalsScored: Scalars['Int'];
-    assists: Scalars['Int'];
-    minutes: Scalars['Int'];
-    yellowCards: Scalars['Int'];
-    redCards: Scalars['Int'];
-    ictIndex: Scalars['Float'];
+  __typename?: 'Player';
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  goalsScored: Scalars['Int'];
+  assists: Scalars['Int'];
+  minutes: Scalars['Int'];
+  yellowCards: Scalars['Int'];
+  redCards: Scalars['Int'];
+  ictIndex: Scalars['Float'];
 };
 
 export type Mutation = {
-    __typename?: 'Mutation';
-    register: AccountResponse;
-    login: AccountResponse;
-    logout: Scalars['Boolean'];
+  __typename?: 'Mutation';
+  register: AccountResponse;
+  login: AccountResponse;
+  logout: Scalars['Boolean'];
 };
+
 
 export type MutationRegisterArgs = {
-    options: AccountInput;
+  options: AccountInput;
 };
 
+
 export type MutationLoginArgs = {
-    options: LoginInput;
+  options: LoginInput;
 };
 
 export type AccountResponse = {
-    __typename?: 'AccountResponse';
-    errors?: Maybe<Array<FieldError>>;
-    account?: Maybe<Account>;
+  __typename?: 'AccountResponse';
+  errors?: Maybe<Array<FieldError>>;
+  account?: Maybe<Account>;
 };
 
 export type FieldError = {
-    __typename?: 'FieldError';
-    field: Scalars['String'];
-    message: Scalars['String'];
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
 };
 
 export type AccountInput = {
-    email: Scalars['String'];
-    password: Scalars['String'];
-    username: Scalars['String'];
-    name?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
+  username: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
 };
 
 export type LoginInput = {
-    email: Scalars['String'];
-    password: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
+
+export type CommonAccountFieldsFragment = (
+  { __typename?: 'Account' }
+  & Pick<Account, 'id' | 'username' | 'email' | 'name'>
+);
 
 export type LoginMutationVariables = Exact<{
-    options: LoginInput;
+  options: LoginInput;
 }>;
 
-export type LoginMutation = { __typename?: 'Mutation' } & {
-    login: { __typename?: 'AccountResponse' } & {
-        errors?: Maybe<
-            Array<
-                { __typename?: 'FieldError' } & Pick<
-                    FieldError,
-                    'field' | 'message'
-                >
-            >
-        >;
-        account?: Maybe<
-            { __typename?: 'Account' } & Pick<Account, 'username' | 'email'>
-        >;
-    };
-};
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'AccountResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, account?: Maybe<(
+      { __typename?: 'Account' }
+      & CommonAccountFieldsFragment
+    )> }
+  ) }
+);
 
-export type LogoutMutation = { __typename?: 'Mutation' } & Pick<
-    Mutation,
-    'logout'
->;
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'logout'>
+);
 
 export type RegisterMutationVariables = Exact<{
-    email: Scalars['String'];
-    username: Scalars['String'];
-    password: Scalars['String'];
+  email: Scalars['String'];
+  username: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
-export type RegisterMutation = { __typename?: 'Mutation' } & {
-    register: { __typename?: 'AccountResponse' } & {
-        errors?: Maybe<
-            Array<
-                { __typename?: 'FieldError' } & Pick<
-                    FieldError,
-                    'field' | 'message'
-                >
-            >
-        >;
-        account?: Maybe<
-            { __typename?: 'Account' } & Pick<Account, 'username' | 'email'>
-        >;
-    };
-};
 
-export type MeQueryVariables = Exact<{ [key: string]: never }>;
+export type RegisterMutation = (
+  { __typename?: 'Mutation' }
+  & { register: (
+    { __typename?: 'AccountResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, account?: Maybe<(
+      { __typename?: 'Account' }
+      & CommonAccountFieldsFragment
+    )> }
+  ) }
+);
 
-export type MeQuery = { __typename?: 'Query' } & {
-    me?: Maybe<
-        { __typename?: 'Account' } & Pick<Account, 'id' | 'username' | 'name'>
-    >;
-};
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'Account' }
+    & CommonAccountFieldsFragment
+  )> }
+);
+
+export const CommonAccountFieldsFragmentDoc = gql`
+    fragment CommonAccountFields on Account {
+  id
+  username
+  email
+  name
+}
+    `;
 export const LoginDocument = gql`
     mutation Login($options: LoginInput!) {
-        login(options: $options) {
-            errors {
-                field
-                message
-            }
-            account {
-                username
-                email
-            }
-        }
+  login(options: $options) {
+    errors {
+      field
+      message
     }
-`;
-export type LoginMutationFn = Apollo.MutationFunction<
-    LoginMutation,
-    LoginMutationVariables
->;
+    account {
+      ...CommonAccountFields
+    }
+  }
+}
+    ${CommonAccountFieldsFragmentDoc}`;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
  * __useLoginMutation__
@@ -178,32 +187,18 @@ export type LoginMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useLoginMutation(
-    baseOptions?: Apollo.MutationHookOptions<
-        LoginMutation,
-        LoginMutationVariables
-    >
-) {
-    return Apollo.useMutation<LoginMutation, LoginMutationVariables>(
-        LoginDocument,
-        baseOptions
-    );
-}
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+      }
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
-export type LoginMutationOptions = Apollo.BaseMutationOptions<
-    LoginMutation,
-    LoginMutationVariables
->;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
-        logout
-    }
-`;
-export type LogoutMutationFn = Apollo.MutationFunction<
-    LogoutMutation,
-    LogoutMutationVariables
->;
+  logout
+}
+    `;
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
 /**
  * __useLogoutMutation__
@@ -221,43 +216,26 @@ export type LogoutMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useLogoutMutation(
-    baseOptions?: Apollo.MutationHookOptions<
-        LogoutMutation,
-        LogoutMutationVariables
-    >
-) {
-    return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(
-        LogoutDocument,
-        baseOptions
-    );
-}
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+      }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<
-    LogoutMutation,
-    LogoutMutationVariables
->;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($email: String!, $username: String!, $password: String!) {
-        register(
-            options: { email: $email, username: $username, password: $password }
-        ) {
-            errors {
-                field
-                message
-            }
-            account {
-                username
-                email
-            }
-        }
+  register(options: {email: $email, username: $username, password: $password}) {
+    errors {
+      field
+      message
     }
-`;
-export type RegisterMutationFn = Apollo.MutationFunction<
-    RegisterMutation,
-    RegisterMutationVariables
->;
+    account {
+      ...CommonAccountFields
+    }
+  }
+}
+    ${CommonAccountFieldsFragmentDoc}`;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
  * __useRegisterMutation__
@@ -278,32 +256,19 @@ export type RegisterMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useRegisterMutation(
-    baseOptions?: Apollo.MutationHookOptions<
-        RegisterMutation,
-        RegisterMutationVariables
-    >
-) {
-    return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(
-        RegisterDocument,
-        baseOptions
-    );
-}
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+      }
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<
-    RegisterMutation,
-    RegisterMutationVariables
->;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const MeDocument = gql`
     query Me {
-        me {
-            id
-            username
-            name
-        }
-    }
-`;
+  me {
+    ...CommonAccountFields
+  }
+}
+    ${CommonAccountFieldsFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -320,19 +285,12 @@ export const MeDocument = gql`
  *   },
  * });
  */
-export function useMeQuery(
-    baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>
-) {
-    return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-}
-export function useMeLazyQuery(
-    baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>
-) {
-    return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(
-        MeDocument,
-        baseOptions
-    );
-}
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+      }
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+        }
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
