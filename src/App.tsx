@@ -12,6 +12,7 @@ import {
     Redirect,
 } from 'react-router-dom';
 import LoginRegisterModal from './pages/LoginRegisterModal';
+import AccountSettings from './pages/AccountSettings';
 
 function App() {
     const [accountModalVisible, setAccountModalVisible] = useState<boolean>(
@@ -25,7 +26,7 @@ function App() {
             >
                 <div className="h-screen bg-gray-100">
                     <NavigationBar />
-                    <main className="h-screen w-full max-w-6xl m-auto">
+                    <main className="h-screen w-full max-w-6xl m-auto mt-12">
                         {accountModalVisible && <LoginRegisterModal />}
                         <Switch>
                             <Route path="/home" component={Home} exact />
@@ -38,7 +39,7 @@ function App() {
 
                             <Route path="/profile" />
 
-                            <Route path="/settings" />
+                            <Route path="/settings" component={AccountSettings} />
 
                             <Route path="/404" component={PageNotFound} />
 
