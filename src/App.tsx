@@ -25,7 +25,7 @@ function App() {
             >
                 <div className="h-screen bg-gray-100">
                     <NavigationBar />
-                    <main className="h-screen">
+                    <main className="h-screen w-full max-w-6xl m-auto">
                         {accountModalVisible && <LoginRegisterModal />}
                         <Switch>
                             <Route path="/home" component={Home} exact />
