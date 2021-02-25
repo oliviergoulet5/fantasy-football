@@ -1,7 +1,10 @@
 import React from 'react';
+import Dropdown from '../../components/Dropdown';
 import avatarDefault from '../../images/illustrations/avatar-default.jpg';
+import { CLUBS } from '../../constants';
 
 function ProfileInformation() {
+    const getDropdownValue = (value: string, name?: string) => {};
 
     return (
         <div className='px-4 py-2'>
@@ -22,6 +25,10 @@ function ProfileInformation() {
                     <div>
                         <p className='label'>Bio</p>
                         <textarea className='fg-item px-2 py-1 w-1/2 h-36' placeholder='Maximum of 500 words'/>
+                    </div>
+                    <div>
+                        <p className='label'>Favourite Team</p>
+                        <Dropdown options={[ 'None', ...CLUBS ]} liftSelectedOption={ getDropdownValue } />
                     </div>
                     <p className='primary button w-24 text-center'>Save</p>
                 </div>
