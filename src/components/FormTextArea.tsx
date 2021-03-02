@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FormTextAreaProps } from '../types';
 import FormLabel from './FormLabel';
 
-function FormTextArea({ name, errorMessage, placeholder, setFieldValue }: FormTextAreaProps) {
-    const [ text, setText ] = useState('');
+function FormTextArea({ name, errorMessage, placeholder, setFieldValue, value }: FormTextAreaProps) {
+    const [ text, setText ] = useState(value);
     
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value)

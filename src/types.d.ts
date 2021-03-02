@@ -16,6 +16,7 @@ export type FormDropdownProps = AbstractFormComponentProps & {
 export type FormTextAreaProps = AbstractFormComponentProps & {
     placeholder?: string;
     setFieldValue: FormikFieldValueSetter;
+    value: string;
 }
 
 export type FormFieldProps = AbstractFormComponentProps & {

@@ -150,6 +150,27 @@ export type RegisterMutation = (
   ) }
 );
 
+export type UpdateAccountMutationVariables = Exact<{
+  name: Scalars['String'];
+  avatar: Scalars['String'];
+  bio: Scalars['String'];
+}>;
+
+
+export type UpdateAccountMutation = (
+  { __typename?: 'Mutation' }
+  & { updateAccount: (
+    { __typename?: 'AccountResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, account?: Maybe<(
+      { __typename?: 'Account' }
+      & CommonAccountFieldsFragment
+    )> }
+  ) }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -278,6 +299,46 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateAccountDocument = gql`
+    mutation UpdateAccount($name: String!, $avatar: String!, $bio: String!) {
+  updateAccount(options: {name: $name, avatar: $avatar, bio: $bio}) {
+    errors {
+      field
+      message
+    }
+    account {
+      ...CommonAccountFields
+    }
+  }
+}
+    ${CommonAccountFieldsFragmentDoc}`;
+export type UpdateAccountMutationFn = Apollo.MutationFunction<UpdateAccountMutation, UpdateAccountMutationVariables>;
+
+/**
+ * __useUpdateAccountMutation__
+ *
+ * To run a mutation, you first call `useUpdateAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAccountMutation, { data, loading, error }] = useUpdateAccountMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      avatar: // value for 'avatar'
+ *      bio: // value for 'bio'
+ *   },
+ * });
+ */
+export function useUpdateAccountMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAccountMutation, UpdateAccountMutationVariables>) {
+        return Apollo.useMutation<UpdateAccountMutation, UpdateAccountMutationVariables>(UpdateAccountDocument, baseOptions);
+      }
+export type UpdateAccountMutationHookResult = ReturnType<typeof useUpdateAccountMutation>;
+export type UpdateAccountMutationResult = Apollo.MutationResult<UpdateAccountMutation>;
+export type UpdateAccountMutationOptions = Apollo.BaseMutationOptions<UpdateAccountMutation, UpdateAccountMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {

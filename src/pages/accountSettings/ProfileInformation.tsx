@@ -1,12 +1,13 @@
 import React from 'react';
 import avatarDefault from '../../images/illustrations/avatar-default.jpg';
 import { CLUBS } from '../../constants';
-import { Formik, FormikHelpers, Form } from 'formik';
+import { Formik, FormikHelpers, Form, setNestedObjectValues } from 'formik';
 import FormField from '../../components/FormField';
 import FormDropdown from '../../components/FormDropdown';
 import validationSchema from './profileInformation/validationSchema';
 import FormTextArea from '../../components/FormTextArea';
-import {useMeQuery} from '../../generated/graphql';
+import {useMeQuery, useUpdateAccountMutation } from '../../generated/graphql';
+import toErrorMap from '../../utils/toErrorMap';
 
 type ProfileInformationFormValues = {
     avatar: string,
@@ -17,6 +18,7 @@ type ProfileInformationFormValues = {
 
 function ProfileInformation() {
     const { loading: fetchingAccount, data: accountData } = useMeQuery();
+    const [updateAccount, { data: updateAccountData }] = useUpdateAccountMutation();
 
     if (fetchingAccount) return null;
 
@@ -29,9 +31,22 @@ function ProfileInformation() {
 
     const updateProfileInformation = async (
         values: ProfileInformationFormValues,
-        { setSubmitting, setErrors }: FormikHelpers<ProfileInformationFormValues>
+        { setSubmitting, setErrors, setStatus }: FormikHelpers<ProfileInformationFormValues>
     ) => {
         setSubmitting(true);
+        
+        const response = await updateAccount({
+            variables: values
+        });
+
+        if (response.data?.updateAccount.errors) {
+            setErrors(toErrorMap(response.data.updateAccount.errors));
+            setStatus('error')
+        } else if (response.data?.updateAccount.account) {
+            console.log('Saved account information.');
+            setStatus('success');
+        }
+
         setSubmitting(false);
     }
 
@@ -41,7 +56,7 @@ function ProfileInformation() {
             onSubmit={ updateProfileInformation }
             validationSchema={ validationSchema }
         > 
-        {({ values, isSubmitting, errors, isValid, setFieldValue, submitForm }) => {
+        {({ values, errors, isValid, setFieldValue, submitForm, status }) => {
             return (
                 <Form>
                     <div className='px-4 py-2'>
@@ -68,12 +83,14 @@ function ProfileInformation() {
                                         placeholder="Maximum of 500 words"
                                         errorMessage={errors.name}
                                         setFieldValue={ setFieldValue }
+                                        value={ values.bio }
                                     />
                                 </div>
                                 <div>
                                     <FormDropdown name='favouriteTeam' options={['None', ...CLUBS ]} errorMessage={ errors.favouriteTeam } setFieldValue={ setFieldValue } />
                                 </div>
                                 <button type='submit' onClick={ submitForm } className='primary button w-24 text-center'>Save</button>
+                                {status == 'success' && <p>Saved changes</p>}
                             </div>
                         </div>
                     </div>

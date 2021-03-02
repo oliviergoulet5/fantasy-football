@@ -1,0 +1,12 @@
+mutation UpdateAccount($name: String!, $avatar: String!, $bio: String!) {
+    updateAccount(options: { name: $name, avatar: $avatar, bio: $bio }) {
+        errors {
+            field
+            message
+        }
+
+        account {
+            ...CommonAccountFields
+        }
+    }
+}
