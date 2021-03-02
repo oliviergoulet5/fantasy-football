@@ -17,10 +17,12 @@ type ProfileInformationFormValues = {
 
 function ProfileInformation() {
     const { loading: fetchingAccount, data: accountData } = useMeQuery();
-    
+
+    if (fetchingAccount) return null;
+
     const initialValues: ProfileInformationFormValues = {
         name: accountData?.me?.name || '',
-        bio: '',
+        bio: accountData?.me?.bio || '',
         avatar: 'profilePicture.png',
         favouriteTeam: 'None'
     };

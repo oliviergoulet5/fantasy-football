@@ -3,4 +3,6 @@ fragment CommonAccountFields on Account {
     username
     email
     name
+    avatar
+    bio
 }

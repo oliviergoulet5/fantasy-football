@@ -26,6 +26,8 @@ export type Account = {
   username: Scalars['String'];
   email: Scalars['String'];
   name?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -47,6 +49,7 @@ export type Mutation = {
   register: AccountResponse;
   login: AccountResponse;
   logout: Scalars['Boolean'];
+  updateAccount: AccountResponse;
 };
 
 
@@ -57,6 +60,11 @@ export type MutationRegisterArgs = {
 
 export type MutationLoginArgs = {
   options: LoginInput;
+};
+
+
+export type MutationUpdateAccountArgs = {
+  options: AccountInformationInput;
 };
 
 export type AccountResponse = {
@@ -83,9 +91,15 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
+export type AccountInformationInput = {
+  name?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['String']>;
+};
+
 export type CommonAccountFieldsFragment = (
   { __typename?: 'Account' }
-  & Pick<Account, 'id' | 'username' | 'email' | 'name'>
+  & Pick<Account, 'id' | 'username' | 'email' | 'name' | 'avatar' | 'bio'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -153,6 +167,8 @@ export const CommonAccountFieldsFragmentDoc = gql`
   username
   email
   name
+  avatar
+  bio
 }
     `;
 export const LoginDocument = gql`
