@@ -6,6 +6,7 @@ import FormField from '../../components/FormField';
 import FormDropdown from '../../components/FormDropdown';
 import validationSchema from './profileInformation/validationSchema';
 import FormTextArea from '../../components/FormTextArea';
+import {useMeQuery} from '../../generated/graphql';
 
 type ProfileInformationFormValues = {
     avatar: string,
@@ -15,8 +16,10 @@ type ProfileInformationFormValues = {
 }
 
 function ProfileInformation() {
+    const { loading: fetchingAccount, data: accountData } = useMeQuery();
+    
     const initialValues: ProfileInformationFormValues = {
-        name: '',
+        name: accountData?.me?.name || '',
         bio: '',
         avatar: 'profilePicture.png',
         favouriteTeam: 'None'
