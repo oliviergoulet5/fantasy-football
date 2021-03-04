@@ -1,13 +1,15 @@
 import React from 'react';
 import avatarDefault from '../../images/illustrations/avatar-default.jpg';
 import { CLUBS } from '../../constants';
-import { Formik, FormikHelpers, Form, setNestedObjectValues } from 'formik';
+import { Formik, FormikHelpers, Form } from 'formik';
 import FormField from '../../components/FormField';
 import FormDropdown from '../../components/FormDropdown';
 import validationSchema from './profileInformation/validationSchema';
 import FormTextArea from '../../components/FormTextArea';
 import {useMeQuery, useUpdateAccountMutation } from '../../generated/graphql';
 import toErrorMap from '../../utils/toErrorMap';
+
+// Todo: manage 'success' state of form better. It should be reset when an error has been logged or a change has been made.
 
 type ProfileInformationFormValues = {
     avatar: string,
@@ -18,7 +20,7 @@ type ProfileInformationFormValues = {
 
 function ProfileInformation() {
     const { loading: fetchingAccount, data: accountData } = useMeQuery();
-    const [updateAccount, { data: updateAccountData }] = useUpdateAccountMutation();
+    const [updateAccount] = useUpdateAccountMutation();
 
     if (fetchingAccount) return null;
 
@@ -56,7 +58,9 @@ function ProfileInformation() {
             onSubmit={ updateProfileInformation }
             validationSchema={ validationSchema }
         > 
-        {({ values, errors, isValid, setFieldValue, submitForm, status }) => {
+        {({ values, errors, isValid, isSubmitting, setFieldValue, submitForm, status }) => {
+            let disabled = isSubmitting || !isValid;
+            
             return (
                 <Form>
                     <div className='px-4 py-2'>
@@ -70,27 +74,29 @@ function ProfileInformation() {
                                 </div>
                             </div>
                             <div className='flex flex-col space-y-4 ml-24 w-1/3'>
-                                <div>
-                                    <FormField
-                                        name="name"
-                                        type="text"
-                                        errorMessage={errors.name}
-                                    />
-                                </div>
-                                <div>
-                                    <FormTextArea
-                                        name="bio"
-                                        placeholder="Maximum of 500 words"
-                                        errorMessage={errors.name}
-                                        setFieldValue={ setFieldValue }
-                                        value={ values.bio }
-                                    />
-                                </div>
-                                <div>
-                                    <FormDropdown name='favouriteTeam' options={['None', ...CLUBS ]} errorMessage={ errors.favouriteTeam } setFieldValue={ setFieldValue } />
-                                </div>
-                                <button type='submit' onClick={ submitForm } className='primary button w-24 text-center'>Save</button>
-                                {status == 'success' && <p>Saved changes</p>}
+                                <FormField
+                                    name="name"
+                                    type="text"
+                                    errorMessage={errors.name}
+                                />
+                                <FormTextArea
+                                    name="bio"
+                                    placeholder="Maximum of 500 words"
+                                    errorMessage={errors.bio}
+                                    setFieldValue={ setFieldValue }
+                                    value={ values.bio }
+                                />
+                                <FormDropdown 
+                                    name='favouriteTeam' 
+                                    options={['None', ...CLUBS ]} 
+                                    errorMessage={ errors.favouriteTeam } 
+                                    setFieldValue={ setFieldValue } 
+                                />
+                                <input type='submit' value='Save' disabled={disabled} onClick={ submitForm } className={`button w-24 text-center ${
+                                    disabled ? 'primary-disabled' : 'primary'
+                                }`}  />
+
+                                {(status === 'success' && !disabled) && <p>Saved changes</p>}
                             </div>
                         </div>
                     </div>
