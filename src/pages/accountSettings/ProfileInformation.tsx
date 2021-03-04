@@ -6,7 +6,7 @@ import FormField from '../../components/FormField';
 import FormDropdown from '../../components/FormDropdown';
 import validationSchema from './profileInformation/validationSchema';
 import FormTextArea from '../../components/FormTextArea';
-import {useMeQuery, useUpdateAccountMutation } from '../../generated/graphql';
+import {useMeProfileQuery, useUpdateAccountMutation } from '../../generated/graphql';
 import toErrorMap from '../../utils/toErrorMap';
 
 // Todo: manage 'success' state of form better. It should be reset when an error has been logged or a change has been made.
@@ -19,7 +19,7 @@ type ProfileInformationFormValues = {
 }
 
 function ProfileInformation() {
-    const { loading: fetchingAccount, data: accountData } = useMeQuery();
+    const { loading: fetchingAccount, data: accountData } = useMeProfileQuery();
     const [updateAccount] = useUpdateAccountMutation();
 
     if (fetchingAccount) return null;
@@ -27,8 +27,8 @@ function ProfileInformation() {
     const initialValues: ProfileInformationFormValues = {
         name: accountData?.me?.name || '',
         bio: accountData?.me?.bio || '',
-        avatar: 'profilePicture.png',
-        favouriteTeam: 'None'
+        avatar: accountData?.me?.avatar || 'default.png',
+        favouriteTeam: accountData?.me?.favouriteTeam || 'None'
     };
 
     const updateProfileInformation = async (
@@ -91,6 +91,7 @@ function ProfileInformation() {
                                     options={['None', ...CLUBS ]} 
                                     errorMessage={ errors.favouriteTeam } 
                                     setFieldValue={ setFieldValue } 
+                                    value={ values.favouriteTeam }
                                 />
                                 <input type='submit' value='Save' disabled={disabled} onClick={ submitForm } className={`button w-24 text-center ${
                                     disabled ? 'primary-disabled' : 'primary'

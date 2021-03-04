@@ -4,5 +4,4 @@ fragment CommonAccountFields on Account {
     email
     name
     avatar
-    bio
 }

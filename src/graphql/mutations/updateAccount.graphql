@@ -1,5 +1,5 @@
-mutation UpdateAccount($name: String!, $avatar: String!, $bio: String!) {
-    updateAccount(options: { name: $name, avatar: $avatar, bio: $bio }) {
+mutation UpdateAccount($name: String!, $avatar: String!, $bio: String!, $favouriteTeam: String!) {
+    updateAccount(options: { name: $name, avatar: $avatar, bio: $bio, favouriteTeam: $favouriteTeam }) {
         errors {
             field
             message
@@ -7,6 +7,7 @@ mutation UpdateAccount($name: String!, $avatar: String!, $bio: String!) {
 
         account {
             ...CommonAccountFields
+            ...ProfileFields
         }
     }
 }

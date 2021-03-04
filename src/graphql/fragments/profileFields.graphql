@@ -1,0 +1,5 @@
+fragment ProfileFields on Account {
+    ...CommonAccountFields
+    bio
+    favouriteTeam
+}

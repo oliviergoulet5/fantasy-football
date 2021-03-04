@@ -27,6 +27,7 @@ export type Account = {
   email: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
+  favouriteTeam?: Maybe<Scalars['String']>;
   avatar?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -95,11 +96,18 @@ export type AccountInformationInput = {
   name?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   avatar?: Maybe<Scalars['String']>;
+  favouriteTeam?: Maybe<Scalars['String']>;
 };
 
 export type CommonAccountFieldsFragment = (
   { __typename?: 'Account' }
-  & Pick<Account, 'id' | 'username' | 'email' | 'name' | 'avatar' | 'bio'>
+  & Pick<Account, 'id' | 'username' | 'email' | 'name' | 'avatar'>
+);
+
+export type ProfileFieldsFragment = (
+  { __typename?: 'Account' }
+  & Pick<Account, 'bio' | 'favouriteTeam'>
+  & CommonAccountFieldsFragment
 );
 
 export type LoginMutationVariables = Exact<{
@@ -154,6 +162,7 @@ export type UpdateAccountMutationVariables = Exact<{
   name: Scalars['String'];
   avatar: Scalars['String'];
   bio: Scalars['String'];
+  favouriteTeam: Scalars['String'];
 }>;
 
 
@@ -167,6 +176,7 @@ export type UpdateAccountMutation = (
     )>>, account?: Maybe<(
       { __typename?: 'Account' }
       & CommonAccountFieldsFragment
+      & ProfileFieldsFragment
     )> }
   ) }
 );
@@ -182,6 +192,18 @@ export type MeQuery = (
   )> }
 );
 
+export type MeProfileQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeProfileQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'Account' }
+    & CommonAccountFieldsFragment
+    & ProfileFieldsFragment
+  )> }
+);
+
 export const CommonAccountFieldsFragmentDoc = gql`
     fragment CommonAccountFields on Account {
   id
@@ -189,9 +211,15 @@ export const CommonAccountFieldsFragmentDoc = gql`
   email
   name
   avatar
-  bio
 }
     `;
+export const ProfileFieldsFragmentDoc = gql`
+    fragment ProfileFields on Account {
+  ...CommonAccountFields
+  bio
+  favouriteTeam
+}
+    ${CommonAccountFieldsFragmentDoc}`;
 export const LoginDocument = gql`
     mutation Login($options: LoginInput!) {
   login(options: $options) {
@@ -300,18 +328,22 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateAccountDocument = gql`
-    mutation UpdateAccount($name: String!, $avatar: String!, $bio: String!) {
-  updateAccount(options: {name: $name, avatar: $avatar, bio: $bio}) {
+    mutation UpdateAccount($name: String!, $avatar: String!, $bio: String!, $favouriteTeam: String!) {
+  updateAccount(
+    options: {name: $name, avatar: $avatar, bio: $bio, favouriteTeam: $favouriteTeam}
+  ) {
     errors {
       field
       message
     }
     account {
       ...CommonAccountFields
+      ...ProfileFields
     }
   }
 }
-    ${CommonAccountFieldsFragmentDoc}`;
+    ${CommonAccountFieldsFragmentDoc}
+${ProfileFieldsFragmentDoc}`;
 export type UpdateAccountMutationFn = Apollo.MutationFunction<UpdateAccountMutation, UpdateAccountMutationVariables>;
 
 /**
@@ -330,6 +362,7 @@ export type UpdateAccountMutationFn = Apollo.MutationFunction<UpdateAccountMutat
  *      name: // value for 'name'
  *      avatar: // value for 'avatar'
  *      bio: // value for 'bio'
+ *      favouriteTeam: // value for 'favouriteTeam'
  *   },
  * });
  */
@@ -371,3 +404,37 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const MeProfileDocument = gql`
+    query MeProfile {
+  me {
+    ...CommonAccountFields
+    ...ProfileFields
+  }
+}
+    ${CommonAccountFieldsFragmentDoc}
+${ProfileFieldsFragmentDoc}`;
+
+/**
+ * __useMeProfileQuery__
+ *
+ * To run a query within a React component, call `useMeProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeProfileQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeProfileQuery(baseOptions?: Apollo.QueryHookOptions<MeProfileQuery, MeProfileQueryVariables>) {
+        return Apollo.useQuery<MeProfileQuery, MeProfileQueryVariables>(MeProfileDocument, baseOptions);
+      }
+export function useMeProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeProfileQuery, MeProfileQueryVariables>) {
+          return Apollo.useLazyQuery<MeProfileQuery, MeProfileQueryVariables>(MeProfileDocument, baseOptions);
+        }
+export type MeProfileQueryHookResult = ReturnType<typeof useMeProfileQuery>;
+export type MeProfileLazyQueryHookResult = ReturnType<typeof useMeProfileLazyQuery>;
+export type MeProfileQueryResult = Apollo.QueryResult<MeProfileQuery, MeProfileQueryVariables>;
