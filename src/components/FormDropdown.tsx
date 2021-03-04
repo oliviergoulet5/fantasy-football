@@ -6,7 +6,7 @@ import FormLabel from './FormLabel';
 function FormDropdown({ name, errorMessage, options, setFieldValue }: FormDropdownProps) {
 
     return (
-        <>
+        <div>
             <FormLabel name={ name } errorMessage={ errorMessage } />
             <Dropdown 
                 options={ options } 
@@ -14,7 +14,7 @@ function FormDropdown({ name, errorMessage, options, setFieldValue }: FormDropdo
                     setFieldValue(name, selectedOption);
                 }} 
             />
-        </>
+        </div>
     );
 }
 

@@ -14,7 +14,7 @@ function FormTextArea({ name, errorMessage, placeholder, setFieldValue, value }:
     }, [text]);
 
     return (
-        <>
+        <div>
             <FormLabel name={name} errorMessage={ errorMessage } />
             <textarea 
                 className='fg-item px-2 py-1 w-full h-36' 
@@ -22,7 +22,7 @@ function FormTextArea({ name, errorMessage, placeholder, setFieldValue, value }:
                 value={ text }
                 onChange={ handleChange }
             />
-        </>
+        </div>
     );
 }
 
