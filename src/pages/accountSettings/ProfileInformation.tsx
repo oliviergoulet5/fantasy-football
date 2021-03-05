@@ -10,6 +10,7 @@ import {useMeProfileQuery, useUpdateProfileMutation, useUpdateAvatarMutation } f
 import toErrorMap from '../../utils/toErrorMap';
 import getChangedValues from '../../utils/getChangedValues';
 import { NetworkStatus } from '@apollo/client';
+import noCache from '../../utils/noCache';
 // Todo: manage 'success' state of form better. It should be reset when an error has been logged or a change has been made.
 
 type ProfileInformationFormValues = {
@@ -84,7 +85,7 @@ function ProfileInformation() {
                             <div>
                                 <p className='label'>Avatar</p>
                                 <div>
-                                    <img src={ `${profileData.me?.avatarLocation || defaultValues.avatarLocation}?=preventCache=${Math.floor(Math.random() * 10000) + 1}` } alt='avatar-preview' className='rounded-full h-24' />
+                                    <img src={ noCache(profileData.me?.avatarLocation || defaultValues.avatarLocation) } alt='avatar-preview' className='rounded-full h-24' />
                                     <p>Change picture</p>
                                     <input type='file' name='avatar' onChange={
                                         (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,4 +1,3 @@
-import mock_avi from '../../images/mock/avatar.png';
 import { useOutsideAlerter } from '../../hooks/outsideAlerter';
 import { Transition } from '@headlessui/react';
 import {
@@ -10,6 +9,8 @@ import React from 'react';
 import AvatarButton from './profileDropdown/AvatarButton';
 import { Link } from 'react-router-dom';
 import SigninButton from './profileDropdown/SigninButton';
+import avatarDefault from '../../images/illustrations/avatar-default.jpg';
+import noCache from '../../utils/noCache';
 
 function ProfileDropdown() {
     const { visible, setVisible, ref } = useOutsideAlerter(false);
@@ -35,7 +36,7 @@ function ProfileDropdown() {
                     {accountData.me.name || accountData.me.username}
                 </p>
                 <AvatarButton
-                    src={mock_avi}
+                    src={ noCache(accountData.me?.avatarLocation || avatarDefault) }
                     onClick={handleProfileButtonClick}
                     sr="open profile menu"
                 />
