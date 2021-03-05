@@ -22,6 +22,11 @@ export type Query = {
   players: Array<Player>;
 };
 
+
+export type QueryAccountsArgs = {
+  id?: Maybe<Scalars['Float']>;
+};
+
 export type Account = {
   __typename?: 'Account';
   id: Scalars['Int'];
@@ -53,7 +58,6 @@ export type Mutation = {
   login: AccountResponse;
   logout: Scalars['Boolean'];
   updateAccount: AccountResponse;
-  uploadAvatar: Scalars['Boolean'];
 };
 
 
@@ -68,12 +72,7 @@ export type MutationLoginArgs = {
 
 
 export type MutationUpdateAccountArgs = {
-  options: AccountInformationInput;
-};
-
-
-export type MutationUploadAvatarArgs = {
-  image: Scalars['Upload'];
+  options: UpdateAccountInput;
 };
 
 export type AccountResponse = {
@@ -100,23 +99,31 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
-export type AccountInformationInput = {
+export type UpdateAccountInput = {
+  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['Upload']>;
   favouriteTeam?: Maybe<Scalars['String']>;
 };
 
 
-export type CommonAccountFieldsFragment = (
+export type AccountFieldsFragment = (
   { __typename?: 'Account' }
-  & Pick<Account, 'id' | 'username' | 'email' | 'name' | 'avatar'>
+  & Pick<Account, 'id' | 'username' | 'email'>
 );
 
 export type ProfileFieldsFragment = (
   { __typename?: 'Account' }
-  & Pick<Account, 'bio' | 'favouriteTeam'>
-  & CommonAccountFieldsFragment
+  & Pick<Account, 'name' | 'bio' | 'favouriteTeam'>
+  & SimplifiedProfileFieldsFragment
+);
+
+export type SimplifiedProfileFieldsFragment = (
+  { __typename?: 'Account' }
+  & Pick<Account, 'id' | 'username' | 'avatar'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -133,7 +140,7 @@ export type LoginMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, account?: Maybe<(
       { __typename?: 'Account' }
-      & CommonAccountFieldsFragment
+      & AccountFieldsFragment
     )> }
   ) }
 );
@@ -162,16 +169,15 @@ export type RegisterMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, account?: Maybe<(
       { __typename?: 'Account' }
-      & CommonAccountFieldsFragment
+      & AccountFieldsFragment
     )> }
   ) }
 );
 
 export type UpdateAccountMutationVariables = Exact<{
-  name: Scalars['String'];
-  avatar: Scalars['String'];
-  bio: Scalars['String'];
-  favouriteTeam: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -184,20 +190,57 @@ export type UpdateAccountMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, account?: Maybe<(
       { __typename?: 'Account' }
-      & CommonAccountFieldsFragment
+      & AccountFieldsFragment
+    )> }
+  ) }
+);
+
+export type UpdateProfileMutationVariables = Exact<{
+  name?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['Upload']>;
+  bio?: Maybe<Scalars['String']>;
+  favouriteTeam?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateProfileMutation = (
+  { __typename?: 'Mutation' }
+  & { updateAccount: (
+    { __typename?: 'AccountResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, account?: Maybe<(
+      { __typename?: 'Account' }
       & ProfileFieldsFragment
     )> }
   ) }
 );
 
-export type UploadAvatarMutationVariables = Exact<{
-  image: Scalars['Upload'];
+export type GetProfileQueryVariables = Exact<{
+  id?: Maybe<Scalars['Float']>;
 }>;
 
 
-export type UploadAvatarMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'uploadAvatar'>
+export type GetProfileQuery = (
+  { __typename?: 'Query' }
+  & { accounts: Array<(
+    { __typename?: 'Account' }
+    & ProfileFieldsFragment
+  )> }
+);
+
+export type GetProfileSnippetQueryVariables = Exact<{
+  id?: Maybe<Scalars['Float']>;
+}>;
+
+
+export type GetProfileSnippetQuery = (
+  { __typename?: 'Query' }
+  & { accounts: Array<(
+    { __typename?: 'Account' }
+    & SimplifiedProfileFieldsFragment
+  )> }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -207,7 +250,19 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'Account' }
-    & CommonAccountFieldsFragment
+    & AccountFieldsFragment
+    & SimplifiedProfileFieldsFragment
+  )> }
+);
+
+export type MeAccountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeAccountQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'Account' }
+    & AccountFieldsFragment
   )> }
 );
 
@@ -218,27 +273,32 @@ export type MeProfileQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'Account' }
-    & CommonAccountFieldsFragment
     & ProfileFieldsFragment
   )> }
 );
 
-export const CommonAccountFieldsFragmentDoc = gql`
-    fragment CommonAccountFields on Account {
+export const AccountFieldsFragmentDoc = gql`
+    fragment AccountFields on Account {
   id
   username
   email
-  name
+}
+    `;
+export const SimplifiedProfileFieldsFragmentDoc = gql`
+    fragment SimplifiedProfileFields on Account {
+  id
+  username
   avatar
 }
     `;
 export const ProfileFieldsFragmentDoc = gql`
     fragment ProfileFields on Account {
-  ...CommonAccountFields
+  ...SimplifiedProfileFields
+  name
   bio
   favouriteTeam
 }
-    ${CommonAccountFieldsFragmentDoc}`;
+    ${SimplifiedProfileFieldsFragmentDoc}`;
 export const LoginDocument = gql`
     mutation Login($options: LoginInput!) {
   login(options: $options) {
@@ -247,11 +307,11 @@ export const LoginDocument = gql`
       message
     }
     account {
-      ...CommonAccountFields
+      ...AccountFields
     }
   }
 }
-    ${CommonAccountFieldsFragmentDoc}`;
+    ${AccountFieldsFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -314,11 +374,11 @@ export const RegisterDocument = gql`
       message
     }
     account {
-      ...CommonAccountFields
+      ...AccountFields
     }
   }
 }
-    ${CommonAccountFieldsFragmentDoc}`;
+    ${AccountFieldsFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -347,22 +407,20 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateAccountDocument = gql`
-    mutation UpdateAccount($name: String!, $avatar: String!, $bio: String!, $favouriteTeam: String!) {
+    mutation UpdateAccount($username: String, $email: String, $password: String) {
   updateAccount(
-    options: {name: $name, avatar: $avatar, bio: $bio, favouriteTeam: $favouriteTeam}
+    options: {username: $username, email: $email, password: $password}
   ) {
     errors {
       field
       message
     }
     account {
-      ...CommonAccountFields
-      ...ProfileFields
+      ...AccountFields
     }
   }
 }
-    ${CommonAccountFieldsFragmentDoc}
-${ProfileFieldsFragmentDoc}`;
+    ${AccountFieldsFragmentDoc}`;
 export type UpdateAccountMutationFn = Apollo.MutationFunction<UpdateAccountMutation, UpdateAccountMutationVariables>;
 
 /**
@@ -378,10 +436,9 @@ export type UpdateAccountMutationFn = Apollo.MutationFunction<UpdateAccountMutat
  * @example
  * const [updateAccountMutation, { data, loading, error }] = useUpdateAccountMutation({
  *   variables: {
- *      name: // value for 'name'
- *      avatar: // value for 'avatar'
- *      bio: // value for 'bio'
- *      favouriteTeam: // value for 'favouriteTeam'
+ *      username: // value for 'username'
+ *      email: // value for 'email'
+ *      password: // value for 'password'
  *   },
  * });
  */
@@ -391,43 +448,124 @@ export function useUpdateAccountMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateAccountMutationHookResult = ReturnType<typeof useUpdateAccountMutation>;
 export type UpdateAccountMutationResult = Apollo.MutationResult<UpdateAccountMutation>;
 export type UpdateAccountMutationOptions = Apollo.BaseMutationOptions<UpdateAccountMutation, UpdateAccountMutationVariables>;
-export const UploadAvatarDocument = gql`
-    mutation UploadAvatar($image: Upload!) {
-  uploadAvatar(image: $image)
+export const UpdateProfileDocument = gql`
+    mutation UpdateProfile($name: String, $avatar: Upload, $bio: String, $favouriteTeam: String) {
+  updateAccount(
+    options: {name: $name, avatar: $avatar, bio: $bio, favouriteTeam: $favouriteTeam}
+  ) {
+    errors {
+      field
+      message
+    }
+    account {
+      ...ProfileFields
+    }
+  }
 }
-    `;
-export type UploadAvatarMutationFn = Apollo.MutationFunction<UploadAvatarMutation, UploadAvatarMutationVariables>;
+    ${ProfileFieldsFragmentDoc}`;
+export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutation, UpdateProfileMutationVariables>;
 
 /**
- * __useUploadAvatarMutation__
+ * __useUpdateProfileMutation__
  *
- * To run a mutation, you first call `useUploadAvatarMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUploadAvatarMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [uploadAvatarMutation, { data, loading, error }] = useUploadAvatarMutation({
+ * const [updateProfileMutation, { data, loading, error }] = useUpdateProfileMutation({
  *   variables: {
- *      image: // value for 'image'
+ *      name: // value for 'name'
+ *      avatar: // value for 'avatar'
+ *      bio: // value for 'bio'
+ *      favouriteTeam: // value for 'favouriteTeam'
  *   },
  * });
  */
-export function useUploadAvatarMutation(baseOptions?: Apollo.MutationHookOptions<UploadAvatarMutation, UploadAvatarMutationVariables>) {
-        return Apollo.useMutation<UploadAvatarMutation, UploadAvatarMutationVariables>(UploadAvatarDocument, baseOptions);
+export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileMutation, UpdateProfileMutationVariables>) {
+        return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, baseOptions);
       }
-export type UploadAvatarMutationHookResult = ReturnType<typeof useUploadAvatarMutation>;
-export type UploadAvatarMutationResult = Apollo.MutationResult<UploadAvatarMutation>;
-export type UploadAvatarMutationOptions = Apollo.BaseMutationOptions<UploadAvatarMutation, UploadAvatarMutationVariables>;
+export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
+export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
+export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export const GetProfileDocument = gql`
+    query GetProfile($id: Float) {
+  accounts(id: $id) {
+    ...ProfileFields
+  }
+}
+    ${ProfileFieldsFragmentDoc}`;
+
+/**
+ * __useGetProfileQuery__
+ *
+ * To run a query within a React component, call `useGetProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProfileQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetProfileQuery(baseOptions?: Apollo.QueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
+        return Apollo.useQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, baseOptions);
+      }
+export function useGetProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
+          return Apollo.useLazyQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, baseOptions);
+        }
+export type GetProfileQueryHookResult = ReturnType<typeof useGetProfileQuery>;
+export type GetProfileLazyQueryHookResult = ReturnType<typeof useGetProfileLazyQuery>;
+export type GetProfileQueryResult = Apollo.QueryResult<GetProfileQuery, GetProfileQueryVariables>;
+export const GetProfileSnippetDocument = gql`
+    query GetProfileSnippet($id: Float) {
+  accounts(id: $id) {
+    ...SimplifiedProfileFields
+  }
+}
+    ${SimplifiedProfileFieldsFragmentDoc}`;
+
+/**
+ * __useGetProfileSnippetQuery__
+ *
+ * To run a query within a React component, call `useGetProfileSnippetQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfileSnippetQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProfileSnippetQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetProfileSnippetQuery(baseOptions?: Apollo.QueryHookOptions<GetProfileSnippetQuery, GetProfileSnippetQueryVariables>) {
+        return Apollo.useQuery<GetProfileSnippetQuery, GetProfileSnippetQueryVariables>(GetProfileSnippetDocument, baseOptions);
+      }
+export function useGetProfileSnippetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileSnippetQuery, GetProfileSnippetQueryVariables>) {
+          return Apollo.useLazyQuery<GetProfileSnippetQuery, GetProfileSnippetQueryVariables>(GetProfileSnippetDocument, baseOptions);
+        }
+export type GetProfileSnippetQueryHookResult = ReturnType<typeof useGetProfileSnippetQuery>;
+export type GetProfileSnippetLazyQueryHookResult = ReturnType<typeof useGetProfileSnippetLazyQuery>;
+export type GetProfileSnippetQueryResult = Apollo.QueryResult<GetProfileSnippetQuery, GetProfileSnippetQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
-    ...CommonAccountFields
+    ...AccountFields
+    ...SimplifiedProfileFields
   }
 }
-    ${CommonAccountFieldsFragmentDoc}`;
+    ${AccountFieldsFragmentDoc}
+${SimplifiedProfileFieldsFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -453,15 +591,45 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const MeAccountDocument = gql`
+    query MeAccount {
+  me {
+    ...AccountFields
+  }
+}
+    ${AccountFieldsFragmentDoc}`;
+
+/**
+ * __useMeAccountQuery__
+ *
+ * To run a query within a React component, call `useMeAccountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeAccountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeAccountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeAccountQuery(baseOptions?: Apollo.QueryHookOptions<MeAccountQuery, MeAccountQueryVariables>) {
+        return Apollo.useQuery<MeAccountQuery, MeAccountQueryVariables>(MeAccountDocument, baseOptions);
+      }
+export function useMeAccountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeAccountQuery, MeAccountQueryVariables>) {
+          return Apollo.useLazyQuery<MeAccountQuery, MeAccountQueryVariables>(MeAccountDocument, baseOptions);
+        }
+export type MeAccountQueryHookResult = ReturnType<typeof useMeAccountQuery>;
+export type MeAccountLazyQueryHookResult = ReturnType<typeof useMeAccountLazyQuery>;
+export type MeAccountQueryResult = Apollo.QueryResult<MeAccountQuery, MeAccountQueryVariables>;
 export const MeProfileDocument = gql`
     query MeProfile {
   me {
-    ...CommonAccountFields
     ...ProfileFields
   }
 }
-    ${CommonAccountFieldsFragmentDoc}
-${ProfileFieldsFragmentDoc}`;
+    ${ProfileFieldsFragmentDoc}`;
 
 /**
  * __useMeProfileQuery__

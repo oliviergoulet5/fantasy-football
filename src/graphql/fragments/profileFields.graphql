@@ -1,5 +1,6 @@
 fragment ProfileFields on Account {
-    ...CommonAccountFields
+    ...SimplifiedProfileFields
+    name
     bio
     favouriteTeam
 }

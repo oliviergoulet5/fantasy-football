@@ -1,13 +1,12 @@
-mutation UpdateAccount($name: String!, $avatar: String!, $bio: String!, $favouriteTeam: String!) {
-    updateAccount(options: { name: $name, avatar: $avatar, bio: $bio, favouriteTeam: $favouriteTeam }) {
+mutation UpdateAccount($username: String, $email: String, $password: String) {
+    updateAccount(options: { username: $username, email: $email, password: $password }) {
         errors {
             field
             message
         }
 
         account {
-            ...CommonAccountFields
-            ...ProfileFields
+            ...AccountFields
         }
     }
 }

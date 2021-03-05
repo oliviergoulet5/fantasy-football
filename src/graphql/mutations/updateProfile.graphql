@@ -1,0 +1,12 @@
+mutation UpdateProfile($name: String, $avatar: Upload, $bio: String, $favouriteTeam: String) {
+    updateAccount(options: { name: $name, avatar: $avatar, bio: $bio, favouriteTeam: $favouriteTeam }) {
+        errors {
+            field
+            message
+        }
+
+        account {
+            ...ProfileFields
+        }
+    }
+}
