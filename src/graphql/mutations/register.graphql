@@ -6,7 +6,7 @@ mutation Register($email: String!, $username: String!, $password: String!) {
         }
 
         account {
-            ...CommonAccountFields
+            ...AccountFields
         }
     }
 }
