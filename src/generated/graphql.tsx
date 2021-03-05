@@ -58,7 +58,7 @@ export type Mutation = {
   login: AccountResponse;
   logout: Scalars['Boolean'];
   updateAccount: AccountResponse;
-  updateAvatar: Scalars['Boolean'];
+  updateAvatar: Scalars['String'];
 };
 
 

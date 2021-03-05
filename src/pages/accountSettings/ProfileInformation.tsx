@@ -9,48 +9,50 @@ import FormTextArea from '../../components/FormTextArea';
 import {useMeProfileQuery, useUpdateProfileMutation, useUpdateAvatarMutation } from '../../generated/graphql';
 import toErrorMap from '../../utils/toErrorMap';
 import getChangedValues from '../../utils/getChangedValues';
-
+import { NetworkStatus } from '@apollo/client';
 // Todo: manage 'success' state of form better. It should be reset when an error has been logged or a change has been made.
 
 type ProfileInformationFormValues = {
     name: string,
     bio: string,
-    favouriteTeam: string
+    favouriteTeam: string,
+    avatarLocation: string
 }
 
 type TempFormValues = {
-    avatar?: FileList[0]
+    avatar?: FileList[0],
 }
 
 const defaultValues: ProfileInformationFormValues = {
     name: '',
     bio: '',
     favouriteTeam: 'None',
+    avatarLocation: avatarDefault
 }
 
 function ProfileInformation() {
-    const { loading: fetchingAccount, data: accountData } = useMeProfileQuery();
+    const { loading: fetchingAccount, data: profileData, refetch, networkStatus } = useMeProfileQuery();
     const [updateProfile] = useUpdateProfileMutation();
     const [updateAvatar] = useUpdateAvatarMutation();
 
-    if (fetchingAccount || accountData?.me === null || accountData?.me === undefined) return null;
-
-    const initialValues: ProfileInformationFormValues & TempFormValues = {
-        name: accountData.me.name || defaultValues.name,
-        bio: accountData.me.bio || defaultValues.bio,
-        favouriteTeam: accountData.me.favouriteTeam || defaultValues.favouriteTeam
-    };
+    if (fetchingAccount || networkStatus === NetworkStatus.refetch || profileData?.me === null || profileData?.me === undefined) return null;
+    
+    let initialValues: ProfileInformationFormValues & TempFormValues = {
+        name: profileData.me.name || defaultValues.name,
+        bio: profileData.me.bio || defaultValues.bio,
+        favouriteTeam: profileData.me.favouriteTeam || defaultValues.favouriteTeam,
+        avatarLocation: profileData.me.avatarLocation || avatarDefault
+    }
 
     const updateProfileInformation = async (
         values: ProfileInformationFormValues & TempFormValues,
         { setSubmitting, setErrors, setStatus }: FormikHelpers<ProfileInformationFormValues>
     ) => {
         setSubmitting(true);
-        
         const profileResponse = await updateProfile({
             variables: getChangedValues(values, initialValues)
         });
-
+        console.log(values.avatarLocation);
         if (profileResponse.data?.updateAccount.errors) {
             setErrors(toErrorMap(profileResponse.data.updateAccount.errors));
             setStatus('error')
@@ -59,7 +61,8 @@ function ProfileInformation() {
         }
 
         if (values.avatar) {
-            const avatarResponse = await updateAvatar({ variables: { avatar: values.avatar } });
+            await updateAvatar({ variables: { avatar: values.avatar } });
+            refetch();
         }
 
         setSubmitting(false);
@@ -73,7 +76,6 @@ function ProfileInformation() {
         > 
         {({ values, errors, isValid, isSubmitting, setFieldValue, submitForm, status }) => {
             let disabled = isSubmitting || !isValid;
-            
             return (
                 <Form>
                     <div className='px-4 py-2'>
@@ -82,7 +84,7 @@ function ProfileInformation() {
                             <div>
                                 <p className='label'>Avatar</p>
                                 <div>
-                                    <img src={ avatarDefault } alt='avatar-preview' className='rounded-full h-24' />
+                                    <img src={ `${profileData.me?.avatarLocation || defaultValues.avatarLocation}?=preventCache=${Math.floor(Math.random() * 10000) + 1}` } alt='avatar-preview' className='rounded-full h-24' />
                                     <p>Change picture</p>
                                     <input type='file' name='avatar' onChange={
                                         (event: React.ChangeEvent<HTMLInputElement>) => {
