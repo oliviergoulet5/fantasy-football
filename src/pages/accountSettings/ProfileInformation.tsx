@@ -6,73 +6,61 @@ import FormField from '../../components/FormField';
 import FormDropdown from '../../components/FormDropdown';
 import validationSchema from './profileInformation/validationSchema';
 import FormTextArea from '../../components/FormTextArea';
-import {useMeProfileQuery, useUpdateAccountMutation, useUploadAvatarMutation } from '../../generated/graphql';
+import {useMeProfileQuery, useUpdateProfileMutation, useUpdateAvatarMutation } from '../../generated/graphql';
 import toErrorMap from '../../utils/toErrorMap';
+import getChangedValues from '../../utils/getChangedValues';
 
 // Todo: manage 'success' state of form better. It should be reset when an error has been logged or a change has been made.
 
 type ProfileInformationFormValues = {
-    avatar: string,
     name: string,
     bio: string,
     favouriteTeam: string
 }
 
 type TempFormValues = {
-    imageFile?: FileList[0];
+    avatar?: FileList[0]
+}
+
+const defaultValues: ProfileInformationFormValues = {
+    name: '',
+    bio: '',
+    favouriteTeam: 'None',
 }
 
 function ProfileInformation() {
     const { loading: fetchingAccount, data: accountData } = useMeProfileQuery();
-    const [updateAccount] = useUpdateAccountMutation();
-    const [uploadAvatar, uploadResult] = useUploadAvatarMutation();
+    const [updateProfile] = useUpdateProfileMutation();
+    const [updateAvatar] = useUpdateAvatarMutation();
 
-    if (fetchingAccount) return null;
+    if (fetchingAccount || accountData?.me === null || accountData?.me === undefined) return null;
 
     const initialValues: ProfileInformationFormValues & TempFormValues = {
-        name: accountData?.me?.name || '',
-        bio: accountData?.me?.bio || '',
-        avatar: accountData?.me?.avatar || 'default.png',
-        favouriteTeam: accountData?.me?.favouriteTeam || 'None'
+        name: accountData.me.name || defaultValues.name,
+        bio: accountData.me.bio || defaultValues.bio,
+        favouriteTeam: accountData.me.favouriteTeam || defaultValues.favouriteTeam
     };
 
     const updateProfileInformation = async (
-        allValues: ProfileInformationFormValues & TempFormValues,
+        values: ProfileInformationFormValues & TempFormValues,
         { setSubmitting, setErrors, setStatus }: FormikHelpers<ProfileInformationFormValues>
     ) => {
         setSubmitting(true);
-
-        const { imageFile, ...values } = allValues;
         
-        // Profile information update
-        const response = await updateAccount({
-            variables: values
+        const profileResponse = await updateProfile({
+            variables: getChangedValues(values, initialValues)
         });
 
-        if (response.data?.updateAccount.errors) {
-            setErrors(toErrorMap(response.data.updateAccount.errors));
+        if (profileResponse.data?.updateAccount.errors) {
+            setErrors(toErrorMap(profileResponse.data.updateAccount.errors));
             setStatus('error')
-        } else if (response.data?.updateAccount.account) {
-            console.log('Saved account information.');
+        } else if (profileResponse.data?.updateAccount.account) {
             setStatus('success');
         }
 
-        // Avatar update
-        try {
-            if (!imageFile) throw new Error('No image provided');
-
-            const avatarResponse = await uploadAvatar({
-                variables: {
-                    image: imageFile
-                }
-            });
-            console.log('Responsing');
-            console.log(avatarResponse.data?.uploadAvatar || avatarResponse.errors);
-
-        } catch (error) { 
-            console.error(error) 
-            console.log(uploadResult);
-        }; // breaks here
+        if (values.avatar) {
+            const avatarResponse = await updateAvatar({ variables: { avatar: values.avatar } });
+        }
 
         setSubmitting(false);
     }
@@ -96,10 +84,10 @@ function ProfileInformation() {
                                 <div>
                                     <img src={ avatarDefault } alt='avatar-preview' className='rounded-full h-24' />
                                     <p>Change picture</p>
-                                    <input type='file' name='imageFile' onChange={
+                                    <input type='file' name='avatar' onChange={
                                         (event: React.ChangeEvent<HTMLInputElement>) => {
                                             if (!event.target.files) return;
-                                            setFieldValue('imageFile', event.target.files[0]);
+                                            setFieldValue('avatar', event.target.files[0]);
                                         }
                                     }/>
                                 </div>

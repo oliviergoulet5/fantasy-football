@@ -35,7 +35,7 @@ export type Account = {
   name?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   favouriteTeam?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['String']>;
+  avatarLocation?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -58,6 +58,7 @@ export type Mutation = {
   login: AccountResponse;
   logout: Scalars['Boolean'];
   updateAccount: AccountResponse;
+  updateAvatar: Scalars['Boolean'];
 };
 
 
@@ -73,6 +74,11 @@ export type MutationLoginArgs = {
 
 export type MutationUpdateAccountArgs = {
   options: UpdateAccountInput;
+};
+
+
+export type MutationUpdateAvatarArgs = {
+  avatar: Scalars['Upload'];
 };
 
 export type AccountResponse = {
@@ -105,7 +111,6 @@ export type UpdateAccountInput = {
   password?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['Upload']>;
   favouriteTeam?: Maybe<Scalars['String']>;
 };
 
@@ -123,7 +128,7 @@ export type ProfileFieldsFragment = (
 
 export type SimplifiedProfileFieldsFragment = (
   { __typename?: 'Account' }
-  & Pick<Account, 'id' | 'username' | 'avatar'>
+  & Pick<Account, 'id' | 'username' | 'name' | 'avatarLocation'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -195,9 +200,18 @@ export type UpdateAccountMutation = (
   ) }
 );
 
+export type UpdateAvatarMutationVariables = Exact<{
+  avatar: Scalars['Upload'];
+}>;
+
+
+export type UpdateAvatarMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateAvatar'>
+);
+
 export type UpdateProfileMutationVariables = Exact<{
   name?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['Upload']>;
   bio?: Maybe<Scalars['String']>;
   favouriteTeam?: Maybe<Scalars['String']>;
 }>;
@@ -288,7 +302,8 @@ export const SimplifiedProfileFieldsFragmentDoc = gql`
     fragment SimplifiedProfileFields on Account {
   id
   username
-  avatar
+  name
+  avatarLocation
 }
     `;
 export const ProfileFieldsFragmentDoc = gql`
@@ -448,11 +463,39 @@ export function useUpdateAccountMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateAccountMutationHookResult = ReturnType<typeof useUpdateAccountMutation>;
 export type UpdateAccountMutationResult = Apollo.MutationResult<UpdateAccountMutation>;
 export type UpdateAccountMutationOptions = Apollo.BaseMutationOptions<UpdateAccountMutation, UpdateAccountMutationVariables>;
+export const UpdateAvatarDocument = gql`
+    mutation UpdateAvatar($avatar: Upload!) {
+  updateAvatar(avatar: $avatar)
+}
+    `;
+export type UpdateAvatarMutationFn = Apollo.MutationFunction<UpdateAvatarMutation, UpdateAvatarMutationVariables>;
+
+/**
+ * __useUpdateAvatarMutation__
+ *
+ * To run a mutation, you first call `useUpdateAvatarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAvatarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAvatarMutation, { data, loading, error }] = useUpdateAvatarMutation({
+ *   variables: {
+ *      avatar: // value for 'avatar'
+ *   },
+ * });
+ */
+export function useUpdateAvatarMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAvatarMutation, UpdateAvatarMutationVariables>) {
+        return Apollo.useMutation<UpdateAvatarMutation, UpdateAvatarMutationVariables>(UpdateAvatarDocument, baseOptions);
+      }
+export type UpdateAvatarMutationHookResult = ReturnType<typeof useUpdateAvatarMutation>;
+export type UpdateAvatarMutationResult = Apollo.MutationResult<UpdateAvatarMutation>;
+export type UpdateAvatarMutationOptions = Apollo.BaseMutationOptions<UpdateAvatarMutation, UpdateAvatarMutationVariables>;
 export const UpdateProfileDocument = gql`
-    mutation UpdateProfile($name: String, $avatar: Upload, $bio: String, $favouriteTeam: String) {
-  updateAccount(
-    options: {name: $name, avatar: $avatar, bio: $bio, favouriteTeam: $favouriteTeam}
-  ) {
+    mutation UpdateProfile($name: String, $bio: String, $favouriteTeam: String) {
+  updateAccount(options: {name: $name, bio: $bio, favouriteTeam: $favouriteTeam}) {
     errors {
       field
       message
@@ -479,7 +522,6 @@ export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutat
  * const [updateProfileMutation, { data, loading, error }] = useUpdateProfileMutation({
  *   variables: {
  *      name: // value for 'name'
- *      avatar: // value for 'avatar'
  *      bio: // value for 'bio'
  *      favouriteTeam: // value for 'favouriteTeam'
  *   },

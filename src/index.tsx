@@ -9,7 +9,7 @@ import { createUploadLink } from "apollo-upload-client";
 const terminatingLink = createUploadLink({ uri: 'http://localhost:4332/graphql', credentials: 'include' })
 const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link: (terminatingLink as unknown) as ApolloLink // temporary fix until typedefs are updated
+    link: (terminatingLink as unknown) as ApolloLink
 });
 
 ReactDOM.render(
