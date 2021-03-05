@@ -3,6 +3,9 @@ schema: "http://localhost:4332/graphql"
 documents: "src/graphql/**/*.graphql"
 generates:
   src/generated/graphql.tsx:
+    config:
+      scalars:
+        Upload: File
     plugins:
       - "typescript"
       - "typescript-operations"

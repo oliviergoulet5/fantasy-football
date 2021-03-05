@@ -6,7 +6,7 @@ import FormField from '../../components/FormField';
 import FormDropdown from '../../components/FormDropdown';
 import validationSchema from './profileInformation/validationSchema';
 import FormTextArea from '../../components/FormTextArea';
-import {useMeProfileQuery, useUpdateAccountMutation } from '../../generated/graphql';
+import {useMeProfileQuery, useUpdateAccountMutation, useUploadAvatarMutation } from '../../generated/graphql';
 import toErrorMap from '../../utils/toErrorMap';
 
 // Todo: manage 'success' state of form better. It should be reset when an error has been logged or a change has been made.
@@ -18,13 +18,18 @@ type ProfileInformationFormValues = {
     favouriteTeam: string
 }
 
+type TempFormValues = {
+    imageFile?: FileList[0];
+}
+
 function ProfileInformation() {
     const { loading: fetchingAccount, data: accountData } = useMeProfileQuery();
     const [updateAccount] = useUpdateAccountMutation();
+    const [uploadAvatar, uploadResult] = useUploadAvatarMutation();
 
     if (fetchingAccount) return null;
 
-    const initialValues: ProfileInformationFormValues = {
+    const initialValues: ProfileInformationFormValues & TempFormValues = {
         name: accountData?.me?.name || '',
         bio: accountData?.me?.bio || '',
         avatar: accountData?.me?.avatar || 'default.png',
@@ -32,11 +37,14 @@ function ProfileInformation() {
     };
 
     const updateProfileInformation = async (
-        values: ProfileInformationFormValues,
+        allValues: ProfileInformationFormValues & TempFormValues,
         { setSubmitting, setErrors, setStatus }: FormikHelpers<ProfileInformationFormValues>
     ) => {
         setSubmitting(true);
+
+        const { imageFile, ...values } = allValues;
         
+        // Profile information update
         const response = await updateAccount({
             variables: values
         });
@@ -48,6 +56,23 @@ function ProfileInformation() {
             console.log('Saved account information.');
             setStatus('success');
         }
+
+        // Avatar update
+        try {
+            if (!imageFile) throw new Error('No image provided');
+
+            const avatarResponse = await uploadAvatar({
+                variables: {
+                    image: imageFile
+                }
+            });
+            console.log('Responsing');
+            console.log(avatarResponse.data?.uploadAvatar || avatarResponse.errors);
+
+        } catch (error) { 
+            console.error(error) 
+            console.log(uploadResult);
+        }; // breaks here
 
         setSubmitting(false);
     }
@@ -71,6 +96,12 @@ function ProfileInformation() {
                                 <div>
                                     <img src={ avatarDefault } alt='avatar-preview' className='rounded-full h-24' />
                                     <p>Change picture</p>
+                                    <input type='file' name='imageFile' onChange={
+                                        (event: React.ChangeEvent<HTMLInputElement>) => {
+                                            if (!event.target.files) return;
+                                            setFieldValue('imageFile', event.target.files[0]);
+                                        }
+                                    }/>
                                 </div>
                             </div>
                             <div className='flex flex-col space-y-4 ml-24 w-1/3'>
