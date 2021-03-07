@@ -1,4 +1,5 @@
 import React from 'react';
+import noCache from '../../../utils/noCache';
 
 type Props = {
     onClick: () => void;
@@ -18,7 +19,7 @@ function AvatarButton({ src, ref, onClick, sr }: Props) {
                     aria-haspopup="true"
                 >
                     <span className="sr-only">{sr}</span>
-                    <img className="w-8 h-8 rounded-full" src={src} alt="" />
+                    <img className="w-8 h-8 rounded-full" src={ noCache(src) } alt="" />
                 </button>
             </div>
         </div>

@@ -36,7 +36,7 @@ function ProfileDropdown() {
                     {accountData.me.name || accountData.me.username}
                 </p>
                 <AvatarButton
-                    src={ noCache(accountData.me?.avatarLocation || avatarDefault) }
+                    src={ accountData.me?.avatarLocation || avatarDefault }
                     onClick={handleProfileButtonClick}
                     sr="open profile menu"
                 />
