@@ -1,0 +1,12 @@
+mutation UpdateAccount($username: String, $email: String, $password: String) {
+    updateAccount(options: { username: $username, email: $email, password: $password }) {
+        errors {
+            field
+            message
+        }
+
+        account {
+            ...AccountFields
+        }
+    }
+}

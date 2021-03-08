@@ -1,6 +1,0 @@
-fragment CommonAccountFields on Account {
-    id
-    username
-    email
-    name
-}

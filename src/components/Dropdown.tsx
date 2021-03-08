@@ -6,12 +6,13 @@ import { Transition } from '@headlessui/react';
 type Props = {
     name?: string;
     options: Array<string>;
+    value?: string;
     liftSelectedOption: (selectionOption: string, name?: string) => any;
 };
 
-function Dropdown({ name, options, liftSelectedOption }: Props) {
+function Dropdown({ name, options, liftSelectedOption, value }: Props) {
     const [selectedOption, setSelectedOption] = useState(
-        options[0] || 'No Options'
+        value || options[0] || 'No Options'
     );
     const {
         visible: menuVisible,
