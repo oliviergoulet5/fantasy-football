@@ -83,7 +83,7 @@ function ProfileInformation() {
                         <h1 className='font-bold py-2 text-2xl'>Profile Information</h1>
                         <div className='flex mt-6'>
                             <div>
-                                <p className='label'>Avatar</p>
+                                <p className='label mb-2'>Avatar</p>
                                 <div>
                                     <img src={ noCache(profileData.me?.avatarLocation || defaultValues.avatarLocation) } alt='avatar-preview' className='rounded-full h-24' />
                                     <p>Change picture</p>
