@@ -4,6 +4,7 @@ import Stats from './pages/Stats';
 import PageNotFound from './pages/PageNotFound';
 import Home from './pages/Home';
 import AccountModalContext from './contexts/AccountModalContext';
+import Profile from './pages/Profile';
 
 import {
     BrowserRouter as Router,
@@ -37,7 +38,7 @@ function App() {
 
                             <Route path="/games" />
 
-                            <Route path="/profile" />
+                            <Route path="/profile" component={Profile} />
 
                             <Route path="/settings" component={AccountSettings} />
 
