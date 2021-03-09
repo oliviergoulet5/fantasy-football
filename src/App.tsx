@@ -49,7 +49,17 @@ function App() {
                                 component={ Profile }
                             />
 
-                            <Route path="/settings" component={AccountSettings} />
+                            <Route 
+                                path="/settings"
+                                render={({ match: { url }}) => (
+                                    <>
+                                        <Route path={`${url}/profile-information`} component={ () => <AccountSettings page='Profile information' /> } />
+                                        <Route path={`${url}/account-management`} component={ () => <AccountSettings page='Account management' />} />
+                                        <Route path={`${url}/site-preferences`} component={ () => <AccountSettings page='Site preferences' />} /> 
+                                        <Redirect path={`${url}`} to={`${url}/profile-information`} />
+                                    </>
+                                )}
+                            />
 
                             <Route path="/404" component={PageNotFound} />
 
