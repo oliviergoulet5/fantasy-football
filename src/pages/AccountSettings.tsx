@@ -1,26 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ProfileInformation from './accountSettings/ProfileInformation';
 import Sidebar from './accountSettings/Sidebar';
+import { Switch, Route, Redirect } from 'react-router-dom';
+
 
 type Page = 'Profile information' | 'Account management' | 'Site preferences';
 
-function AccountSettings() {
-    const [ currentPanel, setCurrentPanel ] = useState<Page>('Profile information');
+const pageComponents = new Map<Page, JSX.Element>([
+    ['Profile information', <ProfileInformation />],
+    ['Account management', <></>],
+    ['Site preferences', <></>]
+]);
 
-    const pages = new Map<Page, JSX.Element>([
-        ['Profile information', <ProfileInformation />],
-        ['Account management', <></>],
-        ['Site preferences', <></>]
-    ]);
+const pageRoutes = new Map<Page, string>([
+    ['Profile information', '/settings/profile-information'],
+    ['Account management', '/settings/account-management'],
+    ['Site preferences', '/settings/site-preferences']
+]);
 
-    const panelComponent = pages.get(currentPanel);
+interface AccountSettingsProps {
+    page: Page
+}
+
+function AccountSettings({ page }: AccountSettingsProps) {
 
     return (
         <div className='flex space-x-6'>
-            <Sidebar pages={ Array.from(pages.keys()) } changePanel={ setCurrentPanel } />
-            <div className='fg-item w-full pb-4'>
-                { panelComponent || null }
-            </div>
+                <Sidebar pages={ pageRoutes } />
+                <div className='fg-item w-full pb-4'>
+                    { pageComponents.get(page) } 
+                </div>
         </div>
     );
 }
