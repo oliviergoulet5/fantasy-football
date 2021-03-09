@@ -38,7 +38,16 @@ function App() {
 
                             <Route path="/games" />
 
-                            <Route path="/profile" component={Profile} />
+                            <Route 
+                                path="/profile" 
+                                component={ Profile }
+                                exact
+                            />
+
+                            <Route
+                                path="/profile/:id"
+                                component={ Profile }
+                            />
 
                             <Route path="/settings" component={AccountSettings} />
 
