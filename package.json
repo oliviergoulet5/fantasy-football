@@ -1,99 +1,41 @@
 {
-  "name": "fantasy-football",
+  "name": "fpl-watch",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@apollo/client": "^3.3.11",
-    "@headlessui/react": "^0.2.0",
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/styles": "^4.11.3",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/apollo-upload-client": "^14.1.0",
-    "@types/classnames": "^2.2.11",
-    "@types/jest": "^26.0.20",
-    "@types/node": "^14.14.22",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/uuid": "^8.3.0",
-    "apollo-link": "^1.2.14",
-    "apollo-upload-client": "^14.1.3",
-    "classnames": "^2.2.6",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "enzyme-to-json": "^3.6.1",
-    "formik": "^2.2.6",
-    "graphql": "^15.5.0",
-    "graphql-upload": "^11.0.0",
-    "js-cookie": "^2.2.1",
-    "next": "^10.0.8",
-    "postcss": "^8.2.4",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-test-renderer": "^17.0.1",
-    "tailwindcss": "^2.0.2",
-    "typescript": "^4.1.3",
-    "uuid": "^8.3.2",
-    "web-vitals": "^0.2.4",
-    "yup": "^0.32.8"
-  },
   "scripts": {
-    "build:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.output.css",
-    "prestart": "yarn build:tailwind",
-    "prebuild": "yarn build:tailwind",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "prettier": "./node_modules/.bin/prettier --write \"src/**/*.{ts,js,json,tsx,jsx}\"",
-    "precommit": "lint-staged",
     "gen": "graphql-codegen --config codegen.yml"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "lint-staged": {
-    "*.{ts,js,css,json,tsx,jsx}": [
-      "./node_modules/.bin/prettier --write",
-      "git add"
-    ]
-  },
-  "prettier": {
-    "semi": true,
-    "singleQuote": true,
-    "tabWidth": 4,
-    "arrowParens": "avoid",
-    "bracketSpacing": true,
-    "printWidth": 80,
-    "prettier.jsxBracketSameLine": true,
-    "removeDuplicatesClasses": true
+  "dependencies": {
+    "@apollo/client": "^3.3.11",
+    "@headlessui/react": "^0.3.1",
+    "@material-ui/core": "^4.11.3",
+    "@types/yup": "^0.29.11",
+    "apollo-upload-client": "^14.1.3",
+    "formik": "^2.2.6",
+    "graphql": "^15.5.0",
+    "next": "10.0.8",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "uuid": "^8.3.2",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "1.20.1",
-    "@graphql-codegen/typescript": "1.21.0",
-    "@graphql-codegen/typescript-operations": "1.17.14",
-    "@graphql-codegen/typescript-react-apollo": "^2.2.1",
-    "@types/js-cookie": "^2.2.6",
-    "@types/react-router-dom": "^5.1.7",
-    "lint-staged": "^10.5.4",
-    "msw": "^0.25.0",
-    "prettier": "^2.2.1",
-    "prettier-plugin-tailwind-css": "^1.5.0"
+    "@graphql-codegen/cli": "1.21.2",
+    "@graphql-codegen/typescript": "1.21.1",
+    "@graphql-codegen/typescript-operations": "^1.17.15",
+    "@graphql-codegen/typescript-react-apollo": "2.2.2",
+    "@svgr/webpack": "^5.5.0",
+    "@types/apollo-upload-client": "^14.1.0",
+    "@types/material-ui": "^0.21.8",
+    "@types/node": "^14.14.33",
+    "@types/react": "^17.0.3",
+    "@types/uuid": "^8.3.0",
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.7",
+    "tailwindcss": "^2.0.3",
+    "typescript": "^4.2.3"
   }
 }

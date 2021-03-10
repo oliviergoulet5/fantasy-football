@@ -3,7 +3,7 @@ import { Form } from 'formik';
 // Form Components
 type FormikFieldValueSetter = (field: string, value: any, shouldValidate?: boolean | undefined) => void
 
-export type AbstractFormComponentProps = {
+export type AbstractFormComponentProps {
     name: string;
     errorMessage?: string;
 };
