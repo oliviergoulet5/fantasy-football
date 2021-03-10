@@ -18,7 +18,7 @@ export function NavigationDropdown() {
 
     const handlePortraitButtonClick = () => setVisible(!visible);
 
-    let accountStateRender: JSX.Element | undefined;
+    let accountStateRender: JSX.Element | undefined | null;
 
     if (fetchingAccount) {
         // greyed out icon
