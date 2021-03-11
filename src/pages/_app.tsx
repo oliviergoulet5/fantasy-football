@@ -23,10 +23,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AccountModalContext.Provider
         value={{ accountModalVisible, setAccountModalVisible }}
       >
-        <MainLayout>
-          { accountModalVisible && <AuthenticationModal />}
-          <Component {...pageProps} />
-        </MainLayout>
+        { accountModalVisible && <AuthenticationModal />}
+        <Component {...pageProps} />
       </AccountModalContext.Provider>
     </ApolloProvider>
   )
