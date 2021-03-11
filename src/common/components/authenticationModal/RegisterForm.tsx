@@ -8,7 +8,7 @@ import { useRegisterMutation } from '../../generated/graphql';
 interface Props {
     switchToLogin: (values: RegisterFormValues) => void;
     savedValues: RegisterFormValues;
-    setModalVisible: (value: boolean) => void;
+    setModalVisible?: (value: boolean) => void;
 };
 
 export function RegisterForm({ switchToLogin, savedValues, setModalVisible }: Props) {
@@ -27,7 +27,9 @@ export function RegisterForm({ switchToLogin, savedValues, setModalVisible }: Pr
         if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
         } else if (response.data?.register.account) {
-            setModalVisible(false);
+            if (setModalVisible) {
+                setModalVisible(false);
+            }
         }
 
         setSubmitting(false);
