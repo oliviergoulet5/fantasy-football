@@ -1,9 +1,14 @@
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const Index = () => { 
-  
-  return (
-    <div>Front page</div>
-  );
+  const router = useRouter();
+
+  useEffect(() => { 
+    router.replace('/home') 
+  }, []);
+
+  return null; 
 }
 
 export default Index;

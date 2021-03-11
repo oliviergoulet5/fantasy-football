@@ -5,13 +5,13 @@ import { useIsAuth } from '../../common/hooks';
 
 function Login() {
     const router = useRouter();
-    const isAuth = useIsAuth();
+    const isAuth = useIsAuth({ redirect: false });
 
     if (isAuth) {
         router.replace('/');
         return null;
     }
-
+    
     const handleOnSuccess = () => {
         router.reload();
     }

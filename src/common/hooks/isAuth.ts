@@ -2,12 +2,20 @@ import { useMeAccountQuery } from '../generated/graphql';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-export const useIsAuth = () => {
+interface Options {
+    redirect?: boolean;
+}
+
+const defaults: Options = {
+    redirect: true
+}
+
+export const useIsAuth = (options = defaults) => {
     const { loading, data } = useMeAccountQuery();
     const router = useRouter();
 
     useEffect(() => {
-        if (!loading && !data?.me) {
+        if (options.redirect && !loading && !data?.me) {
             router.replace('/login?next=' + router.pathname);
         }
     }, [loading, data, router]);

@@ -42,7 +42,7 @@ export function AuthenticationModal() {
         setMode(mode === Mode.Login ? Mode.Register : Mode.Login);
     };
     
-    const handleLoginOnSuccess = () => {
+    const handleSuccess = () => {
         setVisible(false);
         router.reload();
     }
@@ -60,13 +60,13 @@ export function AuthenticationModal() {
                     <LoginForm
                         switchToRegister={handleModeChange}
                         savedValues={savedValues}
-                        onSuccess={ handleLoginOnSuccess }
+                        onSuccess={ handleSuccess }
                     />
                 ) : (
                     <RegisterForm
                         switchToLogin={handleModeChange}
                         savedValues={savedValues}
-                        setModalVisible={setVisible}
+                        onSuccess={ handleSuccess }
                     />
                 )}
                 <hr className="my-4" />

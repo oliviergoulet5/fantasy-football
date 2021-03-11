@@ -3,30 +3,27 @@ import { useRouter } from 'next/router';
 import { AuthLayout } from '../../common/layouts';
 import { useEffect, useState } from 'react';
 import { LoginFormValues, RegisterFormValues } from '../../types';
+import { useIsAuth } from '../../common/hooks';
 type FormValues = LoginFormValues & RegisterFormValues;
 
 function Login() {
     const router = useRouter();
+    const isAuth = useIsAuth({ redirect: false });
 
-    const [savedValues, setSavedValues] = useState<FormValues>({
-        email: '',
-        username: '',
-        password: '',
-    });
-
-    const handleSwitch = (values: Partial<FormValues>) => {
-        setSavedValues({ ...savedValues, ...values });
+    if (isAuth) {
+        router.replace('/');
+        return null;
     }
 
-    useEffect(() => {
-        router.replace('/register');
-    }, [savedValues]);
+    const handleOnSuccess = () => {
+        router.reload();
+    }
 
     return (
         <AuthLayout>
             <RegisterForm 
-                switchToLogin={ handleSwitch }
-                savedValues={ savedValues }
+                switchToLogin={ () => router.replace('/login') }
+                onSuccess={ handleOnSuccess }
             />
         </AuthLayout>
     );    
