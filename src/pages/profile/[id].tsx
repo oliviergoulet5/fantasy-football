@@ -3,6 +3,7 @@ import { Biography } from '../../modules/profile';
 import { Favourites } from '../../modules/profile';
 import { useMeAccountQuery } from '../../common/generated/graphql';
 import { useGetProfileFromURL } from '../../common/utils/getProfileFromUrl';
+import { MainLayout } from '../../common/layouts';
 
 function ProfileContent() {
     const { data: currentUserData } = useMeAccountQuery();
@@ -45,7 +46,7 @@ function ProfileContent() {
         </div>
 
 
-    return <>{ render }</>;
+    return <MainLayout>{ render }</MainLayout>;
 }
 
 export default ProfileContent;

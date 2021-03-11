@@ -1,6 +1,7 @@
 import { useReducer } from 'react';
 import { __prod__ } from '../../constants';
 import { BrowserFilters } from '../../modules/stats/BrowserFilters';
+import { MainLayout } from '../../common/layouts';
 
 interface Action {
     filter: string;
@@ -36,14 +37,16 @@ function Stats() {
     const [filters, dispatch] = useReducer(reducer, {});
 
     return (
-        <div>
-            {__prod__ && (
-                <pre className="w-full text-center">
-                    {JSON.stringify(filters)}
-                </pre>
-            )}
-            <BrowserFilters dispatchFilters={dispatch} />
-        </div>
+        <MainLayout>
+            <div>
+                {__prod__ && (
+                    <pre className="w-full text-center">
+                        {JSON.stringify(filters)}
+                    </pre>
+                )}
+                <BrowserFilters dispatchFilters={dispatch} />
+            </div>
+        </MainLayout>
     );
 }
 
