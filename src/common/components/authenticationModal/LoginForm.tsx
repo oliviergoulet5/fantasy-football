@@ -3,24 +3,24 @@ import { useLoginMutation } from '../../generated/graphql';
 import { LoginFormValues } from '../../../types';
 import { FormField } from '../../components';
 import { toErrorMap } from '../../utils';
-import { useRouter } from 'next/router';
 import { validationSchema } from './loginForm/validationSchema';
 
 type Props = {
     switchToRegister: (valuesToSave: LoginFormValues) => void;
-    savedValues: LoginFormValues;
-    setModalVisible: (value: boolean) => void;
+    savedValues?: LoginFormValues;
+    setModalVisible?: (value: boolean) => void;
+    onSuccess: () => void;
 };
 
-export function LoginForm({ switchToRegister, savedValues, setModalVisible }: Props) {
+export function LoginForm({ switchToRegister, savedValues = { email: '', password: '' }, onSuccess: success }: Props) {
     const [login] = useLoginMutation();
-    const router = useRouter();
 
     const loginHandler = async (
         values: LoginFormValues,
         { setSubmitting, setErrors }: FormikHelpers<LoginFormValues>
     ) => {
         setSubmitting(true);
+        
         const response = await login({
             variables: { options: values },
         });
@@ -28,9 +28,9 @@ export function LoginForm({ switchToRegister, savedValues, setModalVisible }: Pr
         if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
         } else if (response.data?.login.account) {
-            setModalVisible(false);
-            router.reload();
+            success();
         }
+
         setSubmitting(false);
     };
 

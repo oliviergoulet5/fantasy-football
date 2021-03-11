@@ -3,6 +3,7 @@ import { LoginForm, RegisterForm } from './authenticationModal/index';
 import { AccountModalContext } from '../contexts/accountModalContext';
 import { useOutsideAlerterWithContext } from '../hooks/outsideAlerter';
 import { LoginFormValues, RegisterFormValues } from '../../types';
+import { useRouter } from 'next/router';
 
 type FormValues = LoginFormValues & RegisterFormValues;
 
@@ -30,6 +31,7 @@ export function AuthenticationModal() {
         username: '',
         password: '',
     });
+    const router = useRouter();
 
     const handleModeChange = (values: Partial<FormValues>) => {
         if (mode === Mode.Verification) {
@@ -39,6 +41,11 @@ export function AuthenticationModal() {
         setSavedValues({ ...savedValues, ...values });
         setMode(mode === Mode.Login ? Mode.Register : Mode.Login);
     };
+    
+    const handleLoginOnSuccess = () => {
+        setVisible(false);
+        router.reload();
+    }
 
     return (
         <div className="justify-items-center fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center w-screen h-screen overflow-y-auto bg-black bg-opacity-50">
@@ -53,7 +60,7 @@ export function AuthenticationModal() {
                     <LoginForm
                         switchToRegister={handleModeChange}
                         savedValues={savedValues}
-                        setModalVisible={setVisible}
+                        onSuccess={ handleLoginOnSuccess }
                     />
                 ) : (
                     <RegisterForm
