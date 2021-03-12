@@ -41,8 +41,14 @@ export function AuthenticationModal() {
         setSavedValues({ ...savedValues, ...values });
         setMode(mode === Mode.Login ? Mode.Register : Mode.Login);
     };
+
+    const handleLoginSuccess = () => {
+        setVisible(false);
+        router.reload();
+    }
     
-    const handleSuccess = () => {
+    const handleRegisterSuccess = (email: string) => {
+        // replace all below simply with verification form.
         setVisible(false);
         router.reload();
     }
@@ -60,13 +66,13 @@ export function AuthenticationModal() {
                     <LoginForm
                         switchToRegister={handleModeChange}
                         savedValues={savedValues}
-                        onSuccess={ handleSuccess }
+                        onSuccess={ handleLoginSuccess }
                     />
                 ) : (
                     <RegisterForm
                         switchToLogin={handleModeChange}
                         savedValues={savedValues}
-                        onSuccess={ handleSuccess }
+                        onSuccess={ handleRegisterSuccess }
                     />
                 )}
                 <hr className="my-4" />

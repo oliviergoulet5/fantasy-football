@@ -8,7 +8,7 @@ import { useRegisterMutation } from '../../generated/graphql';
 interface Props {
     switchToLogin: (values: RegisterFormValues) => void;
     savedValues?: RegisterFormValues;
-    onSuccess: () => void;
+    onSuccess: (email: string) => void;
 };
 
 const defaultSavedValues = { email: '', password: '', username: '' };
@@ -27,9 +27,10 @@ export function RegisterForm({ switchToLogin, savedValues = defaultSavedValues, 
         });
 
         if (response.data?.register.errors) {
+            console.log('Errors');
             setErrors(toErrorMap(response.data.register.errors));
-        } else if (response.data?.register.account) {
-            success();
+        } else if (response.data?.register.unverifiedAccount) {
+            success(response.data.register.unverifiedAccount.email);
         }
 
         setSubmitting(false);

@@ -21,11 +21,19 @@ export type Query = {
   me?: Maybe<Account>;
   accounts?: Maybe<Array<Account>>;
   players: Array<Player>;
+  fixtures: Array<Fixture>;
 };
 
 
 export type QueryAccountsArgs = {
   id?: Maybe<Scalars['Float']>;
+};
+
+
+export type QueryPlayersArgs = {
+  ict_index?: Maybe<InputRangeDouble>;
+  assists?: Maybe<InputRange>;
+  goalsScored?: Maybe<InputRange>;
 };
 
 export type Account = {
@@ -50,14 +58,32 @@ export type Player = {
   minutes: Scalars['Int'];
   yellowCards: Scalars['Int'];
   redCards: Scalars['Int'];
-  ictIndex: Scalars['Float'];
+  ict_index: Scalars['Float'];
+};
+
+export type InputRangeDouble = {
+  min: Scalars['Float'];
+  max: Scalars['Float'];
+};
+
+export type InputRange = {
+  min: Scalars['Int'];
+  max: Scalars['Int'];
+};
+
+export type Fixture = {
+  __typename?: 'Fixture';
+  gameWeek?: Maybe<Scalars['String']>;
+  kickoffTime?: Maybe<Scalars['String']>;
+  teamAway: Scalars['String'];
+  teamHome: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   login: AccountResponse;
   logout: Scalars['Boolean'];
-  register: AccountResponse;
+  register: UnverifiedAccountResponse;
   updateAccount: AccountResponse;
   updateAvatar: Scalars['String'];
 };
@@ -97,6 +123,17 @@ export type FieldError = {
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type UnverifiedAccountResponse = {
+  __typename?: 'UnverifiedAccountResponse';
+  errors?: Maybe<Array<FieldError>>;
+  unverifiedAccount?: Maybe<UnverifiedAccount>;
+};
+
+export type UnverifiedAccount = {
+  __typename?: 'UnverifiedAccount';
+  email: Scalars['String'];
 };
 
 export type RegisterInput = {
@@ -168,13 +205,13 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register: (
-    { __typename?: 'AccountResponse' }
+    { __typename?: 'UnverifiedAccountResponse' }
     & { errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
-    )>>, account?: Maybe<(
-      { __typename?: 'Account' }
-      & AccountFieldsFragment
+    )>>, unverifiedAccount?: Maybe<(
+      { __typename?: 'UnverifiedAccount' }
+      & Pick<UnverifiedAccount, 'email'>
     )> }
   ) }
 );
@@ -390,12 +427,12 @@ export const RegisterDocument = gql`
       field
       message
     }
-    account {
-      ...AccountFields
+    unverifiedAccount {
+      email
     }
   }
 }
-    ${AccountFieldsFragmentDoc}`;
+    `;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
