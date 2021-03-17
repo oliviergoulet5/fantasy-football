@@ -1,5 +1,5 @@
-mutation UpdateAccount($username: String, $email: String, $password: String) {
-    updateAccount(options: { username: $username, email: $email, password: $password }) {
+mutation Verify($email: String!, $code: String!) {
+    verify(email: $email, code: $code) {
         error {
             fieldError {
                 field

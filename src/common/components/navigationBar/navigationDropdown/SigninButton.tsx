@@ -5,11 +5,6 @@ export function SigninButton() {
     const { setAccountModalVisible } = useContext(AccountModalContext)!;
 
     return (
-        <div
-            onClick={() => setAccountModalVisible(true)}
-            className="button primary flex content-center h-8 p-4 leading-tight"
-        >
-            <p className="text-sm">Sign In</p>
-        </div>
+            <p className="text-sm button primary" onClick={() => setAccountModalVisible(true)}>Sign In</p>
     )
 }

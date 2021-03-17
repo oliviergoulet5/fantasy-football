@@ -6,18 +6,18 @@ type FormikFieldValueSetter = (field: string, value: any, shouldValidate?: boole
 export type AbstractFormComponentProps {
     name: string;
     errorMessage?: string;
+    onChange?: (event: any) => void
+    value?: string;
 };
 
 export type FormDropdownProps = AbstractFormComponentProps & {
     options: Array<string>;
-    value?: string;
     setFieldValue: FormikFieldValueSetter;
 }
 
 export type FormTextAreaProps = AbstractFormComponentProps & {
     placeholder?: string;
     setFieldValue: FormikFieldValueSetter;
-    value: string;
 }
 
 export type FormFieldProps = AbstractFormComponentProps & {

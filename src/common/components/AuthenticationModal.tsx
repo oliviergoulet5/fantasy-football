@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
-import { LoginForm, RegisterForm } from './authenticationModal/index';
+import { LoginForm } from '../../modules/login';
+import { RegisterForm } from '../../modules/register';
 import { AccountModalContext } from '../contexts/accountModalContext';
 import { useOutsideAlerterWithContext } from '../hooks/outsideAlerter';
 import { LoginFormValues, RegisterFormValues } from '../../types';

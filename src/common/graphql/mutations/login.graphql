@@ -1,8 +1,14 @@
 mutation Login($options: LoginInput!) {
     login(options: $options) {
-        errors {
-            field
-            message
+        error {
+            fieldError {
+                field
+                message
+            }
+
+            formError {
+                message
+            }
         }
 
         account {

@@ -1,5 +1,5 @@
 import { RegisterForm } from '../../common/components/authenticationModal/index';
-import { VerificationForm } from '../../modules/register/VerificationForm';
+import { VerificationForm } from '../../modules/verification/VerificationForm';
 import { useRouter } from 'next/router';
 import { AuthLayout } from '../../common/layouts';
 import { useIsAuth } from '../../common/hooks';
