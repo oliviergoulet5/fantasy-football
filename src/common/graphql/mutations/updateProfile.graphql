@@ -1,8 +1,14 @@
 mutation UpdateProfile($name: String, $bio: String, $favouriteTeam: String) {
     updateAccount(options: { name: $name, bio: $bio, favouriteTeam: $favouriteTeam }) {
-        errors {
-            field
-            message
+        error { 
+            fieldError {
+                field
+                message
+            }
+
+            formError { 
+                message
+            }
         }
 
         account {

@@ -14,9 +14,9 @@ interface Props {
 
 export function ProfileHead({data: { username, name, avatarLocation }, isUser }: Props) {
     const buttonRender = (isUser ? 
-        <button className='button bg-gray-400 text-white px-4 py-2 ml-8'>Edit Profile</button>
+        <button className='button bg-gray-400 text-white w-32 ml-8'>Edit Profile</button>
         :
-        <Link href='/settings/profile-information' ><span className='button bg-red-400 text-white px-4 py-2 ml-8'>Follow</span></Link>
+        <Link href='/settings/profile-information' ><span className='button px-4 bg-red-400 text-white ml-8'>Follow</span></Link>
     );
 
     return (

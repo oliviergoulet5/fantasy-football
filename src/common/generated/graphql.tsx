@@ -21,11 +21,19 @@ export type Query = {
   me?: Maybe<Account>;
   accounts?: Maybe<Array<Account>>;
   players: Array<Player>;
+  fixtures: Array<Fixture>;
 };
 
 
 export type QueryAccountsArgs = {
   id?: Maybe<Scalars['Float']>;
+};
+
+
+export type QueryPlayersArgs = {
+  ict_index?: Maybe<InputRangeDouble>;
+  assists?: Maybe<InputRange>;
+  goalsScored?: Maybe<InputRange>;
 };
 
 export type Account = {
@@ -50,14 +58,33 @@ export type Player = {
   minutes: Scalars['Int'];
   yellowCards: Scalars['Int'];
   redCards: Scalars['Int'];
-  ictIndex: Scalars['Float'];
+  ict_index: Scalars['Float'];
+};
+
+export type InputRangeDouble = {
+  min: Scalars['Float'];
+  max: Scalars['Float'];
+};
+
+export type InputRange = {
+  min: Scalars['Int'];
+  max: Scalars['Int'];
+};
+
+export type Fixture = {
+  __typename?: 'Fixture';
+  gameWeek?: Maybe<Scalars['String']>;
+  kickoffTime?: Maybe<Scalars['String']>;
+  teamAway: Scalars['String'];
+  teamHome: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   login: AccountResponse;
   logout: Scalars['Boolean'];
-  register: AccountResponse;
+  register: UnverifiedAccountResponse;
+  verify: AccountResponse;
   updateAccount: AccountResponse;
   updateAvatar: Scalars['String'];
 };
@@ -73,6 +100,12 @@ export type MutationRegisterArgs = {
 };
 
 
+export type MutationVerifyArgs = {
+  code: Scalars['String'];
+  email: Scalars['String'];
+};
+
+
 export type MutationUpdateAccountArgs = {
   options: UpdateInput;
 };
@@ -84,8 +117,14 @@ export type MutationUpdateAvatarArgs = {
 
 export type AccountResponse = {
   __typename?: 'AccountResponse';
-  errors?: Maybe<Array<FieldError>>;
+  error?: Maybe<Error>;
   account?: Maybe<Account>;
+};
+
+export type Error = {
+  __typename?: 'Error';
+  fieldError?: Maybe<FieldError>;
+  formError?: Maybe<FormError>;
 };
 
 export type FieldError = {
@@ -94,9 +133,25 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
+export type FormError = {
+  __typename?: 'FormError';
+  message: Scalars['String'];
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type UnverifiedAccountResponse = {
+  __typename?: 'UnverifiedAccountResponse';
+  error?: Maybe<Error>;
+  unverifiedAccount?: Maybe<UnverifiedAccount>;
+};
+
+export type UnverifiedAccount = {
+  __typename?: 'UnverifiedAccount';
+  email: Scalars['String'];
 };
 
 export type RegisterInput = {
@@ -140,10 +195,16 @@ export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login: (
     { __typename?: 'AccountResponse' }
-    & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'field' | 'message'>
-    )>>, account?: Maybe<(
+    & { error?: Maybe<(
+      { __typename?: 'Error' }
+      & { fieldError?: Maybe<(
+        { __typename?: 'FieldError' }
+        & Pick<FieldError, 'field' | 'message'>
+      )>, formError?: Maybe<(
+        { __typename?: 'FormError' }
+        & Pick<FormError, 'message'>
+      )> }
+    )>, account?: Maybe<(
       { __typename?: 'Account' }
       & AccountFieldsFragment
     )> }
@@ -168,13 +229,19 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register: (
-    { __typename?: 'AccountResponse' }
-    & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'field' | 'message'>
-    )>>, account?: Maybe<(
-      { __typename?: 'Account' }
-      & AccountFieldsFragment
+    { __typename?: 'UnverifiedAccountResponse' }
+    & { error?: Maybe<(
+      { __typename?: 'Error' }
+      & { fieldError?: Maybe<(
+        { __typename?: 'FieldError' }
+        & Pick<FieldError, 'field' | 'message'>
+      )>, formError?: Maybe<(
+        { __typename?: 'FormError' }
+        & Pick<FormError, 'message'>
+      )> }
+    )>, unverifiedAccount?: Maybe<(
+      { __typename?: 'UnverifiedAccount' }
+      & Pick<UnverifiedAccount, 'email'>
     )> }
   ) }
 );
@@ -190,10 +257,16 @@ export type UpdateAccountMutation = (
   { __typename?: 'Mutation' }
   & { updateAccount: (
     { __typename?: 'AccountResponse' }
-    & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'field' | 'message'>
-    )>>, account?: Maybe<(
+    & { error?: Maybe<(
+      { __typename?: 'Error' }
+      & { fieldError?: Maybe<(
+        { __typename?: 'FieldError' }
+        & Pick<FieldError, 'field' | 'message'>
+      )>, formError?: Maybe<(
+        { __typename?: 'FormError' }
+        & Pick<FormError, 'message'>
+      )> }
+    )>, account?: Maybe<(
       { __typename?: 'Account' }
       & AccountFieldsFragment
     )> }
@@ -221,12 +294,44 @@ export type UpdateProfileMutation = (
   { __typename?: 'Mutation' }
   & { updateAccount: (
     { __typename?: 'AccountResponse' }
-    & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'field' | 'message'>
-    )>>, account?: Maybe<(
+    & { error?: Maybe<(
+      { __typename?: 'Error' }
+      & { fieldError?: Maybe<(
+        { __typename?: 'FieldError' }
+        & Pick<FieldError, 'field' | 'message'>
+      )>, formError?: Maybe<(
+        { __typename?: 'FormError' }
+        & Pick<FormError, 'message'>
+      )> }
+    )>, account?: Maybe<(
       { __typename?: 'Account' }
       & ProfileFieldsFragment
+    )> }
+  ) }
+);
+
+export type VerifyMutationVariables = Exact<{
+  email: Scalars['String'];
+  code: Scalars['String'];
+}>;
+
+
+export type VerifyMutation = (
+  { __typename?: 'Mutation' }
+  & { verify: (
+    { __typename?: 'AccountResponse' }
+    & { error?: Maybe<(
+      { __typename?: 'Error' }
+      & { fieldError?: Maybe<(
+        { __typename?: 'FieldError' }
+        & Pick<FieldError, 'field' | 'message'>
+      )>, formError?: Maybe<(
+        { __typename?: 'FormError' }
+        & Pick<FormError, 'message'>
+      )> }
+    )>, account?: Maybe<(
+      { __typename?: 'Account' }
+      & AccountFieldsFragment
     )> }
   ) }
 );
@@ -317,9 +422,14 @@ export const ProfileFieldsFragmentDoc = gql`
 export const LoginDocument = gql`
     mutation Login($options: LoginInput!) {
   login(options: $options) {
-    errors {
-      field
-      message
+    error {
+      fieldError {
+        field
+        message
+      }
+      formError {
+        message
+      }
     }
     account {
       ...AccountFields
@@ -386,16 +496,21 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, L
 export const RegisterDocument = gql`
     mutation Register($email: String!, $username: String!, $password: String!) {
   register(options: {email: $email, username: $username, password: $password}) {
-    errors {
-      field
-      message
+    error {
+      fieldError {
+        field
+        message
+      }
+      formError {
+        message
+      }
     }
-    account {
-      ...AccountFields
+    unverifiedAccount {
+      email
     }
   }
 }
-    ${AccountFieldsFragmentDoc}`;
+    `;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -429,9 +544,14 @@ export const UpdateAccountDocument = gql`
   updateAccount(
     options: {username: $username, email: $email, password: $password}
   ) {
-    errors {
-      field
-      message
+    error {
+      fieldError {
+        field
+        message
+      }
+      formError {
+        message
+      }
     }
     account {
       ...AccountFields
@@ -501,9 +621,14 @@ export type UpdateAvatarMutationOptions = Apollo.BaseMutationOptions<UpdateAvata
 export const UpdateProfileDocument = gql`
     mutation UpdateProfile($name: String, $bio: String, $favouriteTeam: String) {
   updateAccount(options: {name: $name, bio: $bio, favouriteTeam: $favouriteTeam}) {
-    errors {
-      field
-      message
+    error {
+      fieldError {
+        field
+        message
+      }
+      formError {
+        message
+      }
     }
     account {
       ...ProfileFields
@@ -539,6 +664,51 @@ export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
 export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
 export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export const VerifyDocument = gql`
+    mutation Verify($email: String!, $code: String!) {
+  verify(email: $email, code: $code) {
+    error {
+      fieldError {
+        field
+        message
+      }
+      formError {
+        message
+      }
+    }
+    account {
+      ...AccountFields
+    }
+  }
+}
+    ${AccountFieldsFragmentDoc}`;
+export type VerifyMutationFn = Apollo.MutationFunction<VerifyMutation, VerifyMutationVariables>;
+
+/**
+ * __useVerifyMutation__
+ *
+ * To run a mutation, you first call `useVerifyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVerifyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [verifyMutation, { data, loading, error }] = useVerifyMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useVerifyMutation(baseOptions?: Apollo.MutationHookOptions<VerifyMutation, VerifyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<VerifyMutation, VerifyMutationVariables>(VerifyDocument, options);
+      }
+export type VerifyMutationHookResult = ReturnType<typeof useVerifyMutation>;
+export type VerifyMutationResult = Apollo.MutationResult<VerifyMutation>;
+export type VerifyMutationOptions = Apollo.BaseMutationOptions<VerifyMutation, VerifyMutationVariables>;
 export const GetProfileDocument = gql`
     query GetProfile($id: Float) {
   accounts(id: $id) {

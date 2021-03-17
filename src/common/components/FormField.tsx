@@ -1,12 +1,11 @@
-import { Field } from 'formik';
 import { FormFieldProps } from '../../types';
 import { FormLabel } from './FormLabel';
 
-export function FormField({ name, type, errorMessage }: FormFieldProps) {
+export function FormField({ name, type, errorMessage, onChange, value }: FormFieldProps) {
     return (
         <div>
             <FormLabel name={ name } errorMessage={ errorMessage } />
-            <Field name={name} type={type} className="input-text" />
+            <input name={name} type={type} className="input-text" onChange={ onChange } value={ value } />
         </div>
     );
 }
