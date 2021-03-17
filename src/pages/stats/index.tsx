@@ -14,7 +14,7 @@ interface FilterState {
     position?: string;
     goals?: number[];
     assists?: number[];
-};
+}
 
 function reducer(state: FilterState, action: Action) {
     switch (action.filter) {
@@ -40,7 +40,7 @@ function Stats() {
         <MainLayout>
             <div>
                 {__prod__ && (
-                    <pre className="w-full text-center">
+                    <pre className='w-full text-center'>
                         {JSON.stringify(filters)}
                     </pre>
                 )}

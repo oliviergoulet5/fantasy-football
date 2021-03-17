@@ -3,14 +3,14 @@ import Slider from '@material-ui/core/Slider';
 import { styled } from '@material-ui/styles';
 
 interface Props {
-    name?: string,
-    min: number,
-    max: number,
+    name?: string;
+    min: number;
+    max: number;
     liftRangeUp: (value: number[], name?: string) => void;
 }
 
 const StyledSlider = styled(Slider)({
-    color: '#1D4ED8'
+    color: '#1D4ED8',
 });
 
 export function RangeSlider({ min, max, name, liftRangeUp }: Props) {
@@ -27,14 +27,13 @@ export function RangeSlider({ min, max, name, liftRangeUp }: Props) {
     }, [value]);
 
     return (
-        <div className="w-60 h-8 mx-2">
+        <div className='w-60 h-8 mx-2'>
             <StyledSlider
                 value={value}
                 onChange={handleChange}
-                valueLabelDisplay="auto"
+                valueLabelDisplay='auto'
                 max={max}
-                min={min}
-            ></StyledSlider>
+                min={min}></StyledSlider>
         </div>
     );
 }

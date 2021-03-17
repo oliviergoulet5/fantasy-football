@@ -5,4 +5,11 @@ import { NavigationDropdown } from './NavigationDropdown';
 import { NavigationPageLinks } from './NavigationPageLinks';
 import { NavigationSearchBar } from './NavigationSearchBar';
 
-export { Logo, MobileSidebar, MobileMenuButton, NavigationDropdown, NavigationPageLinks, NavigationSearchBar };
+export {
+    Logo,
+    MobileSidebar,
+    MobileMenuButton,
+    NavigationDropdown,
+    NavigationPageLinks,
+    NavigationSearchBar,
+};

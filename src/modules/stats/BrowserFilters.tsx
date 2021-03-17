@@ -9,7 +9,7 @@ interface Props {
         filter: string;
         value: AcceptedFilterTypes;
     }) => void;
-};
+}
 
 export function BrowserFilters({ dispatchFilters }: Props) {
     const {
@@ -40,35 +40,34 @@ export function BrowserFilters({ dispatchFilters }: Props) {
 
     return (
         <>
-            <div className="flex items-end justify-center w-full p-20 pb-0 space-x-6">
-                <div className="form-group">
-                    <p className="label">Club</p>
+            <div className='flex items-end justify-center w-full p-20 pb-0 space-x-6'>
+                <div className='form-group'>
+                    <p className='label'>Club</p>
                     <Dropdown
-                        name="clubs"
+                        name='clubs'
                         options={['Any', ...CLUBS]}
                         liftSelectedOption={getDropdownValue}
                     />
                 </div>
 
-                <div className="form-group">
-                    <p className="label">Position</p>
+                <div className='form-group'>
+                    <p className='label'>Position</p>
                     <Dropdown
-                        name="positions"
+                        name='positions'
                         options={['Any', ...POSITIONS]}
                         liftSelectedOption={getDropdownValue}
                     />
                 </div>
 
-                <div className="form-group">
-                    <p className="label">Search</p>
+                <div className='form-group'>
+                    <p className='label'>Search</p>
                     <SearchBar liftSearchUp={getSearchValue} />
                 </div>
 
-                <div className="fg-item hover:bg-gray-50 flex justify-center flex-none w-8 h-8">
+                <div className='fg-item hover:bg-gray-50 flex justify-center flex-none w-8 h-8'>
                     <button
                         onClick={handleAdvancedFilterButtonClick}
-                        className="focus:outline-none"
-                    >
+                        className='focus:outline-none'>
                         <img src='/icons/settings-alt.svg' />
                     </button>
                 </div>
@@ -76,30 +75,28 @@ export function BrowserFilters({ dispatchFilters }: Props) {
             <Transition
                 show={advancedFiltersVisible}
                 enter={'ease-out duration-100'}
-                enterFrom="transform opacity-0 -transition-y-full"
-                enterTo="transform opacity-100 transition-y-0"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 transition-y-0"
-                leaveTo="transform opacity-0 -transition-y-full"
-            >
+                enterFrom='transform opacity-0 -transition-y-full'
+                enterTo='transform opacity-100 transition-y-0'
+                leave='transition ease-in duration-75'
+                leaveFrom='transform opacity-100 transition-y-0'
+                leaveTo='transform opacity-0 -transition-y-full'>
                 <div
                     ref={ref}
-                    className="fg-item max-w-max min-w-1/2 absolute left-0 right-0 inline-block w-auto p-2 m-auto mt-2 text-center origin-bottom shadow-sm"
-                >
-                    <div className="relative inline-grid grid-cols-3 grid-rows-3 gap-2">
-                        <div className="form-group">
-                            <p className="label">Goals</p>
+                    className='fg-item max-w-max min-w-1/2 absolute left-0 right-0 inline-block w-auto p-2 m-auto mt-2 text-center origin-bottom shadow-sm'>
+                    <div className='relative inline-grid grid-cols-3 grid-rows-3 gap-2'>
+                        <div className='form-group'>
+                            <p className='label'>Goals</p>
                             <RangeSlider
-                                name="goals"
+                                name='goals'
                                 min={0}
                                 max={13}
                                 liftRangeUp={getRangeValue}
                             />
                         </div>
-                        <div className="form-group">
-                            <p className="label">Assists</p>
+                        <div className='form-group'>
+                            <p className='label'>Assists</p>
                             <RangeSlider
-                                name="assists"
+                                name='assists'
                                 min={0}
                                 max={13}
                                 liftRangeUp={getRangeValue}

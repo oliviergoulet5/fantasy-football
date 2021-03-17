@@ -8,4 +8,14 @@ import { FormTextArea } from './FormTextArea';
 import { FormDropdown } from './FormDropdown';
 import { AuthenticationModal } from './AuthenticationModal';
 
-export { Dropdown, SearchBar, RangeSlider, NavigationBar, FormLabel, FormField, FormTextArea, FormDropdown, AuthenticationModal };
+export {
+    Dropdown,
+    SearchBar,
+    RangeSlider,
+    NavigationBar,
+    FormLabel,
+    FormField,
+    FormTextArea,
+    FormDropdown,
+    AuthenticationModal,
+};

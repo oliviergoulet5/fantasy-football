@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { toHyphenatedCase } from '../../../common/utils';
 
 interface Props {
-    pages: string[]
+    pages: string[];
 }
 
 export function Sidebar({ pages }: Props) {
@@ -12,11 +12,11 @@ export function Sidebar({ pages }: Props) {
                 <h1 className='font-bold text-2xl py-2'>Settings</h1>
                 <hr />
             </div>
-            { pages.map((page) => 
-                <Link href={ '/settings/' + toHyphenatedCase(page) }>
+            {pages.map(page => (
+                <Link href={'/settings/' + toHyphenatedCase(page)}>
                     <span className='sidebar-option'>{page}</span>
                 </Link>
-            )}
+            ))}
         </aside>
     );
 }

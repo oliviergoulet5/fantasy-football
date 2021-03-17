@@ -5,6 +5,6 @@ export const validationSchema = () => {
         name: yup.string().max(70),
         favouriteTeam: yup.string(),
         bio: yup.string().max(500),
-        avatar: yup.string()
+        avatar: yup.string(),
     });
-}
+};

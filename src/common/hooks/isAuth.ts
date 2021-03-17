@@ -7,8 +7,8 @@ interface Options {
 }
 
 const defaults: Options = {
-    redirect: true
-}
+    redirect: true,
+};
 
 export const useIsAuth = (options = defaults) => {
     const { loading, data } = useMeAccountQuery();
@@ -19,6 +19,6 @@ export const useIsAuth = (options = defaults) => {
             router.replace('/login?next=' + router.pathname);
         }
     }, [loading, data, router]);
-    
+
     return data?.me;
 };

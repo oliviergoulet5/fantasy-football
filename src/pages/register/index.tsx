@@ -18,21 +18,20 @@ function Register() {
 
     const handleOnSuccess = (email: string) => {
         setVerifyingEmail(email);
-    }
+    };
 
     return (
         <AuthLayout>
-            {
-                verifyingEmail ? 
-                    <VerificationForm email={ verifyingEmail } />
-                :
-                    <RegisterForm 
-                        switchToLogin={ () => router.replace('/login') }
-                        onSuccess={ handleOnSuccess }
-                    />
-            }
+            {verifyingEmail ? (
+                <VerificationForm email={verifyingEmail} />
+            ) : (
+                <RegisterForm
+                    switchToLogin={() => router.replace('/login')}
+                    onSuccess={handleOnSuccess}
+                />
+            )}
         </AuthLayout>
-    );    
+    );
 }
 
 export default Register;

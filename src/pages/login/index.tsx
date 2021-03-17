@@ -11,19 +11,19 @@ function Login() {
         router.replace('/');
         return null;
     }
-    
+
     const handleOnSuccess = () => {
         router.reload();
-    }
+    };
 
     return (
         <AuthLayout>
-            <LoginForm 
-                switchToRegister={ () => router.replace('/register') }
-                onSuccess={ handleOnSuccess }
+            <LoginForm
+                switchToRegister={() => router.replace('/register')}
+                onSuccess={handleOnSuccess}
             />
         </AuthLayout>
-    );    
+    );
 }
 
 export default Login;

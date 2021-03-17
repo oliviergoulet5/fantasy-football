@@ -48,8 +48,8 @@
     "arrowParens": "avoid",
     "bracketSpacing": true,
     "printWidth": 80,
-    "prettier.jsxBracketSameLine": true,
-    "removeDuplicatesClasses": true,
-    "prettier.jsxSingleQuote": true
+    "jsxBracketSameLine": true,
+    "jsxSingleQuote": true
   }
 }
+
