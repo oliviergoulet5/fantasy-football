@@ -1,5 +1,5 @@
 import {
-    useMeProfileQuery,
+    useMeProfileLazyQuery,
     useUpdateAvatarMutation,
     useUpdateProfileMutation,
 } from '../../../common/generated/graphql';
@@ -36,30 +36,22 @@ const defaultValues: ProfileInformationFormValues = {
 };
 
 function ProfileInformation() {
-    const {
+    const [getMeProfile, {
         loading: loadingAccount,
         data: profileData,
         refetch,
         networkStatus,
-    } = useMeProfileQuery();
+    }] = useMeProfileLazyQuery();
     const [updateProfile] = useUpdateProfileMutation();
     const [updateAvatar] = useUpdateAvatarMutation();
 
-    if (
-        loadingAccount ||
-        networkStatus == NetworkStatus.refetch ||
-        profileData?.me === null ||
-        profileData?.me === undefined
-    )
-        return null;
-
     let initialValues: ProfileInformationFormValues & TempFormValues = {
-        name: profileData.me.name || defaultValues.name,
-        bio: profileData.me.bio || defaultValues.bio,
+        name: profileData?.me?.name || defaultValues.name,
+        bio: profileData?.me?.bio || defaultValues.bio,
         favouriteTeam:
-            profileData.me.favouriteTeam || defaultValues.favouriteTeam,
+            profileData?.me?.favouriteTeam || defaultValues.favouriteTeam,
         avatarLocation:
-            profileData.me.avatarLocation || defaultValues.avatarLocation,
+            profileData?.me?.avatarLocation || defaultValues.avatarLocation,
     };
 
     const formik = useFormik({
@@ -87,12 +79,21 @@ function ProfileInformation() {
 
             if (values.avatar) {
                 await updateAvatar({ variables: { avatar: values.avatar } });
-                refetch();
+                getMeProfile();
             }
 
             setSubmitting(false);
         },
     });
+    
+    if (
+        loadingAccount ||
+        networkStatus == NetworkStatus.refetch ||
+        profileData?.me === null ||
+        profileData?.me === undefined
+    ) {
+        return null;
+    }
 
     const disabled =
         formik.isSubmitting ||
@@ -102,7 +103,7 @@ function ProfileInformation() {
     return (
         <MainLayout>
             <SettingsLayout>
-                <form>
+                <form >
                     <div className='px-4 py-2'>
                         <h1 className='font-bold py-2 text-2xl'>
                             Profile Information
