@@ -8,7 +8,7 @@ interface Props {
 export function NavigationPageLinks({ currentPage }: Props) {
     return (
         <div className='sm:block sm:ml-6 hidden'>
-            <div className='m-full flex items-center content-center h-full space-x-4'>
+            <div className='m-full flex items-center content-center h-full space-x-1 md:space-x-4'>
                 {MAIN_PAGES.map(page => (
                     <PageLink
                         current={

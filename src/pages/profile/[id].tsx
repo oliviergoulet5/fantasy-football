@@ -27,7 +27,7 @@ function ProfileContent() {
     const { avatarLocation, username, name, favouriteTeam, bio } = profileData;
 
     let render = profileData && (
-        <div className='flex flex-col w-2/3 m-auto space-y-6'>
+        <div className='flex flex-col w-full p-2 sm:w-9/12 2xl:w-2/3 m-auto space-y-2 sm:space-y-6'>
             <ProfileHead
                 data={{
                     avatarLocation,
