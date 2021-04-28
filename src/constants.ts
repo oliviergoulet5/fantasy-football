@@ -21,6 +21,7 @@ export const CLUBS = [
     'West Ham United',
     'Wolverhampton Wanderers',
 ];
+
 export const POSITIONS = ['Forward', 'Midfielder', 'Defender', 'Goalkeeper'];
 
 export const MAIN_PAGES = ['Home', 'Stats', 'Watchlist', 'Games'];
@@ -31,4 +32,4 @@ export const SETTINGS_PAGES = [
     'Site preferences',
 ];
 
-export const AVATAR_DEFAULT = '/static/avatar-default.jpg';
+export const AVATAR_DEFAULT = '/images/avatar-default.jpg';
