@@ -34,9 +34,9 @@ const defaultValues: ProfileInformationFormValues = {
     avatarLocation: AVATAR_DEFAULT,
 };
 
-
 function ProfileInformation() {
     const {loading: loadingProfile, data: profileData, networkStatus, refetch: refetchProfile } = useMeProfileQuery();
+
     const [updateProfile] = useUpdateProfileMutation();
     const [updateAvatar] = useUpdateAvatarMutation();
 
@@ -52,7 +52,7 @@ function ProfileInformation() {
     const initialStatus: FormStatus = { type: 'normal' };
 
     const formik = useFormik({
-        initialValues: {...initialValues},
+        initialValues: { ...initialValues },
         enableReinitialize: true,
         initialStatus,
         validationSchema,
@@ -61,7 +61,9 @@ function ProfileInformation() {
             { setSubmitting, setErrors, setStatus }
         ) => {
             setSubmitting(true);
+
             let status: FormStatus;
+
             const profileResponse = await updateProfile({
                 variables: getChangedValues(values, initialValues),
             });
@@ -84,12 +86,14 @@ function ProfileInformation() {
                 };
             }
 
+            // Update Avatar
             if (values.avatar) {
                 await updateAvatar({ variables: { avatar: values.avatar } });
             }
 
-            refetchProfile();
             setStatus(status);
+            await refetchProfile();
+
             setSubmitting(false);
         },
     });
@@ -100,7 +104,7 @@ function ProfileInformation() {
         profileData?.me === null ||
         profileData?.me === undefined
     ) {
-        return null;
+        return <p>Refetching...</p>;
     }
 
     const disabled =
@@ -112,7 +116,6 @@ function ProfileInformation() {
         <MainLayout>
             <SettingsLayout>
                 <form>
-                    <pre>{JSON.stringify(formik.values)}</pre>
                     <div className='px-4 py-2'>
                         <h1 className='font-bold py-2 text-2xl'>
                             Profile Information
@@ -197,5 +200,3 @@ function ProfileInformation() {
 }
 
 export default ProfileInformation;
-
-
