@@ -33,6 +33,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             <AccountModalContext.Provider
                 value={{ accountModalVisible, setAccountModalVisible }}>
                 {accountModalVisible && <AuthenticationModal />}
+                <p className='fixed inline-block right-10 bottom-5 text-blue-500'>Alpha Build</p>
+
                 <Component {...pageProps} />
             </AccountModalContext.Provider>
         </ApolloProvider>
