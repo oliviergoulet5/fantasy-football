@@ -20,7 +20,7 @@ export function ProfileHead({
         <Link href='/settings/profile-information'>
             {/* Normal Button */}
             <div>
-                <span className='button bg-gray-400 text-white w-32 hidden md:inline-block text-center'>
+                <span className='button bg-gray-400 hover:bg-gray-500 text-white w-32 hidden md:inline-block text-center'>
                     Edit Profile
                 </span>
 

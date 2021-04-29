@@ -1,10 +1,11 @@
 import {
+    useGetClubsQuery,
     useMeProfileQuery,
     useUpdateAvatarMutation,
     useUpdateProfileMutation,
 } from '../../../common/generated/graphql';
 import { SettingsLayout, MainLayout } from '../../../common/layouts';
-import { AVATAR_DEFAULT, CLUBS } from '../../../constants';
+import { AVATAR_DEFAULT } from '../../../constants';
 import { NetworkStatus } from '@apollo/client';
 import { useFormik } from 'formik';
 import {
@@ -39,6 +40,9 @@ function ProfileInformation() {
 
     const [updateProfile] = useUpdateProfileMutation();
     const [updateAvatar] = useUpdateAvatarMutation();
+
+    const { data: clubsData } = useGetClubsQuery();
+    const clubs = clubsData?.clubs.map((club) => club.shortName) || [];
 
     let initialValues: ProfileInformationFormValues & TempFormValues = {
         name: profileData?.me?.name || defaultValues.name,
@@ -168,7 +172,7 @@ function ProfileInformation() {
 
                                 <FormDropdown
                                     name='favouriteTeam'
-                                    options={['None', ...CLUBS]}
+                                    options={['None', ...clubs]}
                                     errorMessage={formik.errors.favouriteTeam}
                                     setFieldValue={formik.setFieldValue}
                                     value={formik.values.favouriteTeam}

@@ -22,6 +22,8 @@ export type Query = {
   accounts?: Maybe<Array<Account>>;
   players: Array<Player>;
   fixtures: Array<Fixture>;
+  clubs: Array<Club>;
+  club: Club;
 };
 
 
@@ -34,6 +36,11 @@ export type QueryPlayersArgs = {
   ict_index?: Maybe<InputRangeDouble>;
   assists?: Maybe<InputRange>;
   goalsScored?: Maybe<InputRange>;
+};
+
+
+export type QueryClubArgs = {
+  shortName: Scalars['String'];
 };
 
 export type Account = {
@@ -77,6 +84,21 @@ export type Fixture = {
   kickoffTime?: Maybe<Scalars['String']>;
   teamAway: Scalars['String'];
   teamHome: Scalars['String'];
+};
+
+export type Club = {
+  __typename?: 'Club';
+  name: Scalars['String'];
+  shortName: Scalars['String'];
+  points: Scalars['Int'];
+  crestLocation: Scalars['String'];
+  strength: Scalars['Int'];
+  strengthOverallHome: Scalars['Int'];
+  strengthOverallAway: Scalars['Int'];
+  strengthAttackHome: Scalars['Int'];
+  strengthAttackAway: Scalars['Int'];
+  strengthDefenceHome: Scalars['Int'];
+  strengthDefenceAway: Scalars['Int'];
 };
 
 export type Mutation = {
@@ -167,7 +189,6 @@ export type UpdateInput = {
   name?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   favouriteTeam?: Maybe<Scalars['String']>;
-  avatarLocation?: Maybe<Scalars['String']>;
 };
 
 
@@ -176,9 +197,14 @@ export type AccountFieldsFragment = (
   & Pick<Account, 'id' | 'username' | 'email'>
 );
 
+export type ClubFieldsFragment = (
+  { __typename?: 'Club' }
+  & Pick<Club, 'name' | 'shortName' | 'points' | 'strength' | 'strengthOverallHome' | 'strengthOverallAway' | 'strengthAttackHome' | 'strengthAttackAway' | 'strengthDefenceHome' | 'strengthDefenceAway' | 'crestLocation'>
+);
+
 export type ProfileFieldsFragment = (
   { __typename?: 'Account' }
-  & Pick<Account, 'name' | 'bio' | 'favouriteTeam' | 'avatarLocation'>
+  & Pick<Account, 'name' | 'bio' | 'favouriteTeam'>
   & SimplifiedProfileFieldsFragment
 );
 
@@ -337,6 +363,30 @@ export type VerifyMutation = (
   ) }
 );
 
+export type GetClubQueryVariables = Exact<{
+  shortName: Scalars['String'];
+}>;
+
+
+export type GetClubQuery = (
+  { __typename?: 'Query' }
+  & { club: (
+    { __typename?: 'Club' }
+    & ClubFieldsFragment
+  ) }
+);
+
+export type GetClubsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetClubsQuery = (
+  { __typename?: 'Query' }
+  & { clubs: Array<(
+    { __typename?: 'Club' }
+    & ClubFieldsFragment
+  )> }
+);
+
 export type GetProfileQueryVariables = Exact<{
   id?: Maybe<Scalars['Float']>;
 }>;
@@ -404,6 +454,21 @@ export const AccountFieldsFragmentDoc = gql`
   email
 }
     `;
+export const ClubFieldsFragmentDoc = gql`
+    fragment ClubFields on Club {
+  name
+  shortName
+  points
+  strength
+  strengthOverallHome
+  strengthOverallAway
+  strengthAttackHome
+  strengthAttackAway
+  strengthDefenceHome
+  strengthDefenceAway
+  crestLocation
+}
+    `;
 export const SimplifiedProfileFieldsFragmentDoc = gql`
     fragment SimplifiedProfileFields on Account {
   id
@@ -418,7 +483,6 @@ export const ProfileFieldsFragmentDoc = gql`
   name
   bio
   favouriteTeam
-  avatarLocation
 }
     ${SimplifiedProfileFieldsFragmentDoc}`;
 export const LoginDocument = gql`
@@ -711,6 +775,75 @@ export function useVerifyMutation(baseOptions?: Apollo.MutationHookOptions<Verif
 export type VerifyMutationHookResult = ReturnType<typeof useVerifyMutation>;
 export type VerifyMutationResult = Apollo.MutationResult<VerifyMutation>;
 export type VerifyMutationOptions = Apollo.BaseMutationOptions<VerifyMutation, VerifyMutationVariables>;
+export const GetClubDocument = gql`
+    query GetClub($shortName: String!) {
+  club(shortName: $shortName) {
+    ...ClubFields
+  }
+}
+    ${ClubFieldsFragmentDoc}`;
+
+/**
+ * __useGetClubQuery__
+ *
+ * To run a query within a React component, call `useGetClubQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetClubQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetClubQuery({
+ *   variables: {
+ *      shortName: // value for 'shortName'
+ *   },
+ * });
+ */
+export function useGetClubQuery(baseOptions: Apollo.QueryHookOptions<GetClubQuery, GetClubQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetClubQuery, GetClubQueryVariables>(GetClubDocument, options);
+      }
+export function useGetClubLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetClubQuery, GetClubQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetClubQuery, GetClubQueryVariables>(GetClubDocument, options);
+        }
+export type GetClubQueryHookResult = ReturnType<typeof useGetClubQuery>;
+export type GetClubLazyQueryHookResult = ReturnType<typeof useGetClubLazyQuery>;
+export type GetClubQueryResult = Apollo.QueryResult<GetClubQuery, GetClubQueryVariables>;
+export const GetClubsDocument = gql`
+    query GetClubs {
+  clubs {
+    ...ClubFields
+  }
+}
+    ${ClubFieldsFragmentDoc}`;
+
+/**
+ * __useGetClubsQuery__
+ *
+ * To run a query within a React component, call `useGetClubsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetClubsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetClubsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetClubsQuery(baseOptions?: Apollo.QueryHookOptions<GetClubsQuery, GetClubsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetClubsQuery, GetClubsQueryVariables>(GetClubsDocument, options);
+      }
+export function useGetClubsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetClubsQuery, GetClubsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetClubsQuery, GetClubsQueryVariables>(GetClubsDocument, options);
+        }
+export type GetClubsQueryHookResult = ReturnType<typeof useGetClubsQuery>;
+export type GetClubsLazyQueryHookResult = ReturnType<typeof useGetClubsLazyQuery>;
+export type GetClubsQueryResult = Apollo.QueryResult<GetClubsQuery, GetClubsQueryVariables>;
 export const GetProfileDocument = gql`
     query GetProfile($id: Float) {
   accounts(id: $id) {

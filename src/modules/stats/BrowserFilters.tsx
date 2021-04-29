@@ -1,8 +1,9 @@
 import { Dropdown, SearchBar, RangeSlider } from '../../common/components';
 import { useOutsideAlerter } from '../../common/hooks/outsideAlerter';
 import { Transition } from '@headlessui/react';
-import { CLUBS, POSITIONS } from '../../constants';
+import { POSITIONS } from '../../constants';
 import { AcceptedFilterTypes } from '../../types';
+import { useGetClubsQuery } from '../../common/generated/graphql';
 
 interface Props {
     dispatchFilters: (value: {
@@ -17,6 +18,9 @@ export function BrowserFilters({ dispatchFilters }: Props) {
         setVisible: setAdvancedFiltersVisible,
         ref,
     } = useOutsideAlerter(false);
+
+    const { data: clubsData } = useGetClubsQuery();
+    const clubs = clubsData?.clubs.map((club) => club.name) || [];
 
     const handleAdvancedFilterButtonClick = (
         event: React.MouseEvent<HTMLButtonElement>
@@ -45,7 +49,7 @@ export function BrowserFilters({ dispatchFilters }: Props) {
                     <p className='label'>Club</p>
                     <Dropdown
                         name='clubs'
-                        options={['Any', ...CLUBS]}
+                        options={['Any', ...clubs]}
                         liftSelectedOption={getDropdownValue}
                     />
                 </div>
