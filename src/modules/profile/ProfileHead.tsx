@@ -17,21 +17,29 @@ export function ProfileHead({
     isUser,
 }: Props) {
     const buttonRender = isUser ? (
-        <button className='button bg-gray-400 text-white w-32 ml-8'>
-            Edit Profile
-        </button>
-    ) : (
         <Link href='/settings/profile-information'>
-            <span className='button px-4 bg-red-400 text-white ml-8'>
-                Follow
-            </span>
+            {/* Normal Button */}
+            <div>
+                <span className='button bg-gray-400 hover:bg-gray-500 text-white w-32 hidden md:inline-block text-center'>
+                    Edit Profile
+                </span>
+
+                {/* Mobile Button */}
+                <div className='w-6 h-6 bg-white inline-block md:hidden'>
+                    <img className='w-full h-full' src='/icons/pencil.svg' />
+                </div>
+            </div>
         </Link>
+    ) : (
+        <span className='button px-4 bg-red-400 text-white ml-8 text-center'>
+            Follow
+        </span>
     );
 
     return (
         <div className='flex fg-item p-10'>
             <img
-                className='h-32 w-32 rounded-full'
+                className='w-16 h-16 lg:w-32 lg:h-32 flex-none rounded-full'  // rounded-full
                 src={
                     avatarLocation
                         ? noCache(avatarLocation)
@@ -44,15 +52,17 @@ export function ProfileHead({
                 <p className='font-medium text-gray-700'>{name}</p>
             </div>
             <div className='flex w-full items-start justify-end'>
-                <div className='flex space-x-4 items-center'>
-                    <p className='font-medium'>
-                        Following{' '}
-                        <span className='font-normal text-gray-700'>10</span>
-                    </p>
-                    <p className='font-medium'>
-                        Followers{' '}
-                        <span className='font-normal text-gray-700'>4</span>
-                    </p>
+                <div className='flex space-x-10 items-center'>
+                    <div className='flex flex-col space-x-8 items-end lg:space-y-0 lg:space-x-4 lg:flex-row'>
+                        <p className='font-medium'>
+                            Following{' '}
+                            <span className='font-normal text-gray-700'>10</span>
+                        </p>
+                        <p className='font-medium'>
+                            Followers{' '}
+                            <span className='font-normal text-gray-700'>4</span>
+                        </p>
+                    </div>
                     {buttonRender}
                 </div>
             </div>

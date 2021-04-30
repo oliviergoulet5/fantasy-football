@@ -3,8 +3,8 @@ import { MainLayout } from '../../common/layouts';
 function PageNotFound() {
     return (
         <MainLayout>
-            <div className='flex flex-col items-center justify-start w-screen h-screen pt-32'>
-                <div className='space-y-32 text-center'>
+            <div className='flex  w-screen h-screen'>
+                <div className='space-y-32 text-center justify-start'>
                     <div>
                         <h1 className='text-3xl font-bold'>Page not found</h1>
                         <p className='text-lg font-semibold'>

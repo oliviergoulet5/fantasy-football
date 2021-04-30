@@ -38,3 +38,15 @@ export type RegisterFormValues = LoginFormValues & { username: string };
 
 // Filters
 export type AcceptedFilterTypes = string | number | number[];
+
+// Form Status
+interface IStatusWithContent {
+    type: 'formError';
+    message: string;
+}
+
+interface IFormStatus {
+    type: 'normal' | 'success' | 'fieldError';
+}
+
+export type FormStatus = IFormStatus | IStatusWithContent;

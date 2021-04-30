@@ -1,4 +1,4 @@
-import { LoginForm } from '../../common/components/authenticationModal/index';
+import { LoginForm } from '../../modules/login';
 import { useRouter } from 'next/router';
 import { AuthLayout } from '../../common/layouts';
 import { useIsAuth } from '../../common/hooks';

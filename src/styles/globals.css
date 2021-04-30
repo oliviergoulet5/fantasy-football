@@ -40,7 +40,7 @@
     }
 
     .primary-button {
-        @apply primary primary-hover
+        @apply primary primary-hover button
     }
 
     .error-alert {

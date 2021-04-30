@@ -1,4 +1,4 @@
-import { RegisterForm } from '../../common/components/authenticationModal/index';
+import { RegisterForm } from '../../modules/register';
 import { VerificationForm } from '../../modules/verification/VerificationForm';
 import { useRouter } from 'next/router';
 import { AuthLayout } from '../../common/layouts';

@@ -7,6 +7,7 @@ import { FormField } from './FormField';
 import { FormTextArea } from './FormTextArea';
 import { FormDropdown } from './FormDropdown';
 import { AuthenticationModal } from './AuthenticationModal';
+import { LargeFixture } from './LargeFixture';
 
 export {
     Dropdown,
@@ -18,4 +19,5 @@ export {
     FormTextArea,
     FormDropdown,
     AuthenticationModal,
+    LargeFixture,
 };

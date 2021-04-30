@@ -13,7 +13,6 @@ export function NavigationBar() {
     const [mobileSidebarVisible, setMobileSidebarVisible] = useState(false);
     const router = useRouter();
     const currentPage = router.pathname.substring(1);
-    console.log(currentPage);
     const handleMobileMenuButtonClick = () =>
         setMobileSidebarVisible(!mobileSidebarVisible);
 

@@ -1,12 +1,13 @@
 import {
+    useGetClubsQuery,
     useMeProfileQuery,
     useUpdateAvatarMutation,
     useUpdateProfileMutation,
 } from '../../../common/generated/graphql';
 import { SettingsLayout, MainLayout } from '../../../common/layouts';
-import { AVATAR_DEFAULT, CLUBS } from '../../../constants';
+import { AVATAR_DEFAULT } from '../../../constants';
 import { NetworkStatus } from '@apollo/client';
-import { Formik, FormikHelpers, Form, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import {
     FormField,
     FormDropdown,
@@ -14,6 +15,7 @@ import {
 } from '../../../common/components';
 import { toErrorMap, getChangedValues, noCache } from '../../../common/utils';
 import { validationSchema } from '../../../modules/settings/profile-information';
+import { FormStatus } from '../../../types';
 
 interface ProfileInformationFormValues {
     name: string;
@@ -23,10 +25,8 @@ interface ProfileInformationFormValues {
 }
 
 interface TempFormValues {
-    avatar?: FileList[0];
+    avatar?: File;
 }
-
-const NORMAL_STATUS = undefined;
 
 const defaultValues: ProfileInformationFormValues = {
     name: '',
@@ -36,40 +36,38 @@ const defaultValues: ProfileInformationFormValues = {
 };
 
 function ProfileInformation() {
-    const {
-        loading: loadingAccount,
-        data: profileData,
-        refetch,
-        networkStatus,
-    } = useMeProfileQuery();
+    const {loading: loadingProfile, data: profileData, networkStatus, refetch: refetchProfile } = useMeProfileQuery();
+
     const [updateProfile] = useUpdateProfileMutation();
     const [updateAvatar] = useUpdateAvatarMutation();
 
-    if (
-        loadingAccount ||
-        networkStatus == NetworkStatus.refetch ||
-        profileData?.me === null ||
-        profileData?.me === undefined
-    )
-        return null;
+    const { data: clubsData } = useGetClubsQuery();
+    const clubs = clubsData?.clubs.map((club) => club.shortName) || [];
 
     let initialValues: ProfileInformationFormValues & TempFormValues = {
-        name: profileData.me.name || defaultValues.name,
-        bio: profileData.me.bio || defaultValues.bio,
+        name: profileData?.me?.name || defaultValues.name,
+        bio: profileData?.me?.bio || defaultValues.bio,
         favouriteTeam:
-            profileData.me.favouriteTeam || defaultValues.favouriteTeam,
+            profileData?.me?.favouriteTeam || defaultValues.favouriteTeam,
         avatarLocation:
-            profileData.me.avatarLocation || defaultValues.avatarLocation,
+            profileData?.me?.avatarLocation || defaultValues.avatarLocation,
     };
 
+    const initialStatus: FormStatus = { type: 'normal' };
+
     const formik = useFormik({
-        initialValues,
+        initialValues: { ...initialValues },
+        enableReinitialize: true,
+        initialStatus,
         validationSchema,
         onSubmit: async (
             values: ProfileInformationFormValues & TempFormValues,
             { setSubmitting, setErrors, setStatus }
         ) => {
             setSubmitting(true);
+
+            let status: FormStatus;
+
             const profileResponse = await updateProfile({
                 variables: getChangedValues(values, initialValues),
             });
@@ -78,26 +76,45 @@ function ProfileInformation() {
 
             if (profileError?.fieldError) {
                 setErrors(toErrorMap([profileError.fieldError]));
-                setStatus(NORMAL_STATUS);
+                status = { 
+                    type: 'fieldError' 
+                };
             } else if (profileError?.formError) {
-                setStatus(profileError.formError.message);
+                status = { 
+                    type: 'formError', 
+                    message: profileError.formError.message 
+                };
             } else {
-                setStatus(NORMAL_STATUS);
+                status = { 
+                    type: 'success' 
+                };
             }
 
+            // Update Avatar
             if (values.avatar) {
                 await updateAvatar({ variables: { avatar: values.avatar } });
-                refetch();
             }
+
+            setStatus(status);
+            await refetchProfile();
 
             setSubmitting(false);
         },
     });
+    
+    if (
+        loadingProfile ||
+        networkStatus == NetworkStatus.refetch ||
+        profileData?.me === null ||
+        profileData?.me === undefined
+    ) {
+        return <p>Refetching...</p>;
+    }
 
     const disabled =
         formik.isSubmitting ||
         !formik.isValid ||
-        formik.status !== NORMAL_STATUS;
+        (formik.status.type !== 'normal') && (formik.status.type !== 'success');
 
     return (
         <MainLayout>
@@ -112,10 +129,10 @@ function ProfileInformation() {
                                 <p className='label mb-2'>Avatar</p>
                                 <div>
                                     <img
-                                        src={noCache(
+                                        src={ noCache(
                                             profileData.me?.avatarLocation ||
                                                 defaultValues.avatarLocation
-                                        )}
+                                        ) }
                                         alt='avatar-preview'
                                         className='rounded-full h-24'
                                     />
@@ -155,7 +172,7 @@ function ProfileInformation() {
 
                                 <FormDropdown
                                     name='favouriteTeam'
-                                    options={['None', ...CLUBS]}
+                                    options={['None', ...clubs]}
                                     errorMessage={formik.errors.favouriteTeam}
                                     setFieldValue={formik.setFieldValue}
                                     value={formik.values.favouriteTeam}
@@ -174,7 +191,7 @@ function ProfileInformation() {
                                     Save
                                 </button>
 
-                                {status === 'success' && !disabled && (
+                                { formik.status?.type === 'success' && (
                                     <p>Saved changes</p>
                                 )}
                             </div>
