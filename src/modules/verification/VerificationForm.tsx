@@ -31,7 +31,6 @@ export function VerificationForm({ email }: Props) {
                     router.replace('/');
                 } else {
                     setErrors({ code: 'Wrong or invalid code.'})
-                    // error
                 }
             }); // verify that an account was returned and not an error. If true, redirect to home and sign in.
             setSubmitting(true);
