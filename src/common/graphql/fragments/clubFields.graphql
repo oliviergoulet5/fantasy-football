@@ -10,4 +10,11 @@ fragment ClubFields on Club {
     strengthDefenceHome
     strengthDefenceAway
     crestLocation
+    socialMedia {
+        facebook
+        instagram
+        twitter
+        youtube
+        tiktok
+    }
 }

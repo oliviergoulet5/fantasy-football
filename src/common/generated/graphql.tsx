@@ -99,6 +99,17 @@ export type Club = {
   strengthAttackAway: Scalars['Int'];
   strengthDefenceHome: Scalars['Int'];
   strengthDefenceAway: Scalars['Int'];
+  socialMedia: SocialMedia;
+};
+
+/** Collection of social media profiles for a club or player. */
+export type SocialMedia = {
+  __typename?: 'SocialMedia';
+  facebook?: Maybe<Scalars['String']>;
+  instagram?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
+  tiktok?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -200,6 +211,10 @@ export type AccountFieldsFragment = (
 export type ClubFieldsFragment = (
   { __typename?: 'Club' }
   & Pick<Club, 'name' | 'shortName' | 'points' | 'strength' | 'strengthOverallHome' | 'strengthOverallAway' | 'strengthAttackHome' | 'strengthAttackAway' | 'strengthDefenceHome' | 'strengthDefenceAway' | 'crestLocation'>
+  & { socialMedia: (
+    { __typename?: 'SocialMedia' }
+    & Pick<SocialMedia, 'facebook' | 'instagram' | 'twitter' | 'youtube' | 'tiktok'>
+  ) }
 );
 
 export type ProfileFieldsFragment = (
@@ -467,6 +482,13 @@ export const ClubFieldsFragmentDoc = gql`
   strengthDefenceHome
   strengthDefenceAway
   crestLocation
+  socialMedia {
+    facebook
+    instagram
+    twitter
+    youtube
+    tiktok
+  }
 }
     `;
 export const SimplifiedProfileFieldsFragmentDoc = gql`
