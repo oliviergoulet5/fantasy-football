@@ -1,6 +1,5 @@
 import '../styles/globals.css';
 import { AppProps } from 'next/app';
-
 import { useState } from 'react';
 import {
     ApolloClient,
@@ -10,9 +9,7 @@ import {
 } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client';
 import { AccountModalContext } from '../common/contexts';
-
 import { AuthenticationModal } from '../common/components';
-import { MainLayout } from '../common/layouts';
 
 const terminatingLink = createUploadLink({
     uri: 'http://localhost:4332/graphql',
@@ -34,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 value={{ accountModalVisible, setAccountModalVisible }}>
                 {accountModalVisible && <AuthenticationModal />}
                 <p className='fixed inline-block right-10 bottom-5 text-blue-500'>Alpha Build</p>
-
+                <title>FPL Watch</title>
                 <Component {...pageProps} />
             </AccountModalContext.Provider>
         </ApolloProvider>
