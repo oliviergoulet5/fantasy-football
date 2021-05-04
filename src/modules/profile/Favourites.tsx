@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useGetClubQuery } from '../../common/generated/graphql';
 
 interface Props {
@@ -18,8 +19,12 @@ export function Favourites({ data: { favouriteTeam } }: Props) {
         <div className='fg-item flex px-10 py-5 justify-between'>
             <div className='flex flex-col justify-start items-center space-y-2'>
                 <p className='font-bold text-lg'>Favourite Team</p>
-                <img className='justify-self-center w-20' src={ crestLocation } alt='emblem' />
-                <p className='text-center'>{ clubName }</p>
+                <Link href={`/club/${ favouriteTeam }`}>
+                    <div className='cursor-pointer'>
+                        <img className='justify-self-center w-20' src={ crestLocation } alt='emblem' />
+                        <p className='text-center'>{ clubName }</p>
+                    </div>
+                </Link>
             </div>
 
             <div className='flex flex-col'>
