@@ -19,7 +19,7 @@ export function Favourites({ data: { favouriteTeam } }: Props) {
         <div className='fg-item flex px-10 py-5 justify-between'>
             <div className='flex flex-col justify-start items-center space-y-2'>
                 <p className='font-bold text-lg'>Favourite Team</p>
-                <Link href={`/club/${ favouriteTeam }`}>
+                <Link href={`/club/${ favouriteTeam?.toLowerCase() }`}>
                     <div className='cursor-pointer'>
                         <img className='justify-self-center w-20' src={ crestLocation } alt='emblem' />
                         <p className='text-center'>{ clubName }</p>
