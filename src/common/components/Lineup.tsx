@@ -3,6 +3,7 @@ import { Player } from './lineup/Player';
 
 interface Props {
     venue: 'home' | 'away';
+    fixtureId?: number; // temporary, and not nullable
 }
 
 export function Lineup({ venue }: Props) {
