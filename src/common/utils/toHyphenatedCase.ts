@@ -1,2 +1,2 @@
 export const toHyphenatedCase = (str: string) =>
-    str.replaceAll(' ', '-').toLowerCase();
+    str.replace(/ /g, '-').toLowerCase();
