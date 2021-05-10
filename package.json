@@ -9,7 +9,7 @@
     "gen": "graphql-codegen --config codegen.yml",
     "prettier": "./node_modules/.bin/prettier --write \"src/**/*.{ts,js,json,tsx,jsx}\"",
     "test": "jest --watch",
-    "report": "jest --coverage"
+    "report": "jest src --collectCoverageFrom=**/src/**.*.{ts,js,tsx,jsx}"
   },
   "dependencies": {
     "@apollo/client": "^3.3.11",
