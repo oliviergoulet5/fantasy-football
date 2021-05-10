@@ -1,6 +1,6 @@
 import { useGetClubQuery } from '../generated/graphql';
 import { useRouter } from 'next/router';
-import { useParseParam } from './useParseParam';
+import { useParseParam } from '../hooks';
 
 export const useGetClubFromURL = () => {
     const router = useRouter();

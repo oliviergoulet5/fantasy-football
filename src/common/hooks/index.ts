@@ -3,5 +3,6 @@ import {
     useOutsideAlerter,
     useOutsideAlerterWithContext,
 } from './outsideAlerter';
+import { useParseParam } from './useParseParam';
 
-export { useIsAuth, useOutsideAlerter, useOutsideAlerterWithContext };
+export { useIsAuth, useOutsideAlerter, useOutsideAlerterWithContext, useParseParam };
