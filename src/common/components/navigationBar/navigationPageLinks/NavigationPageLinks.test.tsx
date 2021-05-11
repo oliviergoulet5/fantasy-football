@@ -3,9 +3,9 @@ import { NavigationPageLinks } from '../NavigationPageLinks';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect'
 
-const mainPages = ['Page A', 'Page B', 'Page C'];
+const MAIN_PAGES = ['Page A', 'Page B', 'Page C'];
 
-jest.mock('./MAIN_PAGES', () => mainPages);
+jest.mock('../../../../constants', () => ({ MAIN_PAGES }));
 
 describe('NavigationPageLinks component', () => {
     test('renders successfully', () => {
@@ -16,7 +16,7 @@ describe('NavigationPageLinks component', () => {
         const { getAllByTestId } = render(<NavigationPageLinks currentPage='stats' />);
 
         getAllByTestId('pagelink-p-text').forEach((pageLinkText) => {
-            expect(pageLinkText.textContent).toBeOneOf(mainPages);
+            expect(pageLinkText.textContent).toBeOneOf(MAIN_PAGES);
         });
     });
 });
