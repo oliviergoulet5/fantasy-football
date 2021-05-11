@@ -8,7 +8,7 @@ interface Props {
 
 export function MobileSidebar({ currentPage, visible }: Props) {
     return (
-        <aside className=' fixed w-3/5 h-screen overflow-hidden pointer-events-none'>
+        <aside className=' fixed w-3/5 h-screen overflow-hidden pointer-events-none' data-testid='mobilesidebar'>
             <Transition
                 show={visible}
                 enter='transition ease-in duration-150'
@@ -25,6 +25,7 @@ export function MobileSidebar({ currentPage, visible }: Props) {
                         <>
                             <a
                                 href='#'
+                                data-testid='mobilesidebar-a-link'
                                 className={
                                     (page === currentPage
                                         ? 'text-blue-300'

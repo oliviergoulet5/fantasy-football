@@ -11,6 +11,7 @@ export function MobileMenuButton({ onClick, mobileSidebarVisible }: Props) {
             aria-aria-expanded='false'>
             <span className='sr-only'>Open main menu</span>
             <img
+                data-testid='mobilemenubutton-img-menu'
                 src='/icons/menu.svg'
                 onClick={onClick}
                 className={
@@ -18,6 +19,7 @@ export function MobileMenuButton({ onClick, mobileSidebarVisible }: Props) {
                 }
             />
             <img
+                data-testid='mobilemenubutton-img-close'
                 src='/icons/close.svg'
                 onClick={onClick}
                 className={
