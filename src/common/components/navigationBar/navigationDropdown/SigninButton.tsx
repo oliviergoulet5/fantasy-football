@@ -6,6 +6,7 @@ export function SigninButton() {
 
     return (
         <p
+            data-testid='signinbutton'
             className='text-sm button primary'
             onClick={() => setAccountModalVisible(true)}>
             Sign In
